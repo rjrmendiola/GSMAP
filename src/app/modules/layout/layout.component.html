@@ -1,0 +1,56 @@
+<div class="flex h-screen w-full overflow-hidden">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+  
+  <div class="flex grow flex-col content-start overflow-hidden bg-card">
+  
+
+    <!-- Main content -->
+    <div
+      id="main-content"
+      class="scrollbar-thumb-rounded scrollbar-track-rounded grow overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted"
+    >
+      <div class="map-container">
+        <!-- Checkboxes to toggle visibility of GeoJSON layers -->
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            Layers <span>{{ isDropdownOpen ? '▼' : '▲' }}</span>
+          </button>       
+      
+          <!-- Dropdown content with checkboxes, only visible when dropdown is open -->
+          <div class="dropdown-content">
+            <label>
+              <input type="checkbox" (change)="toggleLayer('barangay')">
+              Show Barangays
+            </label>
+            <label>
+              <input type="checkbox" (change)="toggleLayer('water_river')">
+              Show Water Bodies
+            </label>
+            <label>
+              <input type="checkbox" (change)="toggleLayer('buildings')">
+              Show Buildings
+            </label>
+            <label>
+              <input type="checkbox" (change)="toggleLayer('landcover')">
+              Show Land Cover
+            </label>
+            <label>
+              <input type="checkbox" (change)="toggleLayer('roads')">
+              Show Roads
+            </label>
+          </div>
+        </div>
+    
+
+        <!-- Map Frame -->
+        <div class="map-frame">
+          <div id="map" style="height: 500px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+  </div>
+</div>
