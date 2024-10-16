@@ -20,13 +20,13 @@ export class Menu {
         },
         {
           icon: 'assets/icons/heroicons/outline/cube.svg',
-          label: 'Data',
-          route: '/data',
+          label: 'Landslide',
+          route: '/landslide',
         },
         {
           icon: 'assets/icons/heroicons/outline/information-circle.svg',
-          label: 'Instructions',
-          route: '/usage',
+          label: 'Flood',
+          route: '/flood',
         },
         {
           icon: 'assets/icons/heroicons/outline/user-circle.svg',
