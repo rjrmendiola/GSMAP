@@ -28,11 +28,11 @@ export class Menu {
           label: 'Flood',
           route: '/flood',
         },
-        {
-          icon: 'assets/icons/heroicons/outline/user-circle.svg',
-          label: 'Contact us',
-          route: '/contactus',
-        },
+        // {
+        //   icon: 'assets/icons/heroicons/outline/user-circle.svg',
+        //   label: 'Contact us',
+        //   route: '/contactus',
+        // },
       ],
     },
     // {
