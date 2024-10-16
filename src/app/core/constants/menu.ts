@@ -8,11 +8,14 @@ export class Menu {
       items: [
         {
           icon: 'assets/icons/heroicons/outline/exclamation-triangle.svg',
-          label: 'Hazards',
-          route: '/hazards',
+          label: 'Typhoon Category',
+          route: '/typhoon-category',
           children: [
-            { label: 'Landslides', route: '/hazards/landslides' },
-            { label: 'Floods', route: '/hazards/floods' },
+            { label: 'Signal No. 1', route: '/typhoon-category/1' },
+            { label: 'Signal No. 2', route: '/typhoon-category/2' },
+            { label: 'Signal No. 3', route: '/typhoon-category/3' },
+            { label: 'Signal No. 4', route: '/typhoon-category/4' },
+            { label: 'Signal No. 5', route: '/typhoon-category/5' },
           ],
         },
         {
