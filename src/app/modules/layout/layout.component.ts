@@ -12,6 +12,7 @@ import { NavigationEnd, Router, RouterOutlet, Event } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import * as L from 'leaflet';
+import 'leaflet-minimap';
 
 
 @Component({
@@ -88,11 +89,20 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     tiles.addTo(this.map);
 
     // Load GeoJSON data for different layers
-    this.loadGeoJsonLayer('barangay', './assets/data/carigara/barangay.geojson'); 
+    this.loadGeoJsonLayer('barangay', './assets/data/carigara/barangay.geojson');
     this.loadGeoJsonLayer('water_river', './assets/data/water_river.geojson');
     this.loadGeoJsonLayer('buildings', './assets/data/buildings.geojson');
     this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
     this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
+
+    const attribution =
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    // const orm = L.tileLayer(osmURL, { attribution }).addTo(this.map);
+
+    const osm2 = new L.TileLayer(osmURL, { minZoom: 10, maxZoom: 18, attribution });
+    const miniMap = new L.Control.MiniMap(osm2, { position: 'bottomleft', toggleDisplay: false });
+    miniMap.addTo(this.map);
   }
 
   // Method to load a GeoJSON layer and add it to the map
@@ -187,8 +197,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private onEachFeature(feature: any, layer: any, layerKey: string): void {
     if (layerKey !== 'roads' && layerKey !== 'water_river') {
       layer.on({
-        mouseover: this.highlightFeature.bind(this), 
-        mouseout: this.resetHighlight.bind(this),    
+        mouseover: this.highlightFeature.bind(this),
+        mouseout: this.resetHighlight.bind(this),
       });
     }
     layer.on({

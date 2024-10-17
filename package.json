@@ -44,6 +44,7 @@
     "apexcharts": "^3.35.3",
     "bootstrap": "^5.3.3",
     "leaflet": "^1.9.4",
+    "leaflet-minimap": "^3.6.1",
     "maplibre-gl": "^1.15.2",
     "ng-apexcharts": "^1.7.1",
     "ngx-sonner": "^2.0.1",
