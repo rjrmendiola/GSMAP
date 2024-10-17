@@ -13,6 +13,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import * as L from 'leaflet';
 import 'leaflet-minimap';
+import 'leaflet-fullscreen';
 
 
 @Component({
@@ -75,9 +76,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map = L.map('map', {
       center: [11.2966, 124.6783],
       zoom: 14,
-      zoomControl: false,
-      attributionControl: false,
+      zoomControl: true,
+      attributionControl: false
     }).setView([11.2977099, 124.6878707], 14);
+
+    // Add the fullscreen control
+    this.map.addControl(new L.Control.Fullscreen({
+      content: '<i class="fa fa-expand"></i>', // Custom icon for fullscreen
+      title: 'Enter Fullscreen',
+      titleCancel: 'Exit Fullscreen',
+      contentCancel: '<i class="fa fa-compress"></i>' // Custom icon for exit fullscreen
+    }));
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -95,14 +104,18 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
     this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
 
+    // Add minimap
     const attribution =
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-    // const orm = L.tileLayer(osmURL, { attribution }).addTo(this.map);
 
     const osm2 = new L.TileLayer(osmURL, { minZoom: 10, maxZoom: 18, attribution });
-    const miniMap = new L.Control.MiniMap(osm2, { position: 'bottomleft', toggleDisplay: false });
-    miniMap.addTo(this.map);
+    const minimap = new L.Control.MiniMap(osm2, { position: 'bottomleft', toggleDisplay: false });
+    minimap.addTo(this.map);
+
+    // Add fullscreen control
+    // const fullscreen = new L.Control.fullscreen({ position: 'topleft' });
+    // fullscreen.addTo(this.map);
   }
 
   // Method to load a GeoJSON layer and add it to the map

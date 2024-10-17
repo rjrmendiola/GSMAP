@@ -31,13 +31,15 @@
               "src/assets"
             ],
             "styles": [
+              "src/styles.scss",
               "node_modules/leaflet/dist/leaflet.css",
               "node_modules/leaflet-minimap/dist/Control.MiniMap.min.css",
-              "src/styles.scss"
+              "node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css"
             ],
             "scripts": [
               "node_modules/apexcharts/dist/apexcharts.min.js",
-              "node_modules/leaflet-minimap/dist/Control.MiniMap.min.js"
+              "node_modules/leaflet-minimap/dist/Control.MiniMap.min.js",
+              "node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js"
             ],
             "allowedCommonJsDependencies": [
               "apexcharts"
