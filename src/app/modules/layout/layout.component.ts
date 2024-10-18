@@ -15,7 +15,6 @@ import * as L from 'leaflet';
 import 'leaflet-minimap';
 import 'leaflet-fullscreen';
 
-
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -26,16 +25,13 @@ import 'leaflet-fullscreen';
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   isDropdownOpen: boolean = false;
-
-  //toggle dropdown visibility
-  toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
   private mainContent: HTMLElement | null = null;
   private map: any;
   private legend: any;
   private info: any;
+
+  // Property to track the currently active marker
+  private currentMarker: L.Marker | null = null;
 
   // Dictionary to store GeoJSON layers
   private layers: { [key: string]: L.GeoJSON } = {};
@@ -77,15 +73,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       center: [11.2966, 124.6783],
       zoom: 14,
       zoomControl: false,
-      attributionControl: false
-    }).setView([11.2977099, 124.6878707], 14);
+      attributionControl: false,
+    });
 
     // Add the fullscreen control
     this.map.addControl(new L.Control.Fullscreen({
-      content: '<i class="fa fa-expand"></i>', // Custom icon for fullscreen
+      content: '<i class="fa fa-expand"></i>',
       title: 'Enter Fullscreen',
       titleCancel: 'Exit Fullscreen',
-      contentCancel: '<i class="fa fa-compress"></i>' // Custom icon for exit fullscreen
+      contentCancel: '<i class="fa fa-compress"></i>',
     }));
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -103,19 +99,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('buildings', './assets/data/buildings.geojson');
     this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
     this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
+    this.loadGeoJsonLayer('popupbarangay', './assets/data/brgy.cariaga.geojson');
 
     // Add minimap
-    const attribution =
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-
-    const osm2 = new L.TileLayer(osmURL, { minZoom: 10, maxZoom: 18, attribution });
-    const minimap = new L.Control.MiniMap(osm2, { position: 'bottomleft', toggleDisplay: false });
+    const osm2 = new L.TileLayer(osmURL, { minZoom: 6, maxZoom: 18 });
+    const minimap = new L.Control.MiniMap(osm2, { position: 'bottomleft', toggleDisplay: true });
     minimap.addTo(this.map);
-
-    // Add fullscreen control
-    // const fullscreen = new L.Control.fullscreen({ position: 'topleft' });
-    // fullscreen.addTo(this.map);
   }
 
   // Method to load a GeoJSON layer and add it to the map
@@ -123,14 +113,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.fetchGeoJson(url)
       .then((data) => {
         const layer = L.geoJson(data, {
-          style: (feature) => this.style(feature, layerKey), // Pass layerKey to style
-          onEachFeature: (feature, layer) => this.onEachFeature(feature, layer, layerKey), // Bind onEachFeature method with layerKey
+          style: (feature) => this.style(feature, layerKey),
+          onEachFeature: (feature, layer) => this.onEachFeature(feature, layer, layerKey),
         });
-        this.layers[layerKey] = layer; // Store layer in dictionary
+        this.layers[layerKey] = layer;
 
-        // Only add layer to map if it is set to visible
         if (this.layerVisibility[layerKey]) {
-          layer.addTo(this.map); // Add the layer to the map if visible
+          layer.addTo(this.map);
         }
       })
       .catch((error) => {
@@ -141,21 +130,21 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Method to toggle layer visibility based on checkbox state
   public toggleLayer(layerKey: string): void {
     const layer = this.layers[layerKey];
-    this.layerVisibility[layerKey] = !this.layerVisibility[layerKey]; // Toggle visibility state
+    this.layerVisibility[layerKey] = !this.layerVisibility[layerKey];
 
     if (this.map.hasLayer(layer)) {
-      this.map.removeLayer(layer); // Remove the layer if it is currently visible
+      this.map.removeLayer(layer);
     } else {
-      this.map.addLayer(layer); // Add the layer if it is not visible
+      this.map.addLayer(layer);
     }
 
-    this.addLegend(); // Update the legend when toggling layers
+    this.addLegend();
   }
 
   // Add legend with colors corresponding to each GeoJSON layer
   private addLegend(): void {
     if (this.legend) {
-      this.map.removeControl(this.legend); // Remove existing legend
+      this.map.removeControl(this.legend);
     }
 
     this.legend = new L.Control({ position: 'bottomright' });
@@ -164,14 +153,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const div = L.DomUtil.create('div', 'info legend');
       const labels: string[] = [];
 
-      // Loop through the layer colors and create a legend item for each visible layer
       for (const layerKey in this.layerColors) {
         if (this.layerColors.hasOwnProperty(layerKey) && this.layerVisibility[layerKey]) {
           const color = this.layerColors[layerKey];
-          const layerName = layerKey.charAt(0).toUpperCase() + layerKey.slice(1); // Capitalize the layer name
-          labels.push(
-            `<i style="background:${color}"></i> ${layerName}`
-          );
+          const layerName = layerKey.charAt(0).toUpperCase() + layerKey.slice(1);
+          labels.push(`<i style="background:${color}"></i> ${layerName}`);
         }
       }
 
@@ -188,7 +174,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.info.onAdd = () => {
       this.info._div = L.DomUtil.create('div', 'info');
-      this.info.updateInfo(); // Initialize the info panel
+      this.info.updateInfo();
       return this.info._div;
     };
 
@@ -198,7 +184,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       this.info._div.innerHTML =
-        '<h4>Carigara, Leyte </h4>' +
+        '<h4>Carigara, Leyte</h4>' +
         (props
           ? `<b>${props.name}</b><br />${props.population} people`
           : 'Hover over a barangay');
@@ -240,68 +226,102 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       fillOpacity: 0.7,
     });
 
-    layer.bringToFront(); // Bring the layer to front
-    this.info.updateInfo(layer.feature.properties); // Update info panel with feature properties
+    layer.bringToFront();
+    this.info.updateInfo(layer.feature.properties);
   }
 
   // Reset highlight when mouseout
   private resetHighlight(e: any) {
     const layer = e.target;
-    this.layers['barangay'].resetStyle(layer);  // Reset the style to its original on mouseout
-    this.info.updateInfo(); // Clear the info panel
+    this.layers['barangay'].resetStyle(layer);
+    this.info.updateInfo();
   }
 
   // Zoom to the feature on click
   private zoomToFeature(e: any) {
-    this.map.fitBounds(e.target.getBounds()); // Fit the map to the bounds of the clicked feature
+    const layer = e.target;
+    const popup = layer.getPopup();
 
-    // image
-    const imageUrl =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Krakow_Center_-_basic_map.svg/1440px-Krakow_Center_-_basic_map.svg.png";
+    // Check if the popup is already open
+    if (this.currentMarker && this.currentMarker === layer) {
+      popup.remove(); // Close the popup if it is open
+      this.currentMarker = null; // Reset the current marker
+    } else {
+      this.map.fitBounds(layer.getBounds());
 
-    // new icon
-    const funny = L.icon({
-      iconUrl: "http://grzegorztomicki.pl/serwisy/pin.png",
-      iconSize: [50, 58], // size of the icon
-      iconAnchor: [20, 58], // changed marker icon position
-      popupAnchor: [0, -60], // changed popup position
-    });
+      // Custom marker with popup
+      const funny = L.icon({
+        iconUrl: "http://grzegorztomicki.pl/serwisy/pin.png",
+        iconSize: [50, 58],
+        iconAnchor: [20, 58],
+        popupAnchor: [0, -60],
+      });
 
-    // custom popup image + text
-    const customPopup =
-    '<div class="customPopup"><figure><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/A-10_Sukiennice_w_Krakowie_Krak%C3%B3w%2C_Rynek_G%C5%82%C3%B3wny_MM.jpg/1920px-A-10_Sukiennice_w_Krakowie_Krak%C3%B3w%2C_Rynek_G%C5%82%C3%B3wny_MM.jpg"><figcaption>Source: wikipedia.org</figcaption></figure><div>Kraków,[a] also written in English as Krakow and traditionally known as Cracow, is the second-largest and one of the oldest cities in Poland. Situated on the Vistula River in Lesser Poland Voivodeship... <a href="https://en.wikipedia.org/wiki/Krak%C3%B3w" target="_blank">→ show more</a></div></div>';
+      const customPopup =
+        '<div class="customPopup"><figure><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/A-10_Sukiennice_w_Krakowie_Krak%C3%B3w%2C_Rynek_G%C5%82%C3%B3wny_MM.jpg/1920px-A-10_Sukiennice_w_Krakowie_Krak%C3%B3w%2C_Rynek_G%C5%82%C3%B3wny_MM.jpg"><figcaption>Source: wikipedia.org</figcaption></figure><div>Kraków is the second-largest city in Poland. Situated on the Vistula River in Lesser Poland Voivodeship... <a href="https://en.wikipedia.org/wiki/Krak%C3%B3w" target="_blank">→ show more</a></div></div>';
 
-    // specify popup options
-    const customOptions = {
-      minWidth: 220, // set max-width
-      keepInView: true, // Set it to true if you want to prevent users from panning the popup off of the screen while it is open.
-    };
+      const customOptions = {
+        minWidth: 220,
+        keepInView: false,
+      };
 
-    // create marker object, pass custom icon as option, pass content and options to popup, add to map
-    L.marker([11.2966, 124.6783], {
-      icon: funny,
-    })
-    .bindPopup(customPopup, customOptions)
-    .on("click", this.clickZoom)
-    .addTo(this.map);
+      this.currentMarker = L.marker(e.latlng, {
+        icon: funny,
+      })
+        .bindPopup(customPopup, customOptions)
+        .on("click", this.clickZoom.bind(this))
+        .addTo(this.map);
 
-    // add image to map
-    const imageBounds: L.LatLngBoundsExpression = [
-      [11.2966, 124.6783],
-      [11.0966, 124.0783],
-    ];
-
-    // L.imageOverlay(imageUrl, imageBounds, { opacity: 1 }).addTo(this.map);
+      // Call the addRemoveButtonListener method to set up the button listener
+      this.addRemoveButtonListener();
+    }
   }
 
-  // center map when click on marker
+  // Center map when click on marker
   private clickZoom(e: any) {
-    // this.map.setView(e.target.getLatLng(), zoom);
     this.map.setView(e.target.getLatLng(), 14);
   }
 
+  // Method to remove the popup
+  private removePopup() {
+    if (this.currentMarker) {
+      this.currentMarker.remove(); // Remove the current marker
+      this.currentMarker = null; // Reset the current marker
+    }
+  }
+
+  private addRemoveButtonListener() {
+    // Access the popup's content directly
+    const popupContent = this.currentMarker?.getPopup();
+    if (popupContent) {
+      const popupElement = popupContent.getContent();
+
+      // Check if the content is a valid element
+      if (typeof popupElement === 'string') {
+        // Create a temporary element to parse the string
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = popupElement;
+        const removeButton = tempDiv.querySelector('.remove-popup-btn');
+
+        if (removeButton) {
+          // Remove any existing event listener to prevent duplicates
+          removeButton.replaceWith(removeButton.cloneNode(true)); // Reset the button to remove existing listeners
+
+          // Add a new event listener for the Remove button
+          removeButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent the popup from closing immediately
+            this.removePopup(); // Call the remove method
+          });
+
+          // Reinsert the modified content back into the popup
+          popupContent.setContent(tempDiv.innerHTML);
+        }
+      }
+    }
+  }
+
   @ViewChild('map')
-  private mapContainer!: ElementRef<HTMLElement>; // Reference to the map container
+  private mapContainer!: ElementRef<HTMLElement>;
 
   constructor(private router: Router) {
     this.router.events.subscribe((event: Event) => {
@@ -319,13 +339,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.addLegend(); // Add the initial legend
-    this.addInfoControl(); // Add info control after map initialization
+    this.addLegend();
+    this.addInfoControl();
   }
 
   ngOnDestroy(): void {
     if (this.map) {
-      this.map.remove(); // Clean up map when the component is destroyed
+      this.map.remove();
     }
   }
 }
