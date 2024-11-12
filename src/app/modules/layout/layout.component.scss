@@ -181,3 +181,24 @@ span {
     }
   }
 }
+
+.marker-icon-jump {
+  position: relative;
+  animation: jumpMarker 0.5s infinite alternate;
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+
+@keyframes jump {
+  from {
+    transform: translate3d(var(--position-x), var(--position-y), 0);
+  }
+  to {
+    transform: translate3d(
+      var(--position-x),
+      calc(var(--position-y) - 10px),
+      0
+    );
+  }
+}
