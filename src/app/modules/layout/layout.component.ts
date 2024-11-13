@@ -54,7 +54,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     forest: false,
     landslide_low: false,
     landslide_moderate: false,
-    landslide_high: false
+    landslide_high: false,
+    flood_high: false
   };
 
   // Define colors for each layer
@@ -96,15 +97,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Load GeoJSON data for different layers
     this.loadGeoJsonLayer('barangay', './assets/data/carigara/barangay.geojson');
-    // this.loadGeoJsonLayer('water_river', './assets/data/water_river.geojson');
-    // this.loadGeoJsonLayer('buildings', './assets/data/buildings.geojson');
-    // this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
-    // this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
-    // this.loadGeoJsonLayer('forest', '.src/assets/data/forest.geojson');
-    // this.loadGeoJsonLayer('landslide', './assets/data/hazard_landslide.geojson');
+    this.loadGeoJsonLayer('water_river', './assets/data/water_river.geojson');
+    this.loadGeoJsonLayer('buildings', './assets/data/buildings.geojson');
+    this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
+    this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
+    this.loadGeoJsonLayer('forest', './assets/data/forest.geojson');
+    this.loadGeoJsonLayer('landslide', './assets/data/hazard_landslide.geojson');
     this.loadGeoJsonLayer('landslide_low', './assets/data/landslide/hazard_landslide_low.geojson');
     this.loadGeoJsonLayer('landslide_moderate', './assets/data/landslide/hazard_landslide_moderate.geojson');
     this.loadGeoJsonLayer('landslide_high', './assets/data/landslide/hazard_landslide_high.geojson');
+    this.loadGeoJsonLayer('flood_high', './assets/data/flood/hazard_flood_high.geojson');
 
     L.control.scale({imperial: true,}).addTo(this.map);
   }
@@ -148,6 +150,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.layerVisibility[layerKey] = !this.layerVisibility[layerKey];
 
     if (layerKey === 'landslide_high' || layerKey === 'landslide_moderate' || layerKey === 'landslide_low') {
+      if (!this.map.hasLayer(layer)) {
+        this.map.addLayer(layer);
+        this.map.removeControl(this.info);
+        this.legend.addTo(this.map);
+      }
+    } else if (layerKey === 'flood_high') {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
         this.map.removeControl(this.info);
@@ -311,6 +319,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (this.disasterType) {
         var colors: string[] = ['#FFFF00', '#6B8E23', '#800000'];
+
+        if (this.disasterType.type == 'flood') {
+          var colors: string[] = ['#FFFF00', '#6B8E23', '#7B68EE'];
+        }
+
         var labels: string[] = ['Low', 'Moderate', 'High'];
 
         div.innerHTML += `<h1 class="text-sm font-bold leading-3 mt-2 mb-2 text-gray-800">Hazard Level</h1>`;
@@ -409,16 +422,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         dashArray: '3',
         fillOpacity: 0.7
       };
-
-      // const colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, 100]);
-      // return {
-      //   fillColor: colorScale(1),
-      //   weight: 1,
-      //   opacity: 1,
-      //   color: featurecolor,
-      //   dashArray: '3',
-      //   fillOpacity: 0.7
-      // };
+    } else if (layerKey === 'flood_high') {
+      var featurecolor = '#7B68EE';
+      return {
+        fillColor: featurecolor,
+        weight: 1,
+        opacity: 1,
+        color: featurecolor,
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
     }
 
     return {
@@ -524,11 +537,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toggleLayer('landslide_low');
         this.toggleLayer('landslide_moderate');
         this.toggleLayer('landslide_high');
+      } else if (this.disasterType.type == 'flood') {
+        this.toggleLayer('flood_high');
       } else if (this.disasterType.type == 'typhoon') {
         if (this.disasterType.category == 'category5') {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.toggleLayer('landslide_high');
+          this.toggleLayer('flood_high');
         } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_high']);
