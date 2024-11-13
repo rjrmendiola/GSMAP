@@ -1,0 +1,3477 @@
+{
+  "type": "FeatureCollection",
+  "name": "Flood",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28572222, 124.69725]
+      },
+      "properties": {
+        "barangay": "Bagong Lipunan",
+        "purok_sitio": "Brgy. Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is slightly elevated with gentle sloping ground. No drainage system and houses are disseminated and some houses are situated in a lower elevation leveled together with the ricefields. The Balilit bridge is not passable during heavy rainfall when the river overflows.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall that may cause flooding in the area.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Ricefields must have proper irrigation canals to properly accommodate water especially during heavy rainfall.",
+          "Construction of elevated and appropriate bridge with standard foundation to avoid collapse and for the residents to pass through in case of emergency."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28622222, 124.7014167]
+      },
+      "properties": {
+        "barangay": "Bagong Lipunan",
+        "purok_sitio": "Sitio Choleng Farm",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is slightly elevated and ricefields are on the lower portion. Houses are disseminated and some are situated within the center of ricefield.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall that may cause flooding in the area.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Ricefields must have proper irrigation canals to properly accommodate water especially during heavy rainfall.",
+          "Construction of elevated and appropriate bridge with standard foundation to avoid collapse and for the residents to pass through in case of emergency."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28808333, 124.6938611]
+      },
+      "properties": {
+        "barangay": "Balilit",
+        "purok_sitio": "Brgy. Hall/Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat and wide. Drainage canals are inappropriate and are limited. No signs of mass movements were observed. Soil erosion is present. Balilit-Barugohay creek overflows about 0.5 meters during heavy rainfall due to clogged creek channels.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28855556, 124.6944444]
+      },
+      "properties": {
+        "barangay": "Balilit",
+        "purok_sitio": "Balilit Elem School",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat. No drainage canals were observed. The School can be utilized as a Temporary Evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29705556, 124.69725]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "Brgy. Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No proper drainage canals were observed. No signs of mass movements.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.2935, 124.6969167]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "Sitio Surop",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat and is surrounded by rice field. The area is traversed by meandering creeks and overflows during heavy rainfall. Soil erosion is also active near the creek. Flood height in the area is up to 0.7 meters.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29416667, 124.70375]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "Sitio Bulod",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat and is surrounded by rice field. The area is traversed by meandering creeks and overflows during heavy rainfall. Soil erosion is also active near the creek. Flood height in the area is up to 0.7 meters.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29744444, 124.6999722]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "Sitio Barangay Road",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and is surrounded by rice field. The area is traversed by meandering creeks and overflows during heavy rainfall. Soil erosion is also active near the creek. Flood height in the area is up to 0.7 meters.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29744444, 124.6999722]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "Sitio 13",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No proper drainage canals were observed. No signs of mass movements were present.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29738889, 124.6968889]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "Catholic Cemetery",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No proper drainage canals were observed. No signs of mass movements were present.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29705556, 124.6976667]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "DPWH Carigara",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is on flattish grounds surrounded by rice field.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29647222, 124.6994722]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "San Roque Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "These areas can be utilized as a temporary evacuation center. No mass movements were observed.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29711111, 124.6978611]
+      },
+      "properties": {
+        "barangay": "Barugohay Central",
+        "purok_sitio": "Iglesia ni Cristo",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "These areas can be utilized as a temporary evacuation center. No mass movements were observed.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 5 meter buffer zone along creeks to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30408333, 124.7036667]
+      },
+      "properties": {
+        "barangay": "Barugohay Norte",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "Moderate",
+        "remarks": "Area is flat with no proper drainage system. Houses are concentrated along the highway going to the Municipality of Barugo and some houses are situated near coastal areas and fishponds/swamps. Flood height is >2 m when Balugohay River overflows. Ricefields are observed in between the Carigara District Hospital and the Brgy. Hall.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Rechanneling of Balugohay River from meandering to straight channel, deep dredging and constructing riprap/dike on both side of the river or any improvement of flood controls to minimize flooding.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Establish 40 meter No Build Zone along the coastal area from the highest tide.",
+          "Seawalls must be constructed and a yearly maintenance to prevent structure from further damage.",
+          "Residents along the coastal area should be relocated to a stable and safer place if possible from avoiding tsunami/storm surge/tidal waves.",
+          "Construction of proper and adequate drainage canals within the schools area to easily drain excess water during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30611111, 124.7010833]
+      },
+      "properties": {
+        "barangay": "Barugohay Norte",
+        "purok_sitio": "Sitio Buho",
+        "landslide_level": "Low",
+        "flood_level": "High",
+        "remarks": "Area is situated along the Carigara Bay and some are near swamp/fishponds.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Rechanneling of Balugohay River from meandering to straight channel, deep dredging and constructing riprap/dike on both side of the river or any improvement of flood controls to minimize flooding.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Establish 40 meter No Build Zone along the coastal area from the highest tide.",
+          "Seawalls must be constructed and a yearly maintenance to prevent structure from further damage.",
+          "Residents along the coastal area should be relocated to a stable and safer place if possible from avoiding tsunami/storm surge/tidal waves.",
+          "Construction of proper and adequate drainage canals within the schools area to easily drain excess water during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30408333, 124.7036667]
+      },
+      "properties": {
+        "barangay": "Barugohay Norte",
+        "purok_sitio": "Carigara School of Fisheries/Barugohay Norte High School (Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Moderate",
+        "remarks": "No drainage system inside the school building and swamp at the back of the school. Only some of the rooms can be utilized as evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Rechanneling of Balugohay River from meandering to straight channel, deep dredging and constructing riprap/dike on both side of the river or any improvement of flood controls to minimize flooding.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Establish 40 meter No Build Zone along the coastal area from the highest tide.",
+          "Seawalls must be constructed and a yearly maintenance to prevent structure from further damage.",
+          "Residents along the coastal area should be relocated to a stable and safer place if possible from avoiding tsunami/storm surge/tidal waves.",
+          "Construction of proper and adequate drainage canals within the schools area to easily drain excess water during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30480556, 124.7053333]
+      },
+      "properties": {
+        "barangay": "Barugohay Norte",
+        "purok_sitio": "EVSU (Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Moderate",
+        "remarks": "No drainage system inside the school building and swamp at the back of the school. Only some of the rooms can be utilized as evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Rechanneling of Balugohay River from meandering to straight channel, deep dredging and constructing riprap/dike on both side of the river or any improvement of flood controls to minimize flooding.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Establish 40 meter No Build Zone along the coastal area from the highest tide.",
+          "Seawalls must be constructed and a yearly maintenance to prevent structure from further damage.",
+          "Residents along the coastal area should be relocated to a stable and safer place if possible from avoiding tsunami/storm surge/tidal waves.",
+          "Construction of proper and adequate drainage canals within the schools area to easily drain excess water during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27383333, 124.6977222]
+      },
+      "properties": {
+        "barangay": "Barugohay Sur",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The built up area is slightly sloping and slightly elevated. Houses are disseminated with incomplete drainage canals.",
+        "recommendation": [
+          "Residents must be vigilant during successive heavy rainfall or typhoons.",
+          "Construction of drainage canals within the barangay to accommodate water during heavy rainfall.",
+          "Rechanneling of Uyawan River to straighten its river channel, dee dredging and construction of riprap/dike on both sides of the riverbank or any improvement of flood controls to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27730556, 124.69025]
+      },
+      "properties": {
+        "barangay": "Barugohay Sur",
+        "purok_sitio": "Sitio Poro",
+        "landslide_level": "Low",
+        "flood_level": "Moderate",
+        "remarks": "The area is flattish and slightly elevated with disseminated houses. River is observed at the back of the sitio and it is proximal to the ricefields.",
+        "recommendation": [
+          "Residents must be vigilant during successive heavy rainfall or typhoons.",
+          "Construction of drainage canals within the barangay to accommodate water during heavy rainfall.",
+          "Rechanneling of Uyawan River to straighten its river channel, dee dredging and construction of riprap/dike on both sides of the riverbank or any improvement of flood controls to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30383333, 124.6862222]
+      },
+      "properties": {
+        "barangay": "Baybay",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is one of the coastal barangays of the municipality. Barangay proper is situated in an old mouth of the Ponong River. Existing drainage canals that were observed are clogged. Pipelines, garbage and waste are present in the existing drainage canals that blocks the flow of water and causes localized flooding in the vicinity. During Typhoon Basyang, the area experiences coastal flooding with flood height of 0.5 meter.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter with concrete floors and walls throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during Stormy weather condition especially on areas that are located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the sea.",
+          "Appropriate dike/seawall must be constructed taking into account the highest level of seawater.",
+          "Establish 40meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30386111, 124.6863056]
+      },
+      "properties": {
+        "barangay": "Baybay",
+        "purok_sitio": "Day Care Center",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is one of the coastal barangays of the municipality. Barangay proper is situated in an old mouth of the Ponong River. Existing drainage canals that were observed are clogged. Pipelines, garbage and waste are present in the existing drainage canals that blocks the flow of water and causes localized flooding in the vicinity. During Typhoon Basyang, the area experiences coastal flooding with flood height of 0.5 meter.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter with concrete floors and walls throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during Stormy weather condition especially on areas that are located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the sea.",
+          "Appropriate dike/seawall must be constructed taking into account the highest level of seawater.",
+          "Establish 40meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30397222, 124.6860556]
+      },
+      "properties": {
+        "barangay": "Baybay",
+        "purok_sitio": "Open Court",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is one of the coastal barangays of the municipality. Barangay proper is situated in an old mouth of the Ponong River. Existing drainage canals that were observed are clogged. Pipelines, garbage and waste are present in the existing drainage canals that blocks the flow of water and causes localized flooding in the vicinity. During Typhoon Basyang, the area experiences coastal flooding with flood height of 0.5 meter.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter with concrete floors and walls throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during Stormy weather condition especially on areas that are located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the sea.",
+          "Appropriate dike/seawall must be constructed taking into account the highest level of seawater.",
+          "Establish 40meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30397222, 124.6860556]
+      },
+      "properties": {
+        "barangay": "Baybay",
+        "purok_sitio": "Health Center",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is one of the coastal barangays of the municipality. Barangay proper is situated in an old mouth of the Ponong River. Existing drainage canals that were observed are clogged. Pipelines, garbage and waste are present in the existing drainage canals that blocks the flow of water and causes localized flooding in the vicinity. During Typhoon Basyang, the area experiences coastal flooding with flood height of 0.5 meter.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter with concrete floors and walls throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during Stormy weather condition especially on areas that are located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the sea.",
+          "Appropriate dike/seawall must be constructed taking into account the highest level of seawater.",
+          "Establish 40meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30319444, 124.6865278]
+      },
+      "properties": {
+        "barangay": "Baybay",
+        "purok_sitio": "Son of Mary Child Learning Center",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat. Drainage canals within the corners of the school are silted.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter with concrete floors and walls throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during Stormy weather condition especially on areas that are located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the sea.",
+          "Appropriate dike/seawall must be constructed taking into account the highest level of seawater.",
+          "Establish 40meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.3015, 124.6852222]
+      },
+      "properties": {
+        "barangay": "Baybay",
+        "purok_sitio": "Cong. Alberto T. Acuja Memorial Central School (Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat. School is suitable for evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter with concrete floors and walls throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during Stormy weather condition especially on areas that are located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the sea.",
+          "Appropriate dike/seawall must be constructed taking into account the highest level of seawater.",
+          "Establish 40meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.23561111, 124.7326111]
+      },
+      "properties": {
+        "barangay": "Binibihan",
+        "purok_sitio": "Brgy. Hall/ Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat and wide. The area experiences localized and rain induced flooding due to lack of drainage canals. Improper culverts are observed and also causes flooding. Flood heights are up to 1 meter on creeks and overflows during heavy rainfall.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Pipe culverts throughout the Barangay should be improved to box culvert to minimize flooding and properly accommodate the maximum volume of water on creeks and rivers."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.23461111, 124.7333056]
+      },
+      "properties": {
+        "barangay": "Binibihan",
+        "purok_sitio": "Binibihan Elem. School (Temporary Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat. Soil erosion is active due to lack of drainage canals. The School can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Pipe culverts throughout the Barangay should be improved to box culvert to minimize flooding and properly accommodate the maximum volume of water on creeks and rivers."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.2935, 124.6755556]
+      },
+      "properties": {
+        "barangay": "Bislig",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is surrounded by rice plantation. Carigara River traverses the area with central coordinates of 124°40'46.1\"E 11°17'20.1\"N. River is meandering, Riverbank erosion and silted river channel were also observed. During the devastation of Bagyong Frank river water overflow towards the rice field and then to the houses. Maximum flood height is ranging from 1-1.3 meters.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper to minimize from further scouring of the bank.",
+          "Monitor sudden rise in water levels within the river.",
+          "Establish 20 meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29283333, 124.6769167]
+      },
+      "properties": {
+        "barangay": "Bislig",
+        "purok_sitio": "Open Court",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is surrounded by rice plantation. Carigara River traverses the area with central coordinates of 124°40'46.1\"E 11°17'20.1\"N. River is meandering, Riverbank erosion and silted river channel were also observed. During the devastation of Bagyong Frank river water overflow towards the rice field and then to the houses. Maximum flood height is ranging from 1-1.3 meters.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper to minimize from further scouring of the bank.",
+          "Monitor sudden rise in water levels within the river.",
+          "Establish 20 meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29358333, 124.6757222]
+      },
+      "properties": {
+        "barangay": "Bislig",
+        "purok_sitio": "Tanod Outpost",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is surrounded by rice plantation. Carigara River traverses the area with central coordinates of 124°40'46.1\"E 11°17'20.1\"N. River is meandering, Riverbank erosion and silted river channel were also observed. During the devastation of Bagyong Frank river water overflow towards the rice field and then to the houses. Maximum flood height is ranging from 1-1.3 meters.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper to minimize from further scouring of the bank.",
+          "Monitor sudden rise in water levels within the river.",
+          "Establish 20 meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29355556, 124.6746944]
+      },
+      "properties": {
+        "barangay": "Bislig",
+        "purok_sitio": "Open Court 2",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and is surrounded by rice plantation. Carigara River traverses the area with central coordinates of 124°40'46.1\"E 11°17'20.1\"N. River is meandering, Riverbank erosion and silted river channel were also observed. During the devastation of Bagyong Frank river water overflow towards the rice field and then to the houses. Maximum flood height is ranging from 1-1.3 meters.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper to minimize from further scouring of the bank.",
+          "Monitor sudden rise in water levels within the river.",
+          "Establish 20 meters No Build Zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28908333, 124.6810556]
+      },
+      "properties": {
+        "barangay": "Canal",
+        "purok_sitio": "Brgy. Hall/ Proper",
+        "landslide_level": "Low,Moderate",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is elevated with flattish grounds and is surrounded by rice field. Uyawan River is traversing the area but does not enter the Barangay.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation.",
+          "Construction of appropriate riverbank protection should be done toprevent riverbank erosion and further scouring.",
+          "Construction of flood controls on overflowing portion of the old river channel of Lindog River to prevent flooding in Walohan Area.",
+          "Residents along riverbanks should be relocated if possible to avoid casualties during flashfloods.",
+          "Improvement of drainage outlet for creek under Ponong bridge to drain thestagnant water in the area of Walohan"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29938889, 124.6790556]
+      },
+      "properties": {
+        "barangay": "Canal",
+        "purok_sitio": "Walohan Area",
+        "landslide_level": "Low",
+        "flood_level": "High",
+        "remarks": "Area is on low elevation and is a floodplain. The area is near Lindog River and is the source of flood. Flood heights in the area are up to 1.5 meters. The creek along Ponong bridge is clogged, stagnant with no proper drainage outlet.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation.",
+          "Construction of appropriate riverbank protection should be done toprevent riverbank erosion and further scouring.",
+          "Construction of flood controls on overflowing portion of the old river channel of Lindog River to prevent flooding in Walohan Area.",
+          "Residents along riverbanks should be relocated if possible to avoid casualties during flashfloods.",
+          "Improvement of drainage outlet for creek under Ponong bridge to drain thestagnant water in the area of Walohan"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29227778, 124.6804167]
+      },
+      "properties": {
+        "barangay": "Canal",
+        "purok_sitio": "Collumbrello Area",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and is surrounded by rice fields. No proper drainage canals were observed.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation.",
+          "Construction of appropriate riverbank protection should be done toprevent riverbank erosion and further scouring.",
+          "Construction of flood controls on overflowing portion of the old river channel of Lindog River to prevent flooding in Walohan Area.",
+          "Residents along riverbanks should be relocated if possible to avoid casualties during flashfloods.",
+          "Improvement of drainage outlet for creek under Ponong bridge to drain thestagnant water in the area of Walohan"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29727778, 124.68125]
+      },
+      "properties": {
+        "barangay": "Canal",
+        "purok_sitio": "Dalomeyas Area",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and is surrounded by rice fields. No proper drainage canals were observed. Old Lindog River channels traverses in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation.",
+          "Construction of appropriate riverbank protection should be done toprevent riverbank erosion and further scouring.",
+          "Construction of flood controls on overflowing portion of the old river channel of Lindog River to prevent flooding in Walohan Area.",
+          "Residents along riverbanks should be relocated if possible to avoid casualties during flashfloods.",
+          "Improvement of drainage outlet for creek under Ponong bridge to drain thestagnant water in the area of Walohan"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26333333, 124.6661667]
+      },
+      "properties": {
+        "barangay": "Caghalo",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat to gently sloping. No drainage canalwere observed within the barangay proper. River with central coordinates of GPS: N110 15' 32.8\" E 124040' 14.4\" which is the boundary of Upper Hiraan and Caghalo is very silted, active scouring were also present in the riverbank. Another river with central coordinates of N110 15' 46.9\" E 124039' 54.3\" which is the boundary of Barangay Caghalo and Barangay Manloy is very silted and easily overflows towards the road. Several houses were built within the island bar of the river. Maximum flood height along the road near the river is ranging from 0.5-1 meter.",
+        "recommendation": [
+          "Construction of appropriate drainage canals within the perimeter of the barangay, on both sides of the road to avoid/ minimize saturation of the ground.",
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall.",
+          "The spillway which is the boundary of Barangay Manloy and Barangay Caghalo must be converted into elevated bridge to avoid from river waters to overflow to the road.",
+          "Relocate houses that were situated in the flood prone area.",
+          "Caghalo Elem. School must have drainage canals to accomodate maximum durface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26205556, 124.6668333]
+      },
+      "properties": {
+        "barangay": "Caghalo",
+        "purok_sitio": "Health Center",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat to gently sloping. No drainage canalwere observed within the barangay proper. River with central coordinates of GPS: N110 15' 32.8\" E 124040' 14.4\" which is the boundary of Upper Hiraan and Caghalo is very silted, active scouring were also present in the riverbank. Another river with central coordinates of N110 15' 46.9\" E 124039' 54.3\" which is the boundary of Barangay Caghalo and Barangay Manloy is very silted and easily overflows towards the road. Several houses were built within the island bar of the river. Maximum flood height along the road near the river is ranging from 0.5-1 meter.",
+        "recommendation": [
+          "Construction of appropriate drainage canals within the perimeter of the barangay, on both sides of the road to avoid/ minimize saturation of the ground.",
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall.",
+          "The spillway which is the boundary of Barangay Manloy and Barangay Caghalo must be converted into elevated bridge to avoid from river waters to overflow to the road.",
+          "Relocate houses that were situated in the flood prone area.",
+          "Caghalo Elem. School must have drainage canals to accomodate maximum durface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26238889, 124.6663056]
+      },
+      "properties": {
+        "barangay": "Caghalo",
+        "purok_sitio": "Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat to gently sloping. No drainage canalwere observed within the barangay proper. River with central coordinates of GPS: N110 15' 32.8\" E 124040' 14.4\" which is the boundary of Upper Hiraan and Caghalo is very silted, active scouring were also present in the riverbank. Another river with central coordinates of N110 15' 46.9\" E 124039' 54.3\" which is the boundary of Barangay Caghalo and Barangay Manloy is very silted and easily overflows towards the road. Several houses were built within the island bar of the river. Maximum flood height along the road near the river is ranging from 0.5-1 meter.",
+        "recommendation": [
+          "Construction of appropriate drainage canals within the perimeter of the barangay, on both sides of the road to avoid/ minimize saturation of the ground.",
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall.",
+          "The spillway which is the boundary of Barangay Manloy and Barangay Caghalo must be converted into elevated bridge to avoid from river waters to overflow to the road.",
+          "Relocate houses that were situated in the flood prone area.",
+          "Caghalo Elem. School must have drainage canals to accomodate maximum durface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26327778, 124.66625]
+      },
+      "properties": {
+        "barangay": "Caghalo",
+        "purok_sitio": "Open Court",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat to gently sloping. No drainage canalwere observed within the barangay proper. River with central coordinates of GPS: N110 15' 32.8\" E 124040' 14.4\" which is the boundary of Upper Hiraan and Caghalo is very silted, active scouring were also present in the riverbank. Another river with central coordinates of N110 15' 46.9\" E 124039' 54.3\" which is the boundary of Barangay Caghalo and Barangay Manloy is very silted and easily overflows towards the road. Several houses were built within the island bar of the river. Maximum flood height along the road near the river is ranging from 0.5-1 meter.",
+        "recommendation": [
+          "Construction of appropriate drainage canals within the perimeter of the barangay, on both sides of the road to avoid/ minimize saturation of the ground.",
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall.",
+          "The spillway which is the boundary of Barangay Manloy and Barangay Caghalo must be converted into elevated bridge to avoid from river waters to overflow to the road.",
+          "Relocate houses that were situated in the flood prone area.",
+          "Caghalo Elem. School must have drainage canals to accomodate maximum durface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26213889, 124.6654444]
+      },
+      "properties": {
+        "barangay": "Caghalo",
+        "purok_sitio": "Caghalo Elementary School",
+        "landslide_level": "Low,Moderate",
+        "flood_level": "Low",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the school site. School site is just few meters away from the steep cliff of the riverbank.",
+        "recommendation": [
+          "Construction of appropriate drainage canals within the perimeter of the barangay, on both sides of the road to avoid/ minimize saturation of the ground.",
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall.",
+          "The spillway which is the boundary of Barangay Manloy and Barangay Caghalo must be converted into elevated bridge to avoid from river waters to overflow to the road.",
+          "Relocate houses that were situated in the flood prone area.",
+          "Caghalo Elem. School must have drainage canals to accomodate maximum durface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.22022222, 124.7144167]
+      },
+      "properties": {
+        "barangay": "Camansi",
+        "purok_sitio": "Brgy. Hall/ Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is gently sloping with flattish grounds. Soil erosion is observed on the roadside. Drainage canals are silted.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Construction of well paved road especially going to tinagiban for betteraccess during emergencies.",
+          "Periodic cleaning of existing drainage canals to avoid siltation andclogging.",
+          "The box culvert on the spillway going to Sitio Iraya and Ilawod should beexpanded and improved to accommodate the maximum capacity of waterrun off."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.22130556, 124.7128889]
+      },
+      "properties": {
+        "barangay": "Camansi",
+        "purok_sitio": "Sitio Catundan",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat to moderately sloping. No proper drainage canals were observed.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Construction of well paved road especially going to tinagiban for betteraccess during emergencies.",
+          "Periodic cleaning of existing drainage canals to avoid siltation andclogging.",
+          "The box culvert on the spillway going to Sitio Iraya and Ilawod should beexpanded and improved to accommodate the maximum capacity of waterrun off."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.22277778, 124.719]
+      },
+      "properties": {
+        "barangay": "Camansi",
+        "purok_sitio": "Sitio Ilawod",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and wide. No signs of mass movements were observed. Flooding is not a problem in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Construction of well paved road especially going to tinagiban for betteraccess during emergencies.",
+          "Periodic cleaning of existing drainage canals to avoid siltation andclogging.",
+          "The box culvert on the spillway going to Sitio Iraya and Ilawod should beexpanded and improved to accommodate the maximum capacity of waterrun off."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.22786111, 124.7188611]
+      },
+      "properties": {
+        "barangay": "Camansi",
+        "purok_sitio": "Sitio Tabok Iraya",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and wide. No signs of mass movements were observed. Flooding is not a problem in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Construction of well paved road especially going to tinagiban for betteraccess during emergencies.",
+          "Periodic cleaning of existing drainage canals to avoid siltation andclogging.",
+          "The box culvert on the spillway going to Sitio Iraya and Ilawod should beexpanded and improved to accommodate the maximum capacity of waterrun off."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21833333, 124.7131667]
+      },
+      "properties": {
+        "barangay": "Camansi",
+        "purok_sitio": "Sitio Barrio Iraya",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat and wide. Flood height in a portion of the Sitio is up to 0.5 meters during heavy rainfall due to water flowing down from upper portion of the Barangay. No proper drainage canals were observed.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Construction of well paved road especially going to tinagiban for betteraccess during emergencies.",
+          "Periodic cleaning of existing drainage canals to avoid siltation andclogging.",
+          "The box culvert on the spillway going to Sitio Iraya and Ilawod should beexpanded and improved to accommodate the maximum capacity of waterrun off."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21988889, 124.7141667]
+      },
+      "properties": {
+        "barangay": "Camansi",
+        "purok_sitio": "Camansi Elem. School (Temporary Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and is slightly sloping. Soil erosion is observed and pathways are damaged due to lack of drainage canals. The school can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Construction of well paved road especially going to tinagiban for betteraccess during emergencies.",
+          "Periodic cleaning of existing drainage canals to avoid siltation andclogging.",
+          "The box culvert on the spillway going to Sitio Iraya and Ilawod should beexpanded and improved to accommodate the maximum capacity of waterrun off."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21875, 124.7150556]
+      },
+      "properties": {
+        "barangay": "Camansi",
+        "purok_sitio": "San Roque Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The chapel can be utilized as an evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Construction of well paved road especially going to tinagiban for betteraccess during emergencies.",
+          "Periodic cleaning of existing drainage canals to avoid siltation andclogging.",
+          "The box culvert on the spillway going to Sitio Iraya and Ilawod should beexpanded and improved to accommodate the maximum capacity of waterrun off."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25191667, 124.6980833]
+      },
+      "properties": {
+        "barangay": "Candigahub",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat to slightly sloping topography with no drainage facilities observed. Houses are disseminated, some are situated near creeks and ricefield that residents are isolated during continuous heavy rainfall.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Replace the old round culvert to box culvert to expand the waterway for water to flow freely to avoid clogging.",
+          "Residents must be vigilant during successive heavy rainfall or typhoons especially on areas near the creek/river.",
+          "Candigahub Elementary School must have proper drainage system within he school area to drain excess water."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25225, 124.6988333]
+      },
+      "properties": {
+        "barangay": "Candigahub",
+        "purok_sitio": "Candigahub Elementary School (Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat and slightly elevated with no drainage system. The school is suitable for evacuation.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Replace the old round culvert to box culvert to expand the waterway for water to flow freely to avoid clogging.",
+          "Residents must be vigilant during successive heavy rainfall or typhoons especially on areas near the creek/river.",
+          "Candigahub Elementary School must have proper drainage system within he school area to drain excess water."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26666667, 124.7075]
+      },
+      "properties": {
+        "barangay": "Canfabi",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is gently sloping with inappropriate drainage facilities. Houses are disseminated and some are proximal to the ricefields. The road is not passable during heavy rainfall due to sheet flooding.",
+        "recommendation": [
+          "Construction of proper drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimizeflooding.",
+          "Residents must be vigilant during excessive rainfall or typhoons.",
+          "Ricefields must have a proper irrigation canals to properly accommodate water especially during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26636111, 124.7091389]
+      },
+      "properties": {
+        "barangay": "Canfabi",
+        "purok_sitio": "Canfabi Elementary School (Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat with no drainage facilities. The school as an evacuation center.",
+        "recommendation": [
+          "Construction of proper drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimizeflooding.",
+          "Residents must be vigilant during excessive rainfall or typhoons.",
+          "Ricefields must have a proper irrigation canals to properly accommodate water especially during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26630556, 124.6848333]
+      },
+      "properties": {
+        "barangay": "Canlampay",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and slightly sloping. No drainage canals were observed and soil erosion is present.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.276, 124.6841667]
+      },
+      "properties": {
+        "barangay": "Canlampay",
+        "purok_sitio": "Lower Canlampay",
+        "landslide_level": "Low",
+        "flood_level": "Moderate",
+        "remarks": "Area is slightly elevated and is in between two rivers. The area experienced a 1 meter flood height during typhoon frank. Rice fields are common in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25361111, 124.6855278]
+      },
+      "properties": {
+        "barangay": "Canlampay",
+        "purok_sitio": "Sitio Otap",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is elevated and is situated on a ridge. Soil erosion is active due to lack of drainage canals.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26536111, 124.6843889]
+      },
+      "properties": {
+        "barangay": "Canlampay",
+        "purok_sitio": "Canlampay Elementary School",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No proper drainage canals were observed and causes soil erosion.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25919444, 124.7351944]
+      },
+      "properties": {
+        "barangay": "Cogon",
+        "purok_sitio": "Barangay Hall/Zone 2",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No proper drainage canals were observed.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26197222, 124.7335556]
+      },
+      "properties": {
+        "barangay": "Cogon",
+        "purok_sitio": "Zone 1",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flattish with gentle slopes. Abango river is observed of riverbank erosion and overflows during heavy rainfall but does not affect residents along the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25247222, 124.7352778]
+      },
+      "properties": {
+        "barangay": "Cogon",
+        "purok_sitio": "Zone 3",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat with gentle slopes. Abango river traversing the area overflows due to obstructed river channel.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25861111, 124.7350278]
+      },
+      "properties": {
+        "barangay": "Cogon",
+        "purok_sitio": "Cogon Elementary School",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat with no proper drainage system that causes soil erosion. The school can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25908333, 124.735]
+      },
+      "properties": {
+        "barangay": "Cogon",
+        "purok_sitio": "San Roque Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The chapel can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along riverbanks to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainagesystems to prevent clogging of debris and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26627778, 124.6973611]
+      },
+      "properties": {
+        "barangay": "Cutay",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is characterized as gently sloping ground. No drainage facilities and houses are disseminated with some situated near the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during excessive rainfall or typhoons.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Rechanneling of Balugohay River from meandering to straight channel, deep dredging and constructing riprap/dike on both side of the river or any improvement of flood controls to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26966667, 124.69525]
+      },
+      "properties": {
+        "barangay": "Cutay",
+        "purok_sitio": "Sitio Pongtod",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is slightly elevated with gently sloping ground. Ricefields are observed on the lower portion and houses are disseminated with some situated near the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during excessive rainfall or typhoons.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Rechanneling of Balugohay River from meandering to straight channel, deep dredging and constructing riprap/dike on both side of the river or any improvement of flood controls to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26577778, 124.6943611]
+      },
+      "properties": {
+        "barangay": "Cutay",
+        "purok_sitio": "Sitio Inagol",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is slightly elevated with gently sloping ground. Houses are disseminated.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during excessive rainfall or typhoons.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Rechanneling of Balugohay River from meandering to straight channel, deep dredging and constructing riprap/dike on both side of the river or any improvement of flood controls to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30536111, 124.6987222]
+      },
+      "properties": {
+        "barangay": "Guindapunan East",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "High",
+        "remarks": "Area is situated along the Carigara Bay and some are along swapy areas. No proper drainage systems were observed. The Barangay Hall is less than 10 meters away from the shoreline and is not suitable as evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Establish 40 meter No Build Zone along the coastal area from the highest tide.",
+          "Break waters and seawalls must be constructed and a yearly maintenance to prevent the structure from further damage.",
+          "Construction of proper and adequate drainage canals within the school building.",
+          "Residents along the coastal area should be relocated to a stable and safer place if possible to avoiding coastal flooding and storm surge/tidal waves. Barangay Guindapunan West"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30372222, 124.6998333]
+      },
+      "properties": {
+        "barangay": "Guindapunan East",
+        "purok_sitio": "Guindapunan Elementary School (Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and is located along the highway. No drainage facilities are present inside the school area. The school can be utilized as an evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Establish 40 meter No Build Zone along the coastal area from the highest tide.",
+          "Break waters and seawalls must be constructed and a yearly maintenance to prevent the structure from further damage.",
+          "Construction of proper and adequate drainage canals within the school building.",
+          "Residents along the coastal area should be relocated to a stable and safer place if possible to avoiding coastal flooding and storm surge/tidal waves. Barangay Guindapunan West"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30433333, 124.69625]
+      },
+      "properties": {
+        "barangay": "Guindapunan West",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "High",
+        "remarks": "Area is situated along the Carigara Bay and some are along swapy areas. No proper drainage systems were observed. The Barangay Hall is less than 10 meters away from the shoreline and is not suitable as evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Establish 40 meter No Build Zone along the coastal area from the highest tide.",
+          "Break waters and seawalls must be constructed and a yearly maintenance to prevent the structure from further damage.",
+          "Construction of proper and adequate drainage canals within the school building.",
+          "Residents along the coastal area should be relocated to a stable and safer place if possible to avoiding coastal flooding and storm surge/tidal waves."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.24825, 124.6864444]
+      },
+      "properties": {
+        "barangay": "Hiluctugan",
+        "purok_sitio": "Barangay Hall/ Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat to gently sloping. Soil erosion is active due to lack of drainage canals.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.24877778, 124.6862778]
+      },
+      "properties": {
+        "barangay": "Hiluctugan",
+        "purok_sitio": "Hiluctugan Elementary School (Temporary Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat to moderatelysloping. The school can be utilizedas a Temporary evacuation center. Lack of drainage canals causesflooding in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to preventsoil erosion and to drain excess water in the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30155556, 124.6921111]
+      },
+      "properties": {
+        "barangay": "Jugaban",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat and is away from the 40 meter no build zone. Flooding in the area is caused by clogged drainage canals and rise of water during high tide. Jugaban River traverses the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
+          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
+          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
+          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30155556, 124.6921111]
+      },
+      "properties": {
+        "barangay": "Jugaban",
+        "purok_sitio": "Sitio Monbon",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "The area is along Carigara Bay and is a reclaimed area. Flood height in the area is up to 1 meter during typhoon basyang. Seawall is observed but is limited. Houses are about 20 meters away from Carigara Bay and Some houses are already along Jugaban River.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
+          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
+          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
+          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30341667, 124.6945]
+      },
+      "properties": {
+        "barangay": "Jugaban",
+        "purok_sitio": "Carigara National High School",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat and surrounded by rice field. The area is flooded due to lack of drainage canals. A subsidence is observed inside the school building due to liquefaction. The subsided area is once a dumpsite and water well. However, the school can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
+          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
+          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
+          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.3005, 124.6931944]
+      },
+      "properties": {
+        "barangay": "Jugaban",
+        "purok_sitio": "Carigara Elementary School",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat and is flooded due to lack of proper drainage canals and drainage outlets. However the area can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
+          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
+          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
+          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.3005, 124.6931944]
+      },
+      "properties": {
+        "barangay": "Jugaban",
+        "purok_sitio": "Carigara Elementary School",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat and is flooded due to lack of proper drainage canals and drainage outlets. However the area can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
+          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
+          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
+          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30158333, 124.6921111]
+      },
+      "properties": {
+        "barangay": "Jugaban",
+        "purok_sitio": "St. Francis of Asisi Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat and is away from the 40 meter no build zone. The chapel can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
+          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
+          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
+          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30158333, 124.6921111]
+      },
+      "properties": {
+        "barangay": "Jugaban",
+        "purok_sitio": "LTO Carigara",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "The area is flat and is away from the 40 meter no build zone. The chapel can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
+          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
+          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
+          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26797222, 124.6794722]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the barangay perimeter. Signs of soil erosion was observed through upwelling of roots. The spillway with central coordinates of GPS: 124°40' 54.9\"E11°16'2.5\"N connecting Barangay Canlampay and Barangay Libo easily overflow towards the rice plantations. Motorists cannot pass through in this area, maximum flood height attained is ranging from 0.5-1.3 meters, riverbank erosion is also present in the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26802778, 124.6795]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Open Court",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the barangay perimeter. Signs of soil erosion was observed through upwelling of roots. The spillway with central coordinates of GPS: 124°40' 54.9\"E11°16'2.5\"N connecting Barangay Canlampay and Barangay Libo easily overflow towards the rice plantations. Motorists cannot pass through in this area, maximum flood height attained is ranging from 0.5-1.3 meters, riverbank erosion is also present in the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26808333, 124.6793333]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Health Center",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the barangay perimeter. Signs of soil erosion was observed through upwelling of roots. The spillway with central coordinates of GPS: 124°40' 54.9\"E11°16'2.5\"N connecting Barangay Canlampay and Barangay Libo easily overflow towards the rice plantations. Motorists cannot pass through in this area, maximum flood height attained is ranging from 0.5-1.3 meters, riverbank erosion is also present in the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26808333, 124.6793333]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Health Center",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the barangay perimeter. Signs of soil erosion was observed through upwelling of roots. The spillway with central coordinates of GPS: 124°40' 54.9\"E11°16'2.5\"N connecting Barangay Canlampay and Barangay Libo easily overflow towards the rice plantations. Motorists cannot pass through in this area, maximum flood height attained is ranging from 0.5-1.3 meters, riverbank erosion is also present in the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26802778, 124.6795278]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Day Care Center",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the barangay perimeter. Signs of soil erosion was observed through upwelling of roots. The spillway with central coordinates of GPS: 124°40' 54.9\"E11°16'2.5\"N connecting Barangay Canlampay and Barangay Libo easily overflow towards the rice plantations. Motorists cannot pass through in this area, maximum flood height attained is ranging from 0.5-1.3 meters, riverbank erosion is also present in the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26802778, 124.6795278]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Day Care Center",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the barangay perimeter. Signs of soil erosion was observed through upwelling of roots. The spillway with central coordinates of GPS: 124°40' 54.9\"E11°16'2.5\"N connecting Barangay Canlampay and Barangay Libo easily overflow towards the rice plantations. Motorists cannot pass through in this area, maximum flood height attained is ranging from 0.5-1.3 meters, riverbank erosion is also present in the river.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26452778,	124.6781389]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Sitio Deyo",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is elevated. No drainage canals were observed.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27222222, 124.6815833]
+      },
+      "properties": {
+        "barangay": "Libo",
+        "purok_sitio": "Mariano Morales Elem. School",
+        "landslide_level": "Low",
+        "flood_level": "Low,High",
+        "remarks": "Area is elevated. No drainage canals were observed.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks and along old river channels.",
+          "Spillway that connects Barangay Libo and Barangay Canlampay must be converted into appropriate bridge.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27222222, 124.6815833]
+      },
+      "properties": {
+        "barangay": "Lower Hiraan",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is elevated. No drainage canals were observed.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river.",
+          "Appropriate bridge that connects Barangay Lower Hira-an and Barangay Uyawan must be constructed to prevent from the residents to be isolated during calamities/ natural disaster.",
+          "Desilting/ deep dredging of Uyawan River to deepen its channel.",
+          "Channel modification must be done along the Uyawan River in order to straighten the meandering channel of the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28061111, 124.6768611]
+      },
+      "properties": {
+        "barangay": "Lower Hiraan",
+        "purok_sitio": "Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is elevated. No drainage canals were observed.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river.",
+          "Appropriate bridge that connects Barangay Lower Hira-an and Barangay Uyawan must be constructed to prevent from the residents to be isolated during calamities/ natural disaster.",
+          "Desilting/ deep dredging of Uyawan River to deepen its channel.",
+          "Channel modification must be done along the Uyawan River in order to straighten the meandering channel of the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28075, 124.6771667]
+      },
+      "properties": {
+        "barangay": "Lower Hiraan",
+        "purok_sitio": "Open Court",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat to slightly sloping. Uyawan river traverses the site and is the main cause of flooding in the area. Riverbank erosion and very silted river channel were observed in Uyawan River. Maximum flood height attained in the area is 1.5 meters that happened during typhoon Yoning. Hanging bridge that connects Barangay Uyawan and Barangay Lower Hira-an is not safe due to unstable flat form and loose cable wires and is prone to bridge collapse.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river.",
+          "Appropriate bridge that connects Barangay Lower Hira-an and Barangay Uyawan must be constructed to prevent from the residents to be isolated during calamities/ natural disaster.",
+          "Desilting/ deep dredging of Uyawan River to deepen its channel.",
+          "Channel modification must be done along the Uyawan River in order to straighten the meandering channel of the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28075, 124.677]
+      },
+      "properties": {
+        "barangay": "Lower Hiraan",
+        "purok_sitio": "Day Care Center",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat to slightly sloping. Uyawan river traverses the site and is the main cause of flooding in the area. Riverbank erosion and very silted river channel were observed in Uyawan River. Maximum flood height attained in the area is 1.5 meters that happened during typhoon Yoning. Hanging bridge that connects Barangay Uyawan and Barangay Lower Hira-an is not safe due to unstable flat form and loose cable wires and is prone to bridge collapse.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river.",
+          "Appropriate bridge that connects Barangay Lower Hira-an and Barangay Uyawan must be constructed to prevent from the residents to be isolated during calamities/ natural disaster.",
+          "Desilting/ deep dredging of Uyawan River to deepen its channel.",
+          "Channel modification must be done along the Uyawan River in order to straighten the meandering channel of the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25841667, 124.6890278]
+      },
+      "properties": {
+        "barangay": "Lower Sogod",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is situated in flattish ground with houses mostly situated along the road and near the rice fields and some are situated near the river. No drainage facilities and it is traversed by Uyawan River that overflows during typhoon “Yoning” and the road becomes unpassable. Flood height is up to >2m in the lower elevation and 1 to 2 m in the Barangay proper.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition especially on areas that are located along the river banks.",
+          "Riverbank protection should be installed particularly along the bank proximal to the brgy. proper.",
+          "Monitor sudden rise in water levels within the river.",
+          "Appropriate bridge that connects Barangay Lower Hira-an and Barangay Uyawan must be constructed to prevent from the residents to be isolated during calamities/ natural disaster.",
+          "Desilting/ deep dredging of Uyawan River to deepen its channel.",
+          "Channel modification must be done along the Uyawan River in order to straighten the meandering channel of the river."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25841667, 124.6890278]
+      },
+      "properties": {
+        "barangay": "Lower Sogod",
+        "purok_sitio": "Barangay, Proper",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is situated in flattish ground with houses mostly situated along the road and near the rice fields and some are situated near the river. No drainage facilities and it is traversed by Uyawan River that overflows during typhoon “Yoning” and the road becomes unpassable. Flood height is up to >2m in the lower elevation and 1 to 2 m in the Barangay proper.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Replace the old round culvert to box culvert to expand the waterway for water to flow freely to avoid clogging.",
+          "Residents must be vigilant during successive heavy rainfall or typhoons for flashflood.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "The School must have proper and adequate drainage canals"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25827778, 124.6910833]
+      },
+      "properties": {
+        "barangay": "Lower Sogod",
+        "purok_sitio": "Sitio Sagca",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is elevated with creek on the lower portion. Houses are disseminated throughout the area.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Replace the old round culvert to box culvert to expand the waterway for water to flow freely to avoid clogging.",
+          "Residents must be vigilant during successive heavy rainfall or typhoons for flashflood.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "The School must have proper and adequate drainage canals"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25386111, 124.6932222]
+      },
+      "properties": {
+        "barangay": "Lower Sogod",
+        "purok_sitio": "Sitio Visoria",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is slightly elevated with disseminated houses and proximal to the ricefields and river. No drainage systems were observed.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Replace the old round culvert to box culvert to expand the waterway for water to flow freely to avoid clogging.",
+          "Residents must be vigilant during successive heavy rainfall or typhoons for flashflood.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "The School must have proper and adequate drainage canals"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25563889, 124.6936111]
+      },
+      "properties": {
+        "barangay": "Lower Sogod",
+        "purok_sitio": "Evacuation Centers Lower Sogod Elementary School",
+        "landslide_level": "Low",
+        "flood_level": "Moderate",
+        "remarks": "Area is flattish with no adequate drainage facilities. Only few of the rooms are suitable for evacuation.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Replace the old round culvert to box culvert to expand the waterway for water to flow freely to avoid clogging.",
+          "Residents must be vigilant during successive heavy rainfall or typhoons for flashflood.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "The School must have proper and adequate drainage canals along the school area.",
+          "The schools and the affected residents should be relocated to a stable and safer place if possible to avoid flashflood.",
+          "Rechanneling of Uyawan River to straighten its river channel, deep dredging and construction of riprap/dike on both sides of the riverbank or any improvement of flood controls to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21544444, 124.7326389]
+      },
+      "properties": {
+        "barangay": "Macalpi",
+        "purok_sitio": "Barangay Hall, Proper",
+        "landslide_level": "Low,Moderate",
+        "flood_level": "Low",
+        "remarks": "Area is flat to gently sloping. Soil erosion is active in the area due to lack of drainage canals. The steep portion of the area located at 110 12’ 49.6” N and 1240 44 01.0 E is prone to landslide.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Avoid putting-up of houses on the edges of cliffs, steep sloping grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.20780556, 124.7229722]
+      },
+      "properties": {
+        "barangay": "Macalpi",
+        "purok_sitio": "Sitio Iraya",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and wide with slightly sloping grounds. No signs of mass movements.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Avoid putting-up of houses on the edges of cliffs, steep sloping grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21730556, 124.7233611]
+      },
+      "properties": {
+        "barangay": "Macalpi",
+        "purok_sitio": "Sitio Gabas",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and wide with slightly sloping grounds. No signs of mass movements.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Avoid putting-up of houses on the edges of cliffs, steep sloping grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.22530556, 124.7318333]
+      },
+      "properties": {
+        "barangay": "Macalpi",
+        "purok_sitio": "Sitio Ilawod",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat with gentle slopes. No signs of mass movements.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Avoid putting-up of houses on the edges of cliffs, steep sloping grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21477778, 124.7330556]
+      },
+      "properties": {
+        "barangay": "Macalpi",
+        "purok_sitio": "Macalpi Elementary School (Temporary Evacuation Center)",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat and wide. Soil erosion is active due to lack of drainage canals. The school can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Avoid putting-up of houses on the edges of cliffs, steep sloping grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21080556, 124.7283056]
+      },
+      "properties": {
+        "barangay": "Macalpi",
+        "purok_sitio": "Carigara Water District",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is flat with gentle slopes. No signs of mass movements.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Avoid putting-up of houses on the edges of cliffs, steep sloping grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27622222, 124.6637778]
+      },
+      "properties": {
+        "barangay": "Manloy",
+        "purok_sitio": "Barangay hall/ Sitio Lower",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals were observed within the area. Maximum flood height is 0.5 meter that will drain within 3 hours. Area is situated in the footslope of the mountain.",
+        "recommendation": [
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall as residual soils within the area are not stable.",
+          "Riverbank protection must be installed in order to minimize further scouring of the riverbank.",
+          "Deep dredging/ desilting of the river that traverses the barangay to deepen its channel.",
+          "Construction of elevated bridge along the river that traverses Sitio Cahodloman is highly recommended to minimize the river water from overflowing towards the houses.",
+          "Manloy Elem. school must have drainage facilities to accommodate maximum surface run-off during heavy rainfall.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Houses that are prone to flooding must be relocated.",
+          "Plant deep rooted trees to enhance and stabilize the slopes."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27641667, 124.6623611]
+      },
+      "properties": {
+        "barangay": "Manloy",
+        "purok_sitio": "Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals were observed within the area. Maximum flood height is 0.5 meter that will drain within 3 hours. Area is situated in the footslope of the mountain.",
+        "recommendation": [
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall as residual soils within the area are not stable.",
+          "Riverbank protection must be installed in order to minimize further scouring of the riverbank.",
+          "Deep dredging/ desilting of the river that traverses the barangay to deepen its channel.",
+          "Construction of elevated bridge along the river that traverses Sitio Cahodloman is highly recommended to minimize the river water from overflowing towards the houses.",
+          "Manloy Elem. school must have drainage facilities to accommodate maximum surface run-off during heavy rainfall.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Houses that are prone to flooding must be relocated.",
+          "Plant deep rooted trees to enhance and stabilize the slopes."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27669444, 124.6638889]
+      },
+      "properties": {
+        "barangay": "Manloy",
+        "purok_sitio": "Manloy Elem. School",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is slightly elevated. No drainage canals were observed within the school perimeter. Soil erosion is also present in the school perimeter.",
+        "recommendation": [
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall as residual soils within the area are not stable.",
+          "Riverbank protection must be installed in order to minimize further scouring of the riverbank.",
+          "Deep dredging/ desilting of the river that traverses the barangay to deepen its channel.",
+          "Construction of elevated bridge along the river that traverses Sitio Cahodloman is highly recommended to minimize the river water from overflowing towards the houses.",
+          "Manloy Elem. school must have drainage facilities to accommodate maximum surface run-off during heavy rainfall.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Houses that are prone to flooding must be relocated.",
+          "Plant deep rooted trees to enhance and stabilize the slopes."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.26772222, 124.6627778]
+      },
+      "properties": {
+        "barangay": "Manloy",
+        "purok_sitio": "Sitio Upper",
+        "landslide_level": "Moderate",
+        "flood_level": "Low",
+        "remarks": "The area is slightly elevated. No drainage canals were observed within the perimeter of the sitio. Soil erosions were observed by upwelling of roots of the trees. Presence of active landslide and landslide scarp were observed in the upper portion of the sitio with central coordinates of 124°39'22.3\"E 11°15'45.0 \"N , direction of the landslide is approximately N830W. An old landslide activity was also observed with central coordinates of 124°39'33.2\"E 11°15'51.4\"N the displacement of the landslide is about 3 meters with the direction of S250W. The landslide is about one (1) linear kilometer S520W of Sitio proper, however the location of the landslide is distant from the built up area of the sitio.",
+        "recommendation": [
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall as residual soils within the area are not stable.",
+          "Riverbank protection must be installed in order to minimize further scouring of the riverbank.",
+          "Deep dredging/ desilting of the river that traverses the barangay to deepen its channel.",
+          "Construction of elevated bridge along the river that traverses Sitio Cahodloman is highly recommended to minimize the river water from overflowing towards the houses.",
+          "Manloy Elem. school must have drainage facilities to accommodate maximum surface run-off during heavy rainfall.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Houses that are prone to flooding must be relocated.",
+          "Plant deep rooted trees to enhance and stabilize the slopes."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27927778, 124.6617222]
+      },
+      "properties": {
+        "barangay": "Manloy",
+        "purok_sitio": "Sitio Cahodloman",
+        "landslide_level": "Low",
+        "flood_level": "High",
+        "remarks": "Area is flattish and is traverse by Manloy River that is very silted. Houses were situated along the floodplain. No Drainage canals were observed within the area. Maximum flood height is ranging from 1-1.5 meters that will subside within 3-5 hours. Active scouring is also present along the riverbank.",
+        "recommendation": [
+          "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall as residual soils within the area are not stable.",
+          "Riverbank protection must be installed in order to minimize further scouring of the riverbank.",
+          "Deep dredging/ desilting of the river that traverses the barangay to deepen its channel.",
+          "Construction of elevated bridge along the river that traverses Sitio Cahodloman is highly recommended to minimize the river water from overflowing towards the houses.",
+          "Manloy Elem. school must have drainage facilities to accommodate maximum surface run-off during heavy rainfall.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Houses that are prone to flooding must be relocated.",
+          "Plant deep rooted trees to enhance and stabilize the slopes."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29730556, 124.6625556]
+      },
+      "properties": {
+        "barangay": "Naugisan",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flattish and is one of the coastal areas of the municipality. No drainage canals were observed within the barangay proper. Maximum flood height within the area is ranging from 0.5-1 meter. Naugisan River traverses the barangay.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition.",
+          "Establish 40 meter No Build Zone along the coast from the highest tide.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Naugisan Elem. School must have drainage canals to accommodate maximum surface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29591667, 124.6612778]
+      },
+      "properties": {
+        "barangay": "Naugisan",
+        "purok_sitio": "Chapel",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flattish and is one of the coastal areas of the municipality. No drainage canals were observed within the barangay proper. Maximum flood height within the area is ranging from 0.5-1 meter. Naugisan River traverses the barangay.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition.",
+          "Establish 40 meter No Build Zone along the coast from the highest tide.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Naugisan Elem. School must have drainage canals to accommodate maximum surface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29733333, 124.6626111]
+      },
+      "properties": {
+        "barangay": "Naugisan",
+        "purok_sitio": "Open Court",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flattish and is one of the coastal areas of the municipality. No drainage canals were observed within the barangay proper. Maximum flood height within the area is ranging from 0.5-1 meter. Naugisan River traverses the barangay.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition.",
+          "Establish 40 meter No Build Zone along the coast from the highest tide.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Naugisan Elem. School must have drainage canals to accommodate maximum surface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29594444, 124.6595]
+      },
+      "properties": {
+        "barangay": "Naugisan",
+        "purok_sitio": "Kingdom Hall of Jehova's Witnesses",
+        "landslide_level": "Low",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flattish and is one of the coastal areas of the municipality. No drainage canals were observed within the barangay proper. Maximum flood height within the area is ranging from 0.5-1 meter. Naugisan River traverses the barangay.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition.",
+          "Establish 40 meter No Build Zone along the coast from the highest tide.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Naugisan Elem. School must have drainage canals to accommodate maximum surface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29597222, 124.6610833]
+      },
+      "properties": {
+        "barangay": "Naugisan",
+        "purok_sitio": "Naugisan Elem. School (Evacuation site)",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flattish and is one of the coastal areas of the municipality. No drainage canals were observed within the barangay proper. Maximum flood height within the area is ranging from 0.5-1 meter. Naugisan River traverses the barangay.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather condition.",
+          "Establish 40 meter No Build Zone along the coast from the highest tide.",
+          "Establish 20 meters No Build Zone on both sides of the river.",
+          "Naugisan Elem. School must have drainage canals to accommodate maximum surface run-off during heavy rainfall."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.20602778, 124.7177222]
+      },
+      "properties": {
+        "barangay": "Paglaum",
+        "purok_sitio": "Brgy. Hall/ Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is elevated and is gently sloping. Soil erosion is active due to lack of drainage canals.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Resident along mountain slopes and foot slopes should be vigilant during extreme weather condition for unpredicted landslides.",
+          "Avoid putting-up of houses on the edges of cliffs, unstable grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.20241667, 124.7240556]
+      },
+      "properties": {
+        "barangay": "Paglaum",
+        "purok_sitio": "Sitio Kanmatyo",
+        "landslide_level": "Low,Moderate",
+        "flood_level": "Low",
+        "remarks": "The Sitio is located on the ridge with moderate to steep slopes. Soil creeping is observed in the area. Illegal logging was also reported in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Resident along mountain slopes and foot slopes should be vigilant during extreme weather condition for unpredicted landslides.",
+          "Avoid putting-up of houses on the edges of cliffs, unstable grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.19333333, 124.7179444]
+      },
+      "properties": {
+        "barangay": "Paglaum",
+        "purok_sitio": "Sitio Cabahian",
+        "landslide_level": "Low,Moderate",
+        "flood_level": "Low",
+        "remarks": "The Sitio is located on the ridge with moderate to steep slopes. Soil creeping is observed in the area. Illegal logging was also reported in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Resident along mountain slopes and foot slopes should be vigilant during extreme weather condition for unpredicted landslides.",
+          "Avoid putting-up of houses on the edges of cliffs, unstable grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.19669444, 124.7114167]
+      },
+      "properties": {
+        "barangay": "Paglaum",
+        "purok_sitio": "Sitio Bagawbaw",
+        "landslide_level": "Low,Moderate",
+        "flood_level": "Low",
+        "remarks": "The Sitio is located on the ridge with moderate to steep slopes. Soil creeping is observed in the area. Illegal logging was also reported in the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Resident along mountain slopes and foot slopes should be vigilant during extreme weather condition for unpredicted landslides.",
+          "Avoid putting-up of houses on the edges of cliffs, unstable grounds and areas full of cracks."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28111111, 124.7085]
+      },
+      "properties": {
+        "barangay": "Pangna",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "Low",
+        "flood_level": "Low",
+        "remarks": "Area is slightly elevated with gently sloping ground. No drainage system and houses are disseminated. Ricefields are observed on the lower portion of the barangay",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Construction of proper and adequate drainage canals within the school area.",
+          "Ricefields must have proper irrigation canals to properly accommodate water especially during heavy rainfall.",
+          "Construction of elevated spillway with box culvert to avoid clogging and overflowing."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27086111, 124.71125]
+      },
+      "properties": {
+        "barangay": "Pangna",
+        "purok_sitio": "Sitio Bori",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is slightly elevated and ricefield are on the lower portion. 5 houses are affected and the road is not passable during the flood.y",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Construction of proper and adequate drainage canals within the school area.",
+          "Ricefields must have proper irrigation canals to properly accommodate water especially during heavy rainfall.",
+          "Construction of elevated spillway with box culvert to avoid clogging and overflowing."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27075, 124.7136944]
+      },
+      "properties": {
+        "barangay": "Pangna",
+        "purok_sitio": "Pangna Elementary School Evacuation Center",
+        "landslide_level": "Low",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is slightly elevated and flat. No drainage facilities were observed. The school is suitable as an evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Establish 20 meter No Build Zone on both sides of the River.",
+          "Construction of proper and adequate drainage canals within the school area.",
+          "Ricefields must have proper irrigation canals to properly accommodate water especially during heavy rainfall.",
+          "Construction of elevated spillway with box culvert to avoid clogging and overflowing."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25855556, 124.72675]
+      },
+      "properties": {
+        "barangay": "Parag-um",
+        "purok_sitio": "Barangay Proper/Sitio Upper Parag-um",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat with slightly sloping grounds. No proper drainage canals were observed causing soil erosion especially along Barangay roads.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along rivers to avoid unexpectedflashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "The Dumpsite should have proper waste segregation to separate biodegradable from Non-biodegrable products.",
+          "Proper disposal methods should be done in the dumpsite to prevent foul odors from scattering throughout the Barangay."
+
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27297222, 124.7152778]
+      },
+      "properties": {
+        "barangay": "Parag-um",
+        "purok_sitio": "Sitio Lower Parag-um",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat to moderately sloping. Some portions of the area are on lowland and experiences flooding up to 0.5 meters. Flooding is caused by rivers during heavy rainfall and typhoons.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along rivers to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "The Dumpsite should have proper waste segregation to separate biodegradable from Non-biodegradable products.",
+          "Proper disposal methods should be done in the dumpsite to prevent foul odors from scattering throughout the Barangay."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25988889, 124.7265]
+      },
+      "properties": {
+        "barangay": "Parag-um",
+        "purok_sitio": "Parag-um Elementary School",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat with no proper drainage canals causing soil erosion. The school can be utilized as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along rivers to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "The Dumpsite should have proper waste segregation to separate biodegradable from Non-biodegradable products.",
+          "Proper disposal methods should be done in the dumpsite to prevent foul odors from scattering throughout the Barangay."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.25227778, 124.7217222]
+      },
+      "properties": {
+        "barangay": "Parag-um",
+        "purok_sitio": "Carigara Solid Waste Disposal Site",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "The area is flat and is surrounded by concrete fence but some portion is destroyed by typhoon Yolanda. Segregation is not observed in the dumpsite. Solid wastes are not properly dumped and is scattered all over the area.",
+        "recommendation": [
+          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+          "Implement a 20 meter buffer zone along rivers to avoid unexpected flashfloods.",
+          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+          "The Dumpsite should have proper waste segregation to separate biodegradable from Non-biodegradable products.",
+          "Proper disposal methods should be done in the dumpsite to prevent foul odors from scattering throughout the Barangay."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29961111, 124.70925]
+      },
+      "properties": {
+        "barangay": "Parena",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "",
+        "flood_level": "",
+        "remarks": "Area is flat and situated in low elevation with no proper drainage system. Houses are located along the road and some are within the center of ricefields. Flood height is >3 m when high tide and river water meets, causing flooding. The Brgy. Hall is situated within the ricefield and is not suitable as an evacuation center. Two rivers traverse the barangay: Canomantag and Balugohay rivers.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Rechanneling of Canomantag river from meandering to straight channel, deep dredging, and constructing riprap/dike on both sides of the river to minimize flooding.",
+          "Establish a 20 meter No Build Zone on both sides of the river.",
+          "Construction of an elevated and appropriate bridge/spillway with a standard foundation to avoid collapse and allow safe passage during emergencies.",
+          "Relocate residents to the nearest stable and safer relocation site, if possible, to avoid flash flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.23766667, 124.719]
+      },
+      "properties": {
+        "barangay": "Piloro",
+        "purok_sitio": "Brgy. Hall / Evacuation Center",
+        "landslide_level": "",
+        "flood_level": "",
+        "remarks": "Barangay Hall is suitable as an evacuation center.",
+        "recommendation": [
+          "Residents must be vigilant during inclement weather conditions such as typhoons or heavy rainfall.",
+          "Construction of proper drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.23747222, 124.7184722]
+      },
+      "properties": {
+        "barangay": "Parena",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "",
+        "flood_level": "",
+        "remarks": "Area is elevated and characterized by gently sloping ground. Houses are spread out with no drainage system. Suitable as an evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during continuous heavy rainfall.",
+          "Rechanneling of Canomantag river from meandering to straight channel, deep dredging, and constructing riprap/dike on both sides of the river to minimize flooding.",
+          "Establish a 20 meter No Build Zone on both sides of the river.",
+          "Construction of an elevated and appropriate bridge/spillway with a standard foundation to avoid collapse and allow safe passage during emergencies.",
+          "Relocate residents to the nearest stable and safer relocation site, if possible, to avoid flash flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.23738889, 124.7199722]
+      },
+      "properties": {
+        "barangay": "Piloro",
+        "purok_sitio": "Chapel",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is gently sloping with a depression at the back of the chapel. Soil erosion and cracks were observed. Not suitable as an evacuation center.",
+        "recommendation": [
+          "Residents must be vigilant during inclement weather conditions such as typhoons or heavy rainfall.",
+          "Construction of proper drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29897222, 124.68125]
+      },
+      "properties": {
+        "barangay": "Piloro",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals were observed. Signs of soil erosion are present, with upwelling of roots. Some lower areas, such as Jose P. Rizal Street, experience flooding up to 0.5 meters due to a lack of drainage.",
+        "recommendation": [
+          "Residents must be vigilant during inclement weather conditions such as typhoons or heavy rainfall.",
+          "Construction of proper drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29875, 124.6811667]
+      },
+      "properties": {
+        "barangay": "Piloro",
+        "purok_sitio": "Open Court",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals were observed. Signs of soil erosion are present, with upwelling of roots. Some lower areas experience flooding up to 0.5 meters due to a lack of drainage.",
+        "recommendation": [
+          "Residents must be vigilant during inclement weather conditions such as typhoons or heavy rainfall.",
+          "Construction of proper drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29891667, 124.6809722]
+      },
+      "properties": {
+        "barangay": "Piloro",
+        "purok_sitio": "SK Center",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals were observed. Signs of soil erosion are present, with upwelling of roots. Some lower areas experience flooding up to 0.5 meters due to a lack of drainage.",
+        "recommendation": [
+          "Residents must be vigilant during inclement weather conditions such as typhoons or heavy rainfall.",
+          "Construction of proper drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.299, 124.6811111]
+      },
+      "properties": {
+        "barangay": "Piloro",
+        "purok_sitio": "Barangay Health Center",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals were observed. Signs of soil erosion are present, with upwelling of roots. Some lower areas experience flooding up to 0.5 meters due to a lack of drainage.",
+        "recommendation": [
+          "Residents must be vigilant during inclement weather conditions such as typhoons or heavy rainfall.",
+          "Construction of proper drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29863889, 124.6810278]
+      },
+      "properties": {
+        "barangay": "Ponong",
+        "purok_sitio": "Ponong Elem. School (Evacuation Center)",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No drainage canals were observed. The school is suitable as an evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and on both sides of the national highway with concrete floors and walls, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather conditions, especially those near river banks and mangrove areas.",
+          "Monitor sudden rises in water levels in the river and sea.",
+          "River channel modification must be done along the Ponong River.",
+          "Unblock all obstructions in the Ponong River channel."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29902778, 124.6811667]
+      },
+      "properties": {
+        "barangay": "Ponong",
+        "purok_sitio": "Ponong National High School (Evacuation Center)",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No drainage canals were observed. The school is suitable as an evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and on both sides of the national highway with concrete floors and walls, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather conditions, especially those near river banks and mangrove areas.",
+          "Monitor sudden rises in water levels in the river and sea.",
+          "River channel modification must be done along the Ponong River.",
+          "Unblock all obstructions in the Ponong River channel."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.31444444, 124.6819722]
+      },
+      "properties": {
+        "barangay": "Ponong",
+        "purok_sitio": "Sitio Mahulos",
+        "landslide_level": "",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat. Houses are situated in a swampy area. The creek in the area overflows, with a maximum flood height of 0.5-1.3 meters.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and on both sides of the national highway with concrete floors and walls, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather conditions, especially those near river banks and mangrove areas.",
+          "Monitor sudden rises in water levels in the river and sea.",
+          "River channel modification must be done along the Ponong River.",
+          "Unblock all obstructions in the Ponong River channel."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30125, 124.68225]
+      },
+      "properties": {
+        "barangay": "Ponong",
+        "purok_sitio": "Catholic Chapel",
+        "landslide_level": "",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat. Houses are situated in a swampy area. The creek in the area overflows, with a maximum flood height of 0.5-1.3 meters.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and on both sides of the national highway with concrete floors and walls, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather conditions, especially those near river banks and mangrove areas.",
+          "Monitor sudden rises in water levels in the river and sea.",
+          "River channel modification must be done along the Ponong River.",
+          "Unblock all obstructions in the Ponong River channel."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30208333, 124.6849167]
+      },
+      "properties": {
+        "barangay": "Ponong",
+        "purok_sitio": "Carigara Parish Church (Evacuation Center)",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. Drainage canals observed in the perimeter are silted and clogged with garbage. The Parish Church and school are suitable as evacuation centers.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and on both sides of the national highway with concrete floors and walls, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather conditions, especially those near river banks and mangrove areas.",
+          "Monitor sudden rises in water levels in the river and sea.",
+          "River channel modification must be done along the Ponong River.",
+          "Unblock all obstructions in the Ponong River channel."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30208333, 124.6849167]
+      },
+      "properties": {
+        "barangay": "Ponong",
+        "purok_sitio": "Carigara Parish Church (Evacuation Center)",
+        "landslide_level": "",
+        "flood_level": "low",
+        "remarks": "Area is flat. Drainage canals observed in the perimeter are silted and clogged with garbage. Parish Church and School are suitable for evacuation centers.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and on both sides of the national highway with concrete floors and walls throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather, especially in areas located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels both within the river and sea.",
+          "River channel modification must be done along the Ponong River.",
+          "Unblock all obstructions on the river channel of Ponong River."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30208333, 124.6843056]
+      },
+      "properties": {
+        "barangay": "Ponong",
+        "purok_sitio": "Holy Cross College of Carigara (Evacuation Center)",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. Drainage canals observed in the perimeter are silted and clogged with garbage. Parish Church and School are suitable for evacuation centers.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and on both sides of the national highway with concrete floors and walls throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during stormy weather, especially in areas located along the river banks and mangrove areas.",
+          "Monitor sudden rise in water levels both within the river and sea.",
+          "River channel modification must be done along the Ponong River.",
+          "Unblock all obstructions on the river channel of Ponong River."
+        ]
+      }
+    },
+   {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28797222, 124.7150556]
+      },
+      "properties": {
+        "barangay": "Rizal",
+        "purok_sitio": "Brgy. Hall/ Proper",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flattish and along the national road. The Barangay area is lower than the road. No drainage canals observed, especially along the national road. Flood height up to 1.5 meters during Typhoon Undang. Flooding occurs when high tide and flashfloods meet. Sheet flooding is common.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially on barangay roads, schools, and evacuation centers to prevent soil erosion and drain excess water.",
+          "Periodic cleaning of creeks, canals, rivers, and drainage systems to prevent clogging and siltation.",
+          "Implement a 20-meter buffer zone along rivers to avoid flash floods.",
+          "Desilting and dredging of river channels to widen and deepen them."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28694444, 124.7176667]
+      },
+      "properties": {
+        "barangay": "Rizal",
+        "purok_sitio": "Tagak Bridge/Rizal River",
+        "landslide_level": "",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flattish and along the national road. The Barangay area is lower than the road. No drainage canals observed, especially along the national road. Flood height up to 1.5 meters during Typhoon Undang. Flooding occurs when high tide and flashfloods meet. Sheet flooding is common.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially on barangay roads, schools, and evacuation centers to prevent soil erosion and drain excess water.",
+          "Periodic cleaning of creeks, canals, rivers, and drainage systems to prevent clogging and siltation.",
+          "Implement a 20-meter buffer zone along rivers to avoid flash floods.",
+          "Desilting and dredging of river channels to widen and deepen them."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27988889, 124.7248611]
+      },
+      "properties": {
+        "barangay": "Sagkahan",
+        "purok_sitio": "Brgy. Hall/ Proper",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No drainage canals observed. No signs of mass movements.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially on barangay roads, schools, and evacuation centers to prevent soil erosion and drain excess water.",
+          "Implement a 20-meter buffer zone along rivers to avoid flash floods.",
+          "Periodic cleaning of creeks, canals, rivers, and drainage systems to prevent clogging and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28263889, 124.7200278]
+      },
+      "properties": {
+        "barangay": "Sagkahan",
+        "purok_sitio": "Sitio Dao",
+        "landslide_level": "",
+        "flood_level": "Moderate",
+        "remarks": "Area is near Abango River and surrounded by rice fields. Houses are on the ridge of a small hill and some are on riverbanks. Area is isolated during heavy rainfall due to flooding up to 0.5 meters.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially on barangay roads, schools, and evacuation centers to prevent soil erosion and drain excess water.",
+          "Implement a 20-meter buffer zone along rivers to avoid flash floods.",
+          "Periodic cleaning of creeks, canals, rivers, and drainage systems to prevent clogging and siltation."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27980556, 124.7167778]
+      },
+      "properties": {
+        "barangay": "Sagkahan",
+        "purok_sitio": "Sitio Bana-aw",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat and wide. No signs of mass movements.",
+        "recommendation": [
+          "Construct flood controls, such as riprap and dikes, on Abango River in Sitio Dao to prevent overflow.",
+          "Relocate residents along Abango River in Sitio Dao to Sitio Bana-aw due to flood hazard."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.27980556, 124.726]
+      },
+      "properties": {
+        "barangay": "Sagkahan",
+        "purok_sitio": "Sagkahan Elementary School",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. No proper drainage canals observed, causing soil erosion and rain-induced flooding. The school can be used as a temporary evacuation center.",
+        "recommendation": [
+          "Construct flood controls, such as riprap and dikes, on Abango River in Sitio Dao to prevent overflow.",
+          "Relocate residents along Abango River in Sitio Dao to Sitio Bana-aw due to flood hazard."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.20630556, 124.7066667]
+      },
+      "properties": {
+        "barangay": "San Isidro",
+        "purok_sitio": "Barangay Proper (Temporary Evacuation Center)",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is elevated, flat, with gently sloping grounds. Soil erosion is active due to lack of drainage canals. Barangay hall can be used as a temporary evacuation center.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially on barangay roads, schools, and evacuation centers to prevent soil erosion and drain excess water."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.21108333, 124.70975]
+      },
+      "properties": {
+        "barangay": "San Isidro",
+        "purok_sitio": "San Isidro Chapel",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "The chapel can be used as a temporary evacuation center.",
+        "recommendation": []
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28488889, 124.6585833]
+      },
+      "properties": {
+        "barangay": "San Juan",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flattish with no proper drainage system. Maximum flood height ranging from 0.3-0.5 meter. Area is surrounded by rice plantations and nipa trees.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather, especially in areas along river banks.",
+          "Deep dredging along Naugisan River and its tributaries to deepen its channel.",
+          "Install riverbank protection to prevent further damage."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28627778, 124.6588889]
+      },
+      "properties": {
+        "barangay": "San Juan",
+        "purok_sitio": "Open Court",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flattish with no proper drainage system. Maximum flood height ranging from 0.3-0.5 meter. Area is surrounded by rice plantations and nipa trees.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather, especially in areas along river banks.",
+          "Deep dredging along Naugisan River and its tributaries to deepen its channel.",
+          "Install riverbank protection to prevent further damage."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28644444, 124.65925]
+      },
+      "properties": {
+        "barangay": "San Juan",
+        "purok_sitio": "Chapel",
+        "landslide_level": "",
+        "flood_level": "Moderate",
+        "remarks": "Area is flattish with no proper drainage system. Maximum flood height ranging from 0.3-0.5 meter. Area is surrounded by rice plantations and nipa trees.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather, especially in areas along river banks.",
+          "Deep dredging along Naugisan River and its tributaries to deepen its channel.",
+          "Install riverbank protection to prevent further damage."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29036111, 124.6594722]
+      },
+      "properties": {
+        "barangay": "San Juan",
+        "purok_sitio": "Sitio Ilo",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flattish and situated near swamps. Maximum flood height ranging from 0.5-1 meter. Creeks overflow to nearby houses.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather, especially in areas along river banks.",
+          "Deep dredging along Naugisan River and its tributaries to deepen its channel.",
+          "Install riverbank protection to prevent further damage."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.28475, 124.6636111]
+      },
+      "properties": {
+        "barangay": "San Juan",
+        "purok_sitio": "Sitio Puro",
+        "landslide_level": "",
+        "flood_level": "Moderate",
+        "remarks": "Area is flat to gently sloping and slightly elevated with no drainage system. Houses are situated at the center of two tributaries of Naugisan River. Maximum flood height ranging from 0.5-1 meter.",
+        "recommendation": [
+          "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers to minimize flooding.",
+          "Residents must be vigilant during inclement weather, especially in areas along river banks.",
+          "Deep dredging along Naugisan River and its tributaries to deepen its channel.",
+          "Install riverbank protection to prevent further damage."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30311111, 124.6945]
+      },
+      "properties": {
+        "barangay": "San Mateo",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and one of the coastal barangays. Houses are situated in reclaimed areas and prone to flooding due to lack of drainage system. Existing drainage canals are silted, and pipelines block water flow.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of barangay roads with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather, especially in areas along river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the river and sea.",
+          "Construction of seawalls/dikes taking into account the highest level of seawater.",
+          "Plant mangrove trees to protect from big waves.",
+          "Establish a 40-meter no-build zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30358333, 124.6939167]
+      },
+      "properties": {
+        "barangay": "San Mateo",
+        "purok_sitio": "Open Court",
+        "landslide_level": "",
+        "flood_level": "Moderate,High",
+        "remarks": "Area is flat and one of the coastal barangays. Houses are situated in reclaimed areas and prone to flooding due to lack of drainage system. Existing drainage canals are silted, and pipelines block water flow.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of barangay roads with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather, especially in areas along river banks and mangrove areas.",
+          "Monitor sudden rise in water levels within the river and sea.",
+          "Construction of seawalls/dikes taking into account the highest level of seawater.",
+          "Plant mangrove trees to protect from big waves.",
+          "Establish a 40-meter no-build zone along the coast from the highest tide."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30072222, 124.6868889]
+      },
+      "properties": {
+        "barangay": "Sawang",
+        "purok_sitio": "Barangay Proper",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. Existing drainage canals observed are silted.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of the national highway with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather.",
+          "Unblock/desilt existing drainage canals to prevent clogging of water."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.30072222, 124.6869722]
+      },
+      "properties": {
+        "barangay": "Sawang",
+        "purok_sitio": "Day Care Center",
+        "landslide_level": "",
+        "flood_level": "Low",
+        "remarks": "Area is flat. Existing drainage canals observed are silted.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of the national highway with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather.",
+          "Unblock/desilt existing drainage canals to prevent clogging of water."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29894444, 124.6893611]
+      },
+      "properties": {
+        "barangay": "Sawang",
+        "purok_sitio": "Sitio Bulod",
+        "landslide_level": "",
+        "flood_level": "",
+        "remarks": "Area is flat. Several houses were situated in a swampy area. No drainage canals observed.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of the national highway with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather.",
+          "Unblock/desilt existing drainage canals to prevent clogging of water."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29925, 124.6895]
+      },
+      "properties": {
+        "barangay": "Sawang",
+        "purok_sitio": "Catholic Chapel",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. Several houses were situated in a swampy area. No drainage canals observed.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of the national highway with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather.",
+          "Unblock/desilt existing drainage canals to prevent clogging of water."
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29763889, 124.6907222]
+      },
+      "properties": {
+        "barangay": "Sawang",
+        "purok_sitio": "Sitio Upa",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals observed in the perimeter. Signs of soil erosion and upwelling of roots were observed.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of the national highway with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather.",
+          "Unblock/desilt existing drainage canals to prevent clogging of water."
+        ]
+      }
+    },{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [11.29763889, 124.6907222]
+      },
+      "properties": {
+        "barangay": "Sawang",
+        "purok_sitio": "Sitio Upa",
+        "landslide_level": "",
+        "flood_level": "Low,Moderate",
+        "remarks": "Area is flat. No drainage canals observed in the perimeter. Signs of soil erosion and upwelling of roots were observed.",
+        "recommendation": [
+          "Construction of drainage canals along the barangay perimeter and both sides of the national highway with concrete floors and walls to minimize flooding.",
+          "Residents must be vigilant during stormy weather.",
+          "Unblock/desilt existing drainage canals to prevent clogging of water."
+        ]
+      }
+    },
+
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.25813889, 124.7138889]
+        },
+        "properties": {
+          "barangay": "Sawang",
+          "purok_sitio": "Barangay Proper/Brgy. Hall",
+          "landslide_level": "",
+          "flood_level": "",
+          "remarks": "",
+          "recommendation": [
+              ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.25797222, 124.71425]
+        },
+        "properties": {
+          "barangay": "Sta. Fe",
+          "purok_sitio": "Sta. Fe Elementary School",
+          "landslide_level": "",
+          "flood_level": "Low",
+          "remarks": "Area is slightly elevated with no proper drainage system and can be utilized for evacuation center.",
+          "recommendation": [
+            "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+            "Residents should be vigilant during bad weather condition such as typhoons or heavy rainfall.",
+            "Sta. Fe Elementary School must construct proper and adequate drainage system to prevent soil erosion around the school building."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.25813889, 124.7138889]
+        },
+        "properties": {
+          "barangay": "Sta. Fe",
+          "purok_sitio": "Barangay Proper/Brgy. Hall",
+          "landslide_level": "",
+          "flood_level": "Low",
+          "remarks": "Area is slightly elevated and it is characterized as a gently sloping topography with no drainage facilities. Houses are disseminated and some are situated near the ricefield. Barangay Hall is suitable as an evacuation center.",
+          "recommendation": [
+            "Construction of drainage canals throughout the barangay, especially along barangay roads and evacuation centers, to minimize flooding.",
+            "Residents should be vigilant during bad weather conditions such as typhoons or heavy rainfall.",
+            "Sta. Fe Elementary School must construct a proper and adequate drainage system to prevent soil erosion around the school building."
+          ]
+        }
+      },
+
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.29058333, 124.7104722]
+        },
+        "properties": {
+          "barangay": "Tagak",
+          "purok_sitio": "Brgy. Hall/ Proper",
+          "landslide_level": "",
+          "flood_level": "Low,Moderate",
+          "remarks": "The area is mostly flat with lower elevation than the national road. No proper drainage canals were observed along the national road.",
+          "recommendation": [
+            "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+            "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+            "Implement a 20 meter buffer zone along rivers to avoid unexpected flashfloods.",
+            "Desilting of river channels and dredging must be done to widen and deepen the channels.",
+            "Nipa trees along River channels should be removed to unblock waterways of River channels."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.29125, 124.7092778]
+        },
+        "properties": {
+          "barangay": "Tagak",
+          "purok_sitio": "Parena Bridge/ River",
+          "landslide_level": "",
+          "flood_level": "Modarate,High",
+          "remarks": "The area is on low elevation and easily flooded. The area along Parena river experiences flooding of up to 1.5 meters high during typhoons and heavy rainfall due to narrow waterways and obstructed by nipa trees.",
+          "recommendation": [
+            "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+            "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+            "Implement a 20 meter buffer zone along rivers to avoid unexpected flashfloods.",
+            "Desilting of river channels and dredging must be done to widen and deepen the channels.",
+            "Nipa trees along River channels should be removed to unblock waterways of River channels."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.29352778, 124.7146944]
+        },
+        "properties": {
+          "barangay": "Tagak",
+          "purok_sitio": "Sitio Talisay",
+          "landslide_level": "",
+          "flood_level": "Moderate",
+          "remarks": "The area is a floodplain with low elevation. Flood height in the area is up to 1 meter high due to Parena river that overflows during heavy rainfall and when high tide meets the river stream.",
+          "recommendation": [
+            "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+            "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+            "Implement a 20 meter buffer zone along rivers to avoid unexpected flashfloods.",
+            "Desilting of river channels and dredging must be done to widen and deepen the channels.",
+            "Nipa trees along River channels should be removed to unblock waterways of River channels."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.28858333, 124.7146944]
+        },
+        "properties": {
+          "barangay": "Tagak",
+          "purok_sitio": "Tagak Elementary School",
+          "landslide_level": "",
+          "flood_level": "Low",
+          "remarks": "Area is flat with low elevation than the national road. No drainage proper drainage canals were observed. The school can be utilized as a temporary evacuation center.",
+          "recommendation": [
+            "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
+            "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
+            "Implement a 20 meter buffer zone along rivers to avoid unexpected flashfloods.",
+            "Desilting of river channels and dredging must be done to widen and deepen the channels.",
+            "Nipa trees along River channels should be removed to unblock waterways of River channels."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.29902778, 124.6686389]
+        },
+        "properties": {
+          "barangay": "Tangnan",
+          "purok_sitio": "Barangay Proper",
+          "landslide_level": "",
+          "flood_level": "Low",
+          "remarks": "Area is flat and is one of the coastal barangay of the municipality. No drainage canals were observed.",
+          "recommendation": [
+            "Construction of drainage canals throughout the barangay especially along barangay roads and evacuation centers to minimize flooding.",
+            "Residents must be vigilant during stormy weather conditions especially in areas that are located along the river banks and mangrove areas.",
+            "Riverbank protection should be installed particularly along the bank of Carigara River.",
+            "Monitor sudden rise in water levels both within the river and sea.",
+            "Establish 40 meters No Build Zone along the coast from the highest tide."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.25466667, 124.6918333]
+        },
+        "properties": {
+          "barangay": "Upper Sogod",
+          "purok_sitio": "Barangay Proper",
+          "landslide_level": "Moderate",
+          "flood_level": "Moderate",
+          "remarks": "Slightly sloping area with no proper drainage. Houses are mostly along the road with some near the river. Two houses were washed out during Typhoon Yuning.",
+          "recommendation": [
+            "Construction of drainage canals along barangay roads and evacuation centers to minimize flooding.",
+            "Residents must be vigilant during inclement weather.",
+            "Rechanneling of Uyawan River, dredging, and construction of riprap/dike to minimize flooding.",
+            "Establish a 20-meter no-build zone along both sides of the river."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.256, 124.6949167]
+        },
+        "properties": {
+          "barangay": "Upper Sogod",
+          "purok_sitio": "Sitio Macalboc",
+          "landslide_level": "Moderate",
+          "flood_level": "Moderate",
+          "remarks": "Slightly elevated, gentle slope, houses scattered throughout the area.",
+          "recommendation": [
+            "Construction of drainage canals along barangay roads and evacuation centers to minimize flooding.",
+            "Residents must be vigilant during inclement weather.",
+            "Rechanneling of Uyawan River, dredging, and construction of riprap/dike to minimize flooding.",
+            "Establish a 20-meter no-build zone along both sides of the river."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.28572222, 124.6827222]
+        },
+        "properties": {
+          "barangay": "Uyawan",
+          "purok_sitio": "Barangay Hall/Proper, Day Care, and Health Center",
+          "landslide_level": "Moderate-High",
+          "flood_level": "High",
+          "remarks": "Flat area near Uyawan River, 10-15 meters from the riverbank. River erosion is severe with siltation and damaged gabions.",
+          "recommendation": [
+            "Construction of drainage canals along barangay roads, schools, and evacuation centers.",
+            "Implement a 20-meter buffer zone along the riverbanks.",
+            "Regular cleaning of drainage systems to prevent clogging.",
+            "Rechannel the Uyawan River to straighten the channel.",
+            "Relocate residents along riverbanks if possible."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.2785, 124.6861667]
+        },
+        "properties": {
+          "barangay": "Uyawan",
+          "purok_sitio": "Purok 2",
+          "landslide_level": "Moderate-High",
+          "flood_level": "High",
+          "remarks": "Flat area near Uyawan River, riverbanks severely eroded. Flooding due to meandering river.",
+          "recommendation": [
+            "Construction of drainage canals along barangay roads, schools, and evacuation centers.",
+            "Implement a 20-meter buffer zone along riverbanks.",
+            "Regular cleaning of creeks, rivers, and canals.",
+            "Rechannel the Uyawan River to straighten the channel.",
+            "Relocate residents near riverbanks if possible."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.28019444, 124.6810556]
+        },
+        "properties": {
+          "barangay": "Uyawan",
+          "purok_sitio": "Purok 1",
+          "landslide_level": "Moderate-High",
+          "flood_level": "High",
+          "remarks": "Meandering portion of Uyawan River with severe riverbank erosion. Affected 42 houses during Typhoon Yoning.",
+          "recommendation": [
+            "Construction of drainage canals along barangay roads, schools, and evacuation centers.",
+            "Implement a 20-meter buffer zone along riverbanks.",
+            "Regular cleaning of creeks, rivers, and canals.",
+            "Rechannel the Uyawan River to straighten the channel.",
+            "Relocate residents along riverbanks if possible."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.28375, 124.6824167]
+        },
+        "properties": {
+          "barangay": "Uyawan",
+          "purok_sitio": "Uyawan Elementary School",
+          "landslide_level": "Moderate",
+          "flood_level": "Moderate",
+          "remarks": "Flat area with no proper drainage. The school can be a temporary evacuation center.",
+          "recommendation": [
+            "Construction of drainage canals along barangay roads, schools, and evacuation centers.",
+            "Implement a 20-meter buffer zone along riverbanks.",
+            "Regular cleaning of creeks, rivers, and canals.",
+            "Rechannel the Uyawan River to straighten the channel.",
+            "Relocate residents along riverbanks if possible."
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [11.30347222, 124.6816111]
+        },
+        "properties": {
+          "barangay": "East Visoria",
+          "purok_sitio": "Barangay Proper",
+          "landslide_level": "Moderate-High",
+          "flood_level": "High",
+          "remarks": "Flat coastal area with houses built within mangrove and reclaimed zones. Flooding caused by Ponong River overflow.",
+          "recommendation": [
+            "Construction of drainage canals with concrete floors along barangay roads and evacuation centers.",
+            "Vigilance during stormy weather.",
+            "Riverbank protection along Carigara River.",
+            "Monitor sudden rise in water levels both within the river and sea.",
+            "Establish a 40-meter no-build zone along the coast from the highest tide.",
+            "Cut down nipa trees blocking Ponong River.",
+            "Upgrade culverts to prevent backflow.",
+            "Plant mangroves to prevent storm surges."
+          ]
+        }
+      }
+    ]
+}
