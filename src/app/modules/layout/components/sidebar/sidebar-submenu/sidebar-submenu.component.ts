@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SubMenuItem } from 'src/app/core/models/menu.model';
 import { MenuService } from '../../../services/menu.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -21,6 +21,7 @@ import { NgClass, NgFor, NgTemplateOutlet } from '@angular/common';
 })
 export class SidebarSubmenuComponent implements OnInit {
   @Input() public submenu = <SubMenuItem>{};
+  @Output() subMenuClicked = new EventEmitter<{ type: string, category?: string }>();
 
   constructor(public menuService: MenuService) {}
 
@@ -35,5 +36,10 @@ export class SidebarSubmenuComponent implements OnInit {
       item.expanded = false;
       if (item.children) this.collapse(item.children);
     });
+  }
+
+  public onSubMenuClick(type: string, category?: string) {
+    console.log({type, category});
+    this.subMenuClicked.emit({ type, category });
   }
 }

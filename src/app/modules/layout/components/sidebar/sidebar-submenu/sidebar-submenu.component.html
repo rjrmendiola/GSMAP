@@ -11,12 +11,20 @@
         </ng-container>
 
         <!-- Parent Menu -->
-        <ng-template #parentMenu let-sub="sub">
+        <!-- <ng-template #parentMenu let-sub="sub">
           <a
             [routerLink]="sub.route"
             routerLinkActive="text-primary"
             [routerLinkActiveOptions]="{ exact: true }"
             class="inline-block w-full px-4 py-2 text-xs font-semibold">
+            {{ sub.label }}
+          </a>
+        </ng-template> -->
+        <ng-template #parentMenu let-sub="sub">
+          <a
+            routerLinkActive="text-primary"
+            class="inline-block w-full px-4 py-2 text-xs font-semibold cursor-pointer"
+            (click)="onSubMenuClick('landslide', sub.slug)">
             {{ sub.label }}
           </a>
         </ng-template>
