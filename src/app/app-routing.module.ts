@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DataComponent } from './modules/data/data.component';
-import { UsageComponent } from './modules/usage/usage.component';
-import { ContactusComponent } from './modules/contactus/contactus.component';
 
 const routes: Routes = [
   {
@@ -16,18 +13,6 @@ const routes: Routes = [
   {
     path: 'errors',
     loadChildren: () => import('./modules/error/error.module').then((m) => m.ErrorModule),
-  },
-  {
-    path: 'data',
-    component: DataComponent
-  },
-  {
-    path: 'usage',
-    component: UsageComponent
-  },
-  {
-    path: 'contactus',
-    component: ContactusComponent
   },
   { path: '**', redirectTo: 'errors/404' },
 ];
