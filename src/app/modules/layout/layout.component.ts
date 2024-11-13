@@ -52,7 +52,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     landcover: false,
     roads: false,
     forest: false,
-    landslide: false
+    landslide_low: false,
+    landslide_moderate: false,
+    landslide_high: false
   };
 
   // Define colors for each layer
@@ -145,7 +147,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     const layer = this.layers[layerKey];
     this.layerVisibility[layerKey] = !this.layerVisibility[layerKey];
 
-    if (layerKey === 'landslide_high') {
+    if (layerKey === 'landslide_high' || layerKey === 'landslide_moderate' || layerKey === 'landslide_low') {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
         this.map.removeControl(this.info);
@@ -311,9 +313,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         var colors: string[] = ['#FFFF00', '#6B8E23', '#800000'];
         var labels: string[] = ['Low', 'Moderate', 'High'];
 
+        div.innerHTML += `<h1 class="text-sm font-bold leading-3 mt-2 mb-2 text-gray-800">Hazard Level</h1>`;
         for (let i = 0; i < colors.length; i++) {
-          div.innerHTML += `<i style="background:${colors[i]}"></i> `
-            + `&ndash; ${labels[i]}<br>`;
+          div.innerHTML += `<div class="py-1">
+            <i style="background:${colors[i]};"></i><span style="color:${colors[i]};">${labels[i]}</span>
+          </div>`;
         }
       } else {
         var grades: number[] = [0, 100, 300, 800, 1000, 1300, 2300, 3500];
@@ -325,25 +329,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
 
-      return div;
-    };
-  }
-
-  private addLandslideLegend(): void {
-    if (this.legend) {
-      this.map.removeControl(this.legend);
-    }
-    this.legend = new L.Control({ position: 'bottomright' });
-
-    this.legend.onAdd = () => {
-      const div = L.DomUtil.create('div', 'info legend');
-      const colors: string[] = ['#6B8E23', '#FFFF00', '#800000'];
-      const labels: string[] = ['Low', 'Moderate', 'High'];
-
-      for (let i = 0; i < colors.length; i++) {
-        div.innerHTML += `<i style="background:${colors[i]}"></i> `
-        + `&ndash;${labels[i]}<br>`;
-      }
       return div;
     };
   }
@@ -445,7 +430,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onEachFeature(feature: any, layer: any, layerKey: string): void {
-    if (layerKey !== 'landslide' && layerKey !== 'water_river') {
+    if (layerKey === 'barangay') {
       layer.on({
         mouseover: this.highlightFeature.bind(this),
         mouseout: this.resetHighlight.bind(this),
@@ -535,9 +520,29 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   handleDisasterTypeChange(): void {
     if (this.disasterType && this.map) {
       // console.log('Updating map with type:', this.disasterType.type);
-      this.toggleLayer('landslide_low');
-      this.toggleLayer('landslide_moderate');
-      this.toggleLayer('landslide_high');
+      if (this.disasterType.type == 'landslide') {
+        this.toggleLayer('landslide_low');
+        this.toggleLayer('landslide_moderate');
+        this.toggleLayer('landslide_high');
+      } else if (this.disasterType.type == 'typhoon') {
+        if (this.disasterType.category == 'category5') {
+          this.map.removeLayer(this.layers['landslide_low']);
+          this.map.removeLayer(this.layers['landslide_moderate']);
+          this.toggleLayer('landslide_high');
+        } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
+          this.map.removeLayer(this.layers['landslide_low']);
+          this.map.removeLayer(this.layers['landslide_high']);
+          this.toggleLayer('landslide_moderate');
+        } else if (this.disasterType.category == 'category2') {
+          this.map.removeLayer(this.layers['landslide_moderate']);
+          this.map.removeLayer(this.layers['landslide_high']);
+          this.toggleLayer('landslide_low');
+        } else {
+          this.map.removeLayer(this.layers['landslide_low']);
+          this.map.removeLayer(this.layers['landslide_moderate']);
+          this.map.removeLayer(this.layers['landslide_high']);
+        }
+      }
     }
   }
 }

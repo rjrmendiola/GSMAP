@@ -11,11 +11,11 @@ export class Menu {
           label: 'Typhoon Category',
           route: '/typhoon-category',
           children: [
-            { label: 'Category 1', route: '/typhoon-category/1' },
-            { label: 'Category 2', route: '/typhoon-category/2' },
-            { label: 'Category 3', route: '/typhoon-category/3' },
-            { label: 'Category 4', route: '/typhoon-category/4' },
-            { label: 'Category 5', route: '/typhoon-category/5' },
+            { label: 'Category 1', route: '/typhoon-category/1', slug: 'category1' },
+            { label: 'Category 2', route: '/typhoon-category/2', slug: 'category2' },
+            { label: 'Category 3', route: '/typhoon-category/3', slug: 'category3' },
+            { label: 'Category 4', route: '/typhoon-category/4', slug: 'category4' },
+            { label: 'Category 5', route: '/typhoon-category/5', slug: 'category5' },
           ],
         },
         // {

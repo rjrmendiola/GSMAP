@@ -9,6 +9,7 @@ export interface MenuItem {
 export interface SubMenuItem {
   icon?: string;
   label?: string;
+  slug?: string;
   route?: string | null;
   expanded?: boolean;
   active?: boolean;
