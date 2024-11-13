@@ -66,7 +66,7 @@ span {
   background-color: #e9ecf1;
   min-width: 190px;
   box-shadow: 0px 8px 16px 0px rgba(65, 56, 45, 0.795);
-  z-index: 1;
+  z-index: 1001;
   padding: 5px;
   border-radius: 5px;
 }
@@ -153,7 +153,7 @@ span {
   position: sticky;
   right: -10px; /* Align the button to the right */
   top: -50%; /* Vertically center it */
-  transform: translateY(550%); /* Adjust for centering */
+  // transform: translateY(550%); /* Adjust for centering */
   z-index: 1000; /* Ensure it appears on top of other elements */
 }
 .customPopup {
