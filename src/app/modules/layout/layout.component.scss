@@ -28,10 +28,10 @@ html, body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
-
 .dropdown {
   position: relative;
   display: inline-block;
+  margin: 10px;
 }
 
 .dropdown-btn {
@@ -159,7 +159,7 @@ span {
 .customPopup {
   max-width: 220px; /* Adjust as needed */
   font-family: Arial, sans-serif;
-  
+
   figure {
     margin: 0;
     img {
@@ -172,7 +172,7 @@ span {
       font-size: 0.8em;
     }
   }
-  
+
   div {
     margin-top: 5px;
     a {

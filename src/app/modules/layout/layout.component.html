@@ -1,9 +1,9 @@
 <div class="flex h-screen w-full overflow-hidden">
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
-  
+
   <div class="flex grow flex-col content-start overflow-hidden bg-card">
-  
+
 
     <!-- Main content -->
     <div
@@ -15,8 +15,8 @@
         <div class="dropdown">
           <button class="dropdown-btn">
             Layers <span>{{ isDropdownOpen ? '▼' : '▲' }}</span>
-          </button>       
-      
+          </button>
+
           <!-- Dropdown content with checkboxes, only visible when dropdown is open -->
           <div class="dropdown-content">
             <label>
@@ -43,14 +43,14 @@
               <input type="checkbox" (change)="toggleLayer('forest')">
               Forest
             </label>
-             
+
           </div>
         </div>
-    
+
 
         <!-- Map Frame -->
         <div class="map-frame">
-          <div id="map" style="height: 500px;"></div>
+          <div id="map" style="height: 550px;"></div>
         </div>
       </div>
     </div>
