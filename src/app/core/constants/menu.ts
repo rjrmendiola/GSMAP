@@ -11,23 +11,23 @@ export class Menu {
           label: 'Typhoon Category',
           route: '/typhoon-category',
           children: [
-            { label: 'Signal No. 1', route: '/typhoon-category/1' },
-            { label: 'Signal No. 2', route: '/typhoon-category/2' },
-            { label: 'Signal No. 3', route: '/typhoon-category/3' },
-            { label: 'Signal No. 4', route: '/typhoon-category/4' },
-            { label: 'Signal No. 5', route: '/typhoon-category/5' },
+            { label: 'Category 1', route: '/typhoon-category/1' },
+            { label: 'Category 2', route: '/typhoon-category/2' },
+            { label: 'Category 3', route: '/typhoon-category/3' },
+            { label: 'Category 4', route: '/typhoon-category/4' },
+            { label: 'Category 5', route: '/typhoon-category/5' },
           ],
         },
-        {
-          icon: 'assets/icons/heroicons/outline/cube.svg',
-          label: 'Landslide',
-          route: '/landslide',
-        },
-        {
-          icon: 'assets/icons/heroicons/outline/information-circle.svg',
-          label: 'Flood',
-          route: '/flood',
-        },
+        // {
+        //   icon: 'assets/icons/heroicons/outline/cube.svg',
+        //   label: 'Landslide',
+        //   route: '/landslide',
+        // },
+        // {
+        //   icon: 'assets/icons/heroicons/outline/information-circle.svg',
+        //   label: 'Flood',
+        //   route: '/flood',
+        // },
         // {
         //   icon: 'assets/icons/heroicons/outline/user-circle.svg',
         //   label: 'Contact us',

@@ -5,7 +5,7 @@ import {
   ElementRef,
   AfterViewInit,
   OnDestroy,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavigationEnd, Router, RouterOutlet, Event } from '@angular/router';
@@ -15,7 +15,9 @@ import * as L from 'leaflet';
 import 'leaflet-minimap';
 import 'leaflet-fullscreen';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.js';
-
+// import * as d3 from 'd3';
+import { Subscription } from 'rxjs';
+import { DisasterService } from 'src/app/core/services/disaster.service';
 
 @Component({
   selector: 'app-layout',
@@ -26,6 +28,10 @@ import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.js';
   encapsulation: ViewEncapsulation.None,
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
+  // @Input() disasterType!: { type: string; category?: string };
+  private disasterTypeSubscription!: Subscription;
+  disasterType!: { type: string; category?: string };
+
   isDropdownOpen: boolean = false;
   private mainContent: HTMLElement | null = null;
   private map: any;
@@ -46,6 +52,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     landcover: false,
     roads: false,
     forest: false,
+    landslide: false
   };
 
   // Define colors for each layer
@@ -56,6 +63,49 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     roads: '#000000',
     forest: '#4B5320',
   };
+
+  private initMap(): void {
+    this.map = L.map('map', {
+      center: [11.232084301848886, 124.7057818628441],
+      zoom: 12,
+      zoomControl: false,
+      attributionControl: false,
+    });
+
+    // Add the fullscreen control
+    this.map.addControl(new L.Control.Fullscreen({
+      content: '<i class="fa fa-expand"></i>',
+      title: {
+        'false': 'View Fullscreen',
+        'true': 'Exit Fullscreen'},
+      contentCancel: '<i class="fa fa-compress"></i>',
+    }));
+
+    // Add minimap
+    const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    const osm2 = new L.TileLayer(osmURL, { minZoom: 6, maxZoom: 18 });
+    const minimap = new L.Control.MiniMap(osm2, {
+      position: 'bottomleft',
+      toggleDisplay: true,
+      minimized: true,
+      hideText: true,
+      showText: true});
+    minimap.addTo(this.map);
+
+    // Load GeoJSON data for different layers
+    this.loadGeoJsonLayer('barangay', './assets/data/carigara/barangay.geojson');
+    // this.loadGeoJsonLayer('water_river', './assets/data/water_river.geojson');
+    // this.loadGeoJsonLayer('buildings', './assets/data/buildings.geojson');
+    // this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
+    // this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
+    // this.loadGeoJsonLayer('forest', '.src/assets/data/forest.geojson');
+    // this.loadGeoJsonLayer('landslide', './assets/data/hazard_landslide.geojson');
+    this.loadGeoJsonLayer('landslide_low', './assets/data/landslide/hazard_landslide_low.geojson');
+    this.loadGeoJsonLayer('landslide_moderate', './assets/data/landslide/hazard_landslide_moderate.geojson');
+    this.loadGeoJsonLayer('landslide_high', './assets/data/landslide/hazard_landslide_high.geojson');
+
+    L.control.scale({imperial: true,}).addTo(this.map);
+  }
 
   private fetchGeoJson(url: string): Promise<any> {
     return fetch(url)
@@ -69,44 +119,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error(`Error fetching the GeoJSON data from ${url}:`, error);
         throw error;
       });
-  }
-
-  private initMap(): void {
-    this.map = L.map('map', {
-      center: [11.232084301848886, 124.7057818628441],
-      zoom: 12,
-      zoomControl: false,
-      attributionControl: false,
-    });
-    
-    // Add the fullscreen control
-    this.map.addControl(new L.Control.Fullscreen({
-      content: '<i class="fa fa-expand"></i>',
-      title: {
-        'false': 'View Fullscreen',
-        'true': 'Exit Fullscreen'},
-      contentCancel: '<i class="fa fa-compress"></i>',
-    }));
-
-    // Add minimap
-    const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-    const osm2 = new L.TileLayer(osmURL, { minZoom: 6, maxZoom: 18 });
-    const minimap = new L.Control.MiniMap(osm2, { 
-      position: 'bottomleft', 
-      toggleDisplay: true, 
-      minimized: true, 
-      hideText: true, 
-      showText: true});
-    minimap.addTo(this.map); 
-
-    // Load GeoJSON data for different layers
-    this.loadGeoJsonLayer('barangay', './assets/data/carigara/barangay.geojson');
-    this.loadGeoJsonLayer('water_river', './assets/data/water_river.geojson');
-    this.loadGeoJsonLayer('buildings', './assets/data/buildings.geojson');
-    this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
-    this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
-    this.loadGeoJsonLayer('forest', '.src/assets/data/forest.geojson');
-    L.control.scale({imperial: true,}).addTo(this.map);
   }
 
   // Method to load a GeoJSON layer and add it to the map
@@ -133,26 +145,34 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     const layer = this.layers[layerKey];
     this.layerVisibility[layerKey] = !this.layerVisibility[layerKey];
 
-    if (this.map.hasLayer(layer)) {
-      this.map.removeLayer(layer);
-      this.map.removeControl(this.legend);
-      this.map.removeControl(this.info);
+    if (layerKey === 'landslide_high') {
+      if (!this.map.hasLayer(layer)) {
+        this.map.addLayer(layer);
+        this.map.removeControl(this.info);
+        this.legend.addTo(this.map);
+      }
     } else {
-      this.map.addLayer(layer);
-      this.legend.addTo(this.map);
-      this.info.addTo(this.map);
+      if (this.map.hasLayer(layer)) {
+        this.map.removeLayer(layer);
+        this.map.removeControl(this.legend);
+        this.map.removeControl(this.info);
+      } else {
+        this.map.addLayer(layer);
+        this.legend.addTo(this.map);
+        this.info.addTo(this.map);
+      }
     }
   }
 
-    private markerControl(): void {
+  private markerControl(): void {
       const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
         minZoom: 3,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         opacity: 0.3,
       });
-      
-      
+
+
       const tigbaoPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Boundary</figcaption></figure><div>AKON INI BARANGAY!!! </a></div></div>';
       const piloroPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Boundary</figcaption></figure><div>AKON INI BARANGAY!!! </a></div></div>';
       const camansiPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Boundary</figcaption></figure><div>AKON INI BARANGAY!!! </a></div></div>';
@@ -202,7 +222,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const macalpiPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Boundary</figcaption></figure><div>AKON INI BARANGAY!!! </a></div></div>';
       const paglaumPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Boundary</figcaption></figure><div>AKON INI BARANGAY!!! </a></div></div>';
       const sanIsidroPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Boundary</figcaption></figure><div>AKON INI BARANGAY!!! </a></div></div>';
-      
+
       /*const safe = L.AwesomeMarkers.icon({
         icon: 'coffee',
         markerColor: 'red'
@@ -210,10 +230,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       , {icon: safe}).bindPopup(tigbaoPopup)*/
       //barangay marker location
       const tigbao = L.marker([11.23826416064776, 124.7125225852891]).bindPopup(tigbaoPopup).on("click", this.clickZoom.bind(this)),//.on("click", (e) => { this.clickZoom(e); this.clickJump(tigbao)}),
-            piloro = L.marker([11.236402318756134, 124.72036848648168]).bindPopup(piloroPopup).on("click", this.clickZoom.bind(this)),      
-            camansi = L.marker([11.218878646387452, 124.71579779960075]).bindPopup(camansiPopup).on("click", this.clickZoom.bind(this)), 
+            piloro = L.marker([11.236402318756134, 124.72036848648168]).bindPopup(piloroPopup).on("click", this.clickZoom.bind(this)),
+            camansi = L.marker([11.218878646387452, 124.71579779960075]).bindPopup(camansiPopup).on("click", this.clickZoom.bind(this)),
             tinaguban = L.marker([11.236536623529915, 124.70284118033567]).bindPopup(tinagubanPopup).on("click", this.clickZoom.bind(this)),
-            jugaban = L.marker([11.3007, 124.6934]).bindPopup(jugabanPopup).on("click", this.clickZoom.bind(this)), 
+            jugaban = L.marker([11.3007, 124.6934]).bindPopup(jugabanPopup).on("click", this.clickZoom.bind(this)),
             san_mateo = L.marker([11.3018, 124.6953]).bindPopup(sanMateoPopup).on("click", this.clickZoom.bind(this)),
             guindapunan_west = L.marker([11.3026, 124.6980]).bindPopup(guindapunanWestPopup).on("click", this.clickZoom.bind(this)),
             guindapunan_east = L.marker([11.3037, 124.7004]).bindPopup(guindapunanEastPopup).on("click", this.clickZoom.bind(this)),
@@ -281,20 +301,51 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private addLegend(): void{
     if (this.legend) {
       this.map.removeControl(this.legend);
-    } 
+    }
     this.legend = new L.Control({ position: 'bottomright' });
 
     this.legend.onAdd = () => {
       const div = L.DomUtil.create('div', 'info legend');
-      const grades: number[] = [0, 100, 300, 800, 1000, 1300, 2300, 3500];
-      const labels: string[] = [];
 
-      for (let i = 0; i < grades.length; i++) {
-        div.innerHTML += `<i style="background:${this.getColor(grades[i] + 1)}"></i> ` +
-        grades[i] + (grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+');
+      if (this.disasterType) {
+        var colors: string[] = ['#FFFF00', '#6B8E23', '#800000'];
+        var labels: string[] = ['Low', 'Moderate', 'High'];
+
+        for (let i = 0; i < colors.length; i++) {
+          div.innerHTML += `<i style="background:${colors[i]}"></i> `
+            + `&ndash; ${labels[i]}<br>`;
+        }
+      } else {
+        var grades: number[] = [0, 100, 300, 800, 1000, 1300, 2300, 3500];
+        var labels: string[] = [];
+
+        for (let i = 0; i < grades.length; i++) {
+          div.innerHTML += `<i style="background:${this.getColor(grades[i] + 1)}"></i> ` +
+          grades[i] + (grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+');
+        }
+      }
+
+      return div;
+    };
+  }
+
+  private addLandslideLegend(): void {
+    if (this.legend) {
+      this.map.removeControl(this.legend);
+    }
+    this.legend = new L.Control({ position: 'bottomright' });
+
+    this.legend.onAdd = () => {
+      const div = L.DomUtil.create('div', 'info legend');
+      const colors: string[] = ['#6B8E23', '#FFFF00', '#800000'];
+      const labels: string[] = ['Low', 'Moderate', 'High'];
+
+      for (let i = 0; i < colors.length; i++) {
+        div.innerHTML += `<i style="background:${colors[i]}"></i> `
+        + `&ndash;${labels[i]}<br>`;
       }
       return div;
-    };  
+    };
   }
 
   // Add information control for feature properties
@@ -309,7 +360,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.info.updateInfo = (props?: any) => {
       if (!this.info._div) {
-        console.error('Info control div is not created');
+        // console.error('Info control div is not created');
         return;
       }
       this.info._div.innerHTML =
@@ -342,19 +393,59 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         color: 'white',
         dashArray: '3',
         fillOpacity: 0.7
-    }; 
-    }else {
-        return {
-          weight: (layerKey === 'roads' || layerKey === 'water_river') ? 2 : 1,
-          fillOpacity: 10,
-          color: this.layerColors[layerKey],
-          dashArray: '',
-       };
+      };
+    } else if (layerKey === 'landslide_high') {
+      var featurecolor = '#800000';
+      return {
+        fillColor: featurecolor,
+        weight: 1,
+        opacity: 1,
+        color: featurecolor,
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+    } else if (layerKey === 'landslide_moderate') {
+      var featurecolor = '#6B8E23';
+      return {
+        fillColor: featurecolor,
+        weight: 1,
+        opacity: 1,
+        color: featurecolor,
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+    } else if (layerKey === 'landslide_low') {
+      var featurecolor = '#FFFF00';
+      return {
+        fillColor: featurecolor,
+        weight: 1,
+        opacity: 1,
+        color: featurecolor,
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+
+      // const colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, 100]);
+      // return {
+      //   fillColor: colorScale(1),
+      //   weight: 1,
+      //   opacity: 1,
+      //   color: featurecolor,
+      //   dashArray: '3',
+      //   fillOpacity: 0.7
+      // };
     }
+
+    return {
+      weight: (layerKey === 'roads' || layerKey === 'water_river') ? 2 : 1,
+      fillOpacity: 10,
+      color: this.layerColors[layerKey],
+      dashArray: '',
+    };
   }
-  private onEachFeature(feature: any, layer: any, layerKey: string): 
-  void {
-    if (layerKey !== 'water_river' && layerKey !== 'water_river') {
+
+  private onEachFeature(feature: any, layer: any, layerKey: string): void {
+    if (layerKey !== 'landslide' && layerKey !== 'water_river') {
       layer.on({
         mouseover: this.highlightFeature.bind(this),
         mouseout: this.resetHighlight.bind(this),
@@ -364,10 +455,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       click: this.zoomToFeature.bind(this),
     });
   }
-  
+
   // Highlight feature on mouseover
   private highlightFeature(e: any) {
-    const layer = e.target; 
+    const layer = e.target;
     layer.setStyle({
       weight: 2,
       color: '#666',
@@ -381,13 +472,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Reset highlight when mouseout
   private resetHighlight(e: any) {
     const layer = e.target;
-    this.layers['barangay'].resetStyle(layer);   
+    this.layers['barangay'].resetStyle(layer);
     this.info.updateInfo(layer.feature.properties);
   }
 
   // Zoom to the feature on click
   private zoomToFeature(e: any) {
-    const layer = e.target; 
+    const layer = e.target;
   }
 
   // Center map when click on marker
@@ -395,11 +486,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map.setView(e.target.getLatLng(), 14);
   }
 
-
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private disasterService: DisasterService
+  ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         if (this.mainContent) {
@@ -411,6 +504,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.mainContent = document.querySelector('.main-content');
+
+    this.disasterTypeSubscription = this.disasterService.disasterType$.subscribe(
+      (disasterType) => {
+        if (disasterType) {
+          this.disasterType = disasterType;
+          this.handleDisasterTypeChange();
+        }
+      }
+    );
   }
 
   ngAfterViewInit(): void {
@@ -423,6 +525,19 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.map) {
       this.map.remove();
+    }
+
+    if (this.disasterTypeSubscription) {
+      this.disasterTypeSubscription.unsubscribe();
+    }
+  }
+
+  handleDisasterTypeChange(): void {
+    if (this.disasterType && this.map) {
+      // console.log('Updating map with type:', this.disasterType.type);
+      this.toggleLayer('landslide_low');
+      this.toggleLayer('landslide_moderate');
+      this.toggleLayer('landslide_high');
     }
   }
 }

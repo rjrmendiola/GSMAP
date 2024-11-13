@@ -65,6 +65,42 @@
       <!-- Submenu items -->
       <app-sidebar-submenu [submenu]="item"></app-sidebar-submenu>
     </li>
+    <li>
+      <div class="group relative text-muted-foreground">
+        <div
+          class="text-muted-foreground/50 pointer-events-none absolute m-2">
+          <svg-icon src="assets/icons/heroicons/outline/cube.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+        </div>
+
+        <div
+            class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+            <a
+              routerLinkActive="text-primary"
+              class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none"
+              (click)="onMenuClick('landslide')">
+              Landslide
+            </a>
+          </div>
+      </div>
+    </li>
+    <li>
+      <div class="group relative text-muted-foreground">
+        <div
+          class="text-muted-foreground/50 pointer-events-none absolute m-2">
+          <svg-icon src="assets/icons/heroicons/outline/information-circle.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+        </div>
+
+        <div
+            class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+            <a
+              routerLinkActive="text-primary"
+              class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none"
+              (click)="onMenuClick('flood')">
+              Flood
+            </a>
+          </div>
+      </div>
+    </li>
   </ul>
 
   <div class="pt-3" *ngIf="menu.separator">

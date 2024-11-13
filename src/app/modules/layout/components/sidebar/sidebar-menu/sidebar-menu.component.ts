@@ -1,10 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SubMenuItem } from 'src/app/core/models/menu.model';
 import { MenuService } from '../../../services/menu.service';
 import { SidebarSubmenuComponent } from '../sidebar-submenu/sidebar-submenu.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgFor, NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
+
+interface DisasterType {
+  type: string;
+  category?: string; // Make category optional
+}
 
 @Component({
     selector: 'app-sidebar-menu',
@@ -24,10 +29,16 @@ import { NgFor, NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
     ],
 })
 export class SidebarMenuComponent implements OnInit {
+  @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
+
   constructor(public menuService: MenuService) {}
 
   public toggleMenu(subMenu: SubMenuItem) {
     this.menuService.toggleMenu(subMenu);
+  }
+
+  public onMenuClick(type: string, category?: string) {
+    this.menuClicked.emit({ type, category });
   }
 
   ngOnInit(): void {}
