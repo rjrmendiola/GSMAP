@@ -55,7 +55,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     landslide_low: false,
     landslide_moderate: false,
     landslide_high: false,
-    flood_high: false
+    flood_high: false,
+    flood_moderate: false,
+    flood_low: false
   };
 
   // Define colors for each layer
@@ -107,6 +109,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('landslide_moderate', './assets/data/landslide/hazard_landslide_moderate.geojson');
     this.loadGeoJsonLayer('landslide_high', './assets/data/landslide/hazard_landslide_high.geojson');
     this.loadGeoJsonLayer('flood_high', './assets/data/flood/hazard_flood_high.geojson');
+    this.loadGeoJsonLayer('flood_moderate', './assets/data/flood/hazard_flood_moderate.geojson');
+    this.loadGeoJsonLayer('flood_low', './assets/data/flood/hazard_flood_low.geojson');
 
     L.control.scale({imperial: true,}).addTo(this.map);
   }
@@ -155,7 +159,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map.removeControl(this.info);
         this.legend.addTo(this.map);
       }
-    } else if (layerKey === 'flood_high') {
+    } else if (layerKey === 'flood_high' || layerKey === 'flood_low') {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
         this.map.removeControl(this.info);
@@ -321,7 +325,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         var colors: string[] = ['#FFFF00', '#6B8E23', '#800000'];
 
         if (this.disasterType.type == 'flood') {
-          var colors: string[] = ['#FFFF00', '#6B8E23', '#7B68EE'];
+          var colors: string[] = ['#78c679', '#d9f0a3', '#7B68EE'];
         }
 
         var labels: string[] = ['Low', 'Moderate', 'High'];
@@ -424,6 +428,26 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     } else if (layerKey === 'flood_high') {
       var featurecolor = '#7B68EE';
+      return {
+        fillColor: featurecolor,
+        weight: 1,
+        opacity: 1,
+        color: featurecolor,
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+    } else if (layerKey === 'flood_moderate') {
+      var featurecolor = '#d9f0a3';
+      return {
+        fillColor: featurecolor,
+        weight: 1,
+        opacity: 1,
+        color: featurecolor,
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+    } else if (layerKey === 'flood_low') {
+      var featurecolor = '#78c679';
       return {
         fillColor: featurecolor,
         weight: 1,
@@ -538,6 +562,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toggleLayer('landslide_moderate');
         this.toggleLayer('landslide_high');
       } else if (this.disasterType.type == 'flood') {
+        this.map.removeLayer(this.layers['landslide_low']);
+        this.map.removeLayer(this.layers['landslide_moderate']);
+        this.map.removeLayer(this.layers['landslide_high']);
+        this.toggleLayer('flood_low');
+        this.toggleLayer('flood_moderate');
         this.toggleLayer('flood_high');
       } else if (this.disasterType.type == 'typhoon') {
         if (this.disasterType.category == 'category5') {
