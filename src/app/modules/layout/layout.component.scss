@@ -120,21 +120,22 @@ span {
 
 /* Legend styling */
 .legend {
-  line-height: 20px; /* Increased line height for legend */
-  color: #555; /* Color for legend text */
-  padding: 10px; /* Padding for the legend */
-  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-  border-radius: 5px; /* Rounded corners */
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  line-height: 20px;
+  color: #555;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Legend icon styling */
 .legend i {
-  width: 20px; /* Increased icon size */
-  height: 20px;
-  float: left; /* Float to the left */
-  margin-right: 10px; /* Space between icon and label */
-  opacity: 0.7; /* Semi-transparency for icons */
+  border-radius: 0 25px 25px 0;
+  width: 30px;
+  height: 15px;
+  float: left;
+  margin-right: 10px;
+  opacity: 0.7;
 }
 
 /* Add hover effects for legend items */
@@ -144,17 +145,31 @@ span {
 
 /* Additional styles for the map controls */
 .leaflet-control {
-  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for controls */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  border-radius: 5px; /* Rounded corners */
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-bottom: .2em;
+  margin-left: 3px;
+  margin-right: 10px;
+}
+
+.leaflet-control-layers-overlays input,
+.leaflet-control-layers-base input {
+  margin-right: 8px;
+  background-color: green;
+}
+
+.leaflet-control-layers-overlays label,
+.leaflet-control-layers-base label {
+  padding-left: 3px;
 }
 
 .leaflet-control-fullscreen {
-  position: sticky;
-  right: -10px; /* Align the button to the right */
-  top: -50%; /* Vertically center it */
-  // transform: translateY(550%); /* Adjust for centering */
-  z-index: 1000; /* Ensure it appears on top of other elements */
+//position: sticky;
+  right: -2px;
+  top: 50px;
+  transform: translateY(550%);
+  z-index: 1000;
 }
 .customPopup {
   max-width: 220px; /* Adjust as needed */
@@ -166,6 +181,7 @@ span {
       width: 100%;
       height: auto;
       border-radius: 5px;
+      display: block;
     }
     figcaption {
       text-align: center;
@@ -182,23 +198,21 @@ span {
   }
 }
 
-.marker-icon-jump {
-  position: relative;
-  animation: jumpMarker 0.5s infinite alternate;
-  background: none;
-  box-shadow: none;
-  border: none;
+.pulse {
+  display: block;
+  border-radius: 100%;
+  cursor: pointer;
+  animation: pulse 2s infinite;
 }
 
-@keyframes jump {
-  from {
-    transform: translate3d(var(--position-x), var(--position-y), 0);
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0;
   }
-  to {
-    transform: translate3d(
-      var(--position-x),
-      calc(var(--position-y) - 10px),
-      0
-    );
+  70% {
+      box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+  100% {
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
 }

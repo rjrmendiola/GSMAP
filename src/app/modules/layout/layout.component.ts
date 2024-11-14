@@ -762,19 +762,30 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.toggleLayer('landslide_high');
+          this.map.removeLayer(this.layers['flood_low']);
+          this.map.removeLayer(this.layers['flood_moderate']);
           this.toggleLayer('flood_high');
         } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_high']);
           this.toggleLayer('landslide_moderate');
+          this.map.removeLayer(this.layers['flood_low']);
+          this.map.removeLayer(this.layers['flood_high']);
+          this.toggleLayer('flood_moderate');
         } else if (this.disasterType.category == 'category2') {
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.map.removeLayer(this.layers['landslide_high']);
           this.toggleLayer('landslide_low');
+          this.map.removeLayer(this.layers['flood_moderate']);
+          this.map.removeLayer(this.layers['flood_high']);
+          this.toggleLayer('flood_low');
         } else {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.map.removeLayer(this.layers['landslide_high']);
+          this.map.removeLayer(this.layers['flood_low']);
+          this.map.removeLayer(this.layers['flood_moderate']);
+          this.map.removeLayer(this.layers['flood_high']);
         }
       }
     }
