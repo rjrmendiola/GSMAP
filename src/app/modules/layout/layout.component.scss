@@ -165,11 +165,11 @@ span {
 }
 
 .leaflet-control-fullscreen {
-//position: sticky;
-  right: -2px;
-  top: 50px;
-  transform: translateY(550%);
-  z-index: 1000;
+  position: sticky;
+  right: -10px; /* Align the button to the right */
+  top: -50%; /* Vertically center it */
+  // transform: translateY(550%); /* Adjust for centering */
+  z-index: 1000; /* Ensure it appears on top of other elements */
 }
 .customPopup {
   max-width: 220px; /* Adjust as needed */
