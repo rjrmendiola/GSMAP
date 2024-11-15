@@ -30,6 +30,7 @@ interface DisasterType {
 })
 export class SidebarMenuComponent implements OnInit {
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
+  isDropdownOpen: boolean = false;
 
   constructor(public menuService: MenuService) {}
 
@@ -39,6 +40,9 @@ export class SidebarMenuComponent implements OnInit {
 
   public onMenuClick(type: string, category?: string) {
     this.menuClicked.emit({ type, category });
+  }
+
+  public toggleLayer(layerKey: string): void {
   }
 
   ngOnInit(): void {}
