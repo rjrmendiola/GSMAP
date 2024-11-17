@@ -143,23 +143,30 @@
       </div>
     </li> -->
     <li>
-      <div class="group relative text-muted-foreground">
+      <div class="group relative text-muted-foreground" (click)="toggleHazardMenu('flood-categories')">
         <div
           class="text-muted-foreground/50 pointer-events-none absolute m-2">
           <svg-icon src="assets/icons/heroicons/outline/information-circle.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
         </div>
 
         <div
-            class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+          class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+          <!-- <a
+            routerLinkActive="text-primary"
+            class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none"
+            (click)="onMenuClick('flood')"> -->
             <a
-              routerLinkActive="text-primary"
-              class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none"
-              (click)="onMenuClick('flood')">
-              Flood
-            </a>
-          </div>
+            class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none">
+            Flood
+          </a>
+        </div>
+        <button
+          [ngClass]="{ hidden: !menuService.showSideBar, 'rotate-90': isFloodCategoriesVisible }"
+          class="pointer-events-none absolute top-1 right-0 flex items-center p-1 text-muted-foreground/50 transition-all duration-500">
+          <svg-icon src="assets/icons/heroicons/solid/chevron-right.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+        </button>
       </div>
-      <div class="group relative text-muted-foreground">
+      <div class="group relative text-muted-foreground transition-all duration-500" [ngClass]="{ hidden: !isFloodCategoriesVisible }" id="flood-categories">
         <div
             class="flex flex-1 h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
             <a
@@ -230,23 +237,26 @@
       </div>
     </li>
     <li>
-      <div class="group relative text-muted-foreground">
+      <div class="group relative text-muted-foreground" (click)="toggleHazardMenu('landslide-categories')">
         <div
           class="text-muted-foreground/50 pointer-events-none absolute m-2">
           <svg-icon src="assets/icons/heroicons/outline/cube.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
         </div>
-
         <div
-            class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
-            <a
-              routerLinkActive="text-primary"
-              class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none"
-              (click)="onMenuClick('landslide')">
-              Landslide
-            </a>
-          </div>
+          class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+          <a
+            routerLinkActive="text-primary"
+            class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none">
+            Landslide
+          </a>
+        </div>
+        <button
+          [ngClass]="{ hidden: !menuService.showSideBar, 'rotate-90': isLandslideCategoriesVisible }"
+          class="pointer-events-none absolute top-1 right-0 flex items-center p-1 text-muted-foreground/50 transition-all duration-500">
+          <svg-icon src="assets/icons/heroicons/solid/chevron-right.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+        </button>
       </div>
-      <div class="group relative text-muted-foreground">
+      <div class="group relative text-muted-foreground" [ngClass]="{ hidden: !isLandslideCategoriesVisible }" id="landslide-categories">
         <div
             class="flex flex-1 h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
             <a
@@ -303,6 +313,11 @@
       </div>
     </li>
   </ul>
+
+  <!-- Separator -->
+  <div class="pt-3">
+    <hr class="border-dashed border-muted" />
+  </div>
 
   <div class="mx-1 mt-2 mb-2 flex items-center justify-between">
     <small class="text-xs font-semibold text-muted-foreground/50">
@@ -368,7 +383,7 @@
         </div>
       </li>
     </ul>
-
+  <!-- </div> -->
   <div class="pt-3" *ngIf="menu.separator">
     <hr class="border-dashed border-border" />
   </div>

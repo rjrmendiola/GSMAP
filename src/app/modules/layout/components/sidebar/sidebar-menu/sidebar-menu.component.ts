@@ -31,6 +31,8 @@ interface DisasterType {
 export class SidebarMenuComponent implements OnInit {
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
   isDropdownOpen: boolean = false;
+  isFloodCategoriesVisible: boolean = false;
+  isLandslideCategoriesVisible: boolean = false;
 
   constructor(public menuService: MenuService) {}
 
@@ -43,6 +45,14 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   public toggleLayer(layerKey: string): void {
+  }
+
+  public toggleHazardMenu(categoryId: string) {
+    if (categoryId === 'flood-categories') {
+      this.isFloodCategoriesVisible = !this.isFloodCategoriesVisible;
+    } else if (categoryId === 'landslide-categories') {
+      this.isLandslideCategoriesVisible = !this.isLandslideCategoriesVisible;
+    }
   }
 
   ngOnInit(): void {}
