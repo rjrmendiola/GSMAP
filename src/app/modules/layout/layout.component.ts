@@ -81,7 +81,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     buildings: false,
     landcover: false,
     roads: false,
-    forest: false,
+    forest: true,
     landslide_low: false,
     landslide_moderate: false,
     landslide_high: false,
@@ -98,6 +98,76 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     roads: '#000000',
     forest: '#4B5320',
   };
+
+  private defaultIcon = L.icon({
+    iconUrl: 'assets/images/marker-icon.png', // Replace with the path to your custom icon
+    iconSize: [25, 41], // Default size
+    iconAnchor: [12, 41], // Point of the icon that corresponds to the marker's location
+    popupAnchor: [1, -34],
+    shadowUrl: 'assets/images/marker-shadow.png', // Optional shadow
+    shadowSize: [41, 41],
+  });
+
+  private evacuationLocations = [
+    { name: 'tigbao', coords:[11.2375868, 124.7133698] },
+    { name: 'piloro', coords:[11.236402318756134, 124.72036848648168] },
+    { name: 'camansi', coords:[11.21849108135362, 124.71573441769323] },
+    { name: 'tinaguban', coords:[11.2331392, 124.7056969] },
+    { name: 'jugaban', coords:[11.2991697, 124.6943891] },
+    { name: 'san_mateo', coords:[11.2691869, 124.7259261] },
+    { name: 'guindapunan_west', coords:[11.301429126326795, 124.69863695804366] },
+    { name: 'guindapunan_east', coords:[11.302470879288492, 124.70122314248277] },
+    { name: 'barugohay_norte1', coords:[11.3033755,124.7075573] },
+    { name: 'barugohay_norte2', coords:[11.3032152,124.7066521] },
+    { name: 'parena', coords:[11.298482428935586, 124.71232105275067] },
+    { name: 'sawang', coords:[11.2992552, 124.6869251] },
+    { name: 'baybay', coords:[11.3001395,124.6866239] },
+    { name: 'ponong1', coords:[11.297020125112155, 124.68252689499673] },
+    { name: 'ponong2', coords:[11.2978262, 124.6824307] },
+    { name: 'ponong3', coords:[11.3006686, 124.6863469] },
+    { name: 'ponong4', coords:[11.30026, 124.6851016] },
+    { name: 'ponong5', coords:[11.3012958, 124.6868381] },
+    { name: 'west_visoria2', coords:[11.30218474574454, 124.68133417635846] },
+    { name: 'west_visoria3', coords:[11.30218474574454, 124.68133417635846] },
+    { name: 'east_visoria', coords:[11.2989631, 124.6786982] },
+    { name: 'tangnan', coords:[11.297766, 124.6702727] },
+    { name: 'nauguisan', coords:[11.294851119638508, 124.6622293581704] },
+    { name: 'san_juan', coords:[11.289751866680746, 124.66142138289877] },
+    { name: 'manloy', coords:[11.274892635379118, 124.65437594384838] },
+    { name: 'caghalo', coords:[11.260928247291645, 124.66692030297861] },
+    { name: 'upper_hiraan1', coords:[11.2648, 124.6759] },
+    { name: 'upper_hiraan2', coords:[11.265246762928768, 124.67697129266298] },
+    { name: 'lower_hiraan', coords:[11.2795, 124.6786] },
+    { name: 'libo', coords:[11.266721745379868, 124.68083971796977] },
+    { name: 'canlampay1', coords:[11.265940493645303, 124.68529656173274] },
+    { name: 'canlampay2', coords:[11.263751626499598, 124.68557038762572] },
+    { name: 'hiluctugan', coords:[11.2473838, 124.6878364] },
+    { name: 'bislig1', coords:[11.292457563772857, 124.6772379129253] },
+    { name: 'bislig2', coords:[11.293430779370212, 124.67548820806826] },
+    { name: 'canal', coords:[11.2878292, 124.6825409] },
+    { name: 'uyawan', coords:[11.282287385990031, 124.68409130036338] },
+    { name: 'barayong', coords:[	11.2682, 124.6722] },
+    { name: 'lower_sogod', coords:[11.2590973, 124.6900857] },
+    { name: 'upper_sogod', coords:[11.2536, 124.6931] },
+    { name: 'candigahub', coords:[11.2504379, 124.7001859] },
+    { name: 'cutay', coords:[11.2650511, 124.6986922] },
+    { name: 'pangna', coords:[	11.2798, 124.7101] },
+    { name: 'baruguhay_sur', coords:[11.2709821,124.7004102] },
+    { name: 'bagong_lipunan', coords:[11.2843, 124.6987] },
+    { name: 'balilit', coords:[11.28736949670612, 124.69583232220117] },
+    { name: 'barugohay_central', coords:[11.2960, 124.6986] },
+    { name: 'tagak', coords:[11.2872453, 124.7160603] },
+    { name: 'rizal', coords:[11.286840266447967, 124.7166593458391] },
+    { name: 'sagkahan', coords:[11.2811415, 124.7225726] },
+    { name: 'canfabi', coords:[11.2662922, 124.7085475] },
+    { name: 'santa_fe', coords:[11.2568516, 124.7150913] },
+    { name: 'parag_um', coords:[11.257343004963658, 124.72799419450331] },
+    { name: 'cogon', coords:[11.2577, 124.7365] },
+    { name: 'binibihan', coords:[11.233367805199322, 124.73453629750668] },
+    { name: 'macalpi', coords:[11.2132913924805, 124.73425541862093] },
+    { name: 'paglaum', coords:[11.2045, 124.7188] },
+    { name: 'san_isidro', coords:[11.204579867259937, 124.70810276172983] },
+  ];
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -131,7 +201,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('barangay', './assets/data/carigara/barangay.geojson');
     this.loadGeoJsonLayer('water_river', './assets/data/water_river.geojson');
     this.loadGeoJsonLayer('buildings', './assets/data/buildings.geojson');
-    this.loadGeoJsonLayer('landcover', './assets/data/landcovermap.geojson');
+    this.loadGeoJsonLayer('landcover', './assets/data/landcover.geojson');
     this.loadGeoJsonLayer('roads', './assets/data/roads.geojson');
     this.loadGeoJsonLayer('forest', './assets/data/forest.geojson');
     this.loadGeoJsonLayer('landslide', './assets/data/hazard_landslide.geojson');
@@ -143,6 +213,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('flood_low', './assets/data/flood/hazard_flood_low.geojson');
 
     L.control.scale({imperial: true,}).addTo(this.map);
+
+    // Add double-click event listener
+    this.map.on('dblclick', (event: L.LeafletMouseEvent) => this.onMapDoubleClick(event));
   }
 
   private fetchGeoJson(url: string): Promise<any> {
@@ -181,7 +254,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Method to toggle layer visibility based on checkbox state
   public toggleLayer(layerKey: string): void {
     const layer = this.layers[layerKey];
+    console.log(layerKey);
+    console.log(layer);
     this.layerVisibility[layerKey] = !this.layerVisibility[layerKey];
+    console.log(this.layerVisibility[layerKey]);
 
     if (layerKey === 'landslide_high' || layerKey === 'landslide_moderate' || layerKey === 'landslide_low') {
       if (!this.map.hasLayer(layer)) {
@@ -191,10 +267,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.details.addTo(this.map);
         this.legend.addTo(this.map);
       }
-    } else if (layerKey === 'flood_high' || layerKey === 'flood_low') {
+    } else if (layerKey === 'flood_high' || layerKey === 'flood_moderate' || layerKey === 'flood_low') {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
         this.map.removeControl(this.info);
+        this.details.addTo(this.map);
         this.legend.addTo(this.map);
       }
     } else {
@@ -202,10 +279,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map.removeLayer(layer);
         this.map.removeControl(this.legend);
         this.map.removeControl(this.info);
-
       } else {
         this.map.addLayer(layer);
-        this.legend.addTo(this.map);
+        // this.legend.addTo(this.map);
         this.info.addTo(this.map);
       }
     }
@@ -502,7 +578,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
                                           bagong_lipunan_PunongBarangay, balilit_PunongBarangay, barugohay_central_PunongBarangay, tagak_PunongBarangay, rizal_PunongBarangay, sagkahan_PunongBarangay, canfabi_PunongBarangay,
                                           santa_fe_PunongBarangay, parag_um_PunongBarangay, cogon_PunongBarangay, binibihan_PunongBarangay, macalpi_PunongBarangay, paglaum_PunongBarangay, sanIsidro_PunongBarangay]);
 
-    groupedEvacCenter.addTo(this.map);
+    // groupedEvacCenter.addTo(this.map);
 
     const baseMaps = {'None': mapRemover,
                       "OpenStreetMap" : tiles,
@@ -631,8 +707,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Style features rendered to map
   private style(feature: any, layerKey: string) {
     if (layerKey === 'barangay'){
+      var featurecolor = '#3F9B0B';
       return {
-        fillColor: this.getColor(feature.properties.population),
+        // fillColor: this.getColor(feature.properties.population),
+        fillColor: featurecolor,
         weight: 1.5,
         opacity: 1,
         color: 'white',
@@ -763,6 +841,53 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map.setView(e.target.getLatLng(), 14);
   }
 
+  private onMapDoubleClick(event: L.LeafletMouseEvent): void {
+    if (this.currentMarker) {
+      // Remove the existing marker if present
+      this.map?.removeLayer(this.currentMarker);
+    }
+
+    // Add a new marker at the clicked location
+    this.currentMarker = L.marker([event.latlng.lat, event.latlng.lng], {
+      icon: this.defaultIcon,
+    })
+      .addTo(this.map)
+      .bindPopup(`Coordinates: ${event.latlng.lat}, ${event.latlng.lng}`)
+      .openPopup();
+  }
+
+  private findNearestLocations(latlng: any, count: number) {
+    const distances = this.evacuationLocations.map(location => {
+      const distance = this.calculateDistance(latlng.lat, latlng.lng, location.coords[0], location.coords[1]);
+      return { location, distance };
+
+    });
+
+    // Sort by distance and get the top N
+    distances.sort((a, b) => a.distance - b.distance);
+
+    return distances.slice(0, count).map(d => d.location);
+  }
+
+  private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371; // Radius of the Earth in km
+
+    const dLat = this.degreesToRadians(lat2 - lat1);
+    const dLon = this.degreesToRadians(lon2 - lon1);
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.degreesToRadians(lat1)) * Math.cos(this.degreesToRadians(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
+  }
+
+  private degreesToRadians(degrees: number): number {
+    return degrees * (Math.PI / 180);
+  }
+
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
@@ -837,6 +962,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.details.updateDetails(this.hazardRiskDetails.landslide.low);
         }
       } else if (this.disasterType.type == 'flood') {
+        console.log('flood');
         this.map.removeLayer(this.layers['landslide_low']);
         this.map.removeLayer(this.layers['landslide_moderate']);
         this.map.removeLayer(this.layers['landslide_high']);
@@ -849,27 +975,27 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       } else if (this.disasterType.type == 'typhoon') {
         if (this.disasterType.category == 'category5') {
-          this.map.removeLayer(this.layers['landslide_low']);
-          this.map.removeLayer(this.layers['landslide_moderate']);
-          this.toggleLayer('landslide_high');
+          // this.map.removeLayer(this.layers['landslide_low']);
+          // this.map.removeLayer(this.layers['landslide_moderate']);
+          // this.toggleLayer('landslide_high');
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_moderate']);
           this.toggleLayer('flood_high');
           this.details.updateDetails(this.hazardRiskDetails.flood.high);
 
         } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
-          this.map.removeLayer(this.layers['landslide_low']);
-          this.map.removeLayer(this.layers['landslide_high']);
-          this.toggleLayer('landslide_moderate');
+          // this.map.removeLayer(this.layers['landslide_low']);
+          // this.map.removeLayer(this.layers['landslide_high']);
+          // this.toggleLayer('landslide_moderate');
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_moderate');
           this.details.updateDetails(this.hazardRiskDetails.flood.moderate);
 
         } else if (this.disasterType.category == 'category2') {
-          this.map.removeLayer(this.layers['landslide_moderate']);
-          this.map.removeLayer(this.layers['landslide_high']);
-          this.toggleLayer('landslide_low');
+          // this.map.removeLayer(this.layers['landslide_moderate']);
+          // this.map.removeLayer(this.layers['landslide_high']);
+          // this.toggleLayer('landslide_low');
           this.map.removeLayer(this.layers['flood_moderate']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_low');
