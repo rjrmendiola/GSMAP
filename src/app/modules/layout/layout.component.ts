@@ -852,7 +852,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       icon: this.defaultIcon,
     })
       .addTo(this.map)
-      .bindPopup(`Coordinates: ${event.latlng.lat}, ${event.latlng.lng}`)
+      // .bindPopup(`Coordinates: ${event.latlng.lat}, ${event.latlng.lng}`)
       .openPopup();
   }
 
