@@ -108,65 +108,68 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     shadowSize: [41, 41],
   });
 
+  // Store references to nearest markers
+  nearestEvacuationMarkers: L.Marker[] = [];
+
   private evacuationLocations = [
-    { name: 'tigbao', coords:[11.2375868, 124.7133698] },
-    { name: 'piloro', coords:[11.236402318756134, 124.72036848648168] },
-    { name: 'camansi', coords:[11.21849108135362, 124.71573441769323] },
-    { name: 'tinaguban', coords:[11.2331392, 124.7056969] },
-    { name: 'jugaban', coords:[11.2991697, 124.6943891] },
-    { name: 'san_mateo', coords:[11.2691869, 124.7259261] },
-    { name: 'guindapunan_west', coords:[11.301429126326795, 124.69863695804366] },
-    { name: 'guindapunan_east', coords:[11.302470879288492, 124.70122314248277] },
-    { name: 'barugohay_norte1', coords:[11.3033755,124.7075573] },
-    { name: 'barugohay_norte2', coords:[11.3032152,124.7066521] },
-    { name: 'parena', coords:[11.298482428935586, 124.71232105275067] },
-    { name: 'sawang', coords:[11.2992552, 124.6869251] },
-    { name: 'baybay', coords:[11.3001395,124.6866239] },
-    { name: 'ponong1', coords:[11.297020125112155, 124.68252689499673] },
-    { name: 'ponong2', coords:[11.2978262, 124.6824307] },
-    { name: 'ponong3', coords:[11.3006686, 124.6863469] },
-    { name: 'ponong4', coords:[11.30026, 124.6851016] },
-    { name: 'ponong5', coords:[11.3012958, 124.6868381] },
-    { name: 'west_visoria2', coords:[11.30218474574454, 124.68133417635846] },
-    { name: 'west_visoria3', coords:[11.30218474574454, 124.68133417635846] },
-    { name: 'east_visoria', coords:[11.2989631, 124.6786982] },
-    { name: 'tangnan', coords:[11.297766, 124.6702727] },
-    { name: 'nauguisan', coords:[11.294851119638508, 124.6622293581704] },
-    { name: 'san_juan', coords:[11.289751866680746, 124.66142138289877] },
-    { name: 'manloy', coords:[11.274892635379118, 124.65437594384838] },
-    { name: 'caghalo', coords:[11.260928247291645, 124.66692030297861] },
-    { name: 'upper_hiraan1', coords:[11.2648, 124.6759] },
-    { name: 'upper_hiraan2', coords:[11.265246762928768, 124.67697129266298] },
-    { name: 'lower_hiraan', coords:[11.2795, 124.6786] },
-    { name: 'libo', coords:[11.266721745379868, 124.68083971796977] },
-    { name: 'canlampay1', coords:[11.265940493645303, 124.68529656173274] },
-    { name: 'canlampay2', coords:[11.263751626499598, 124.68557038762572] },
-    { name: 'hiluctugan', coords:[11.2473838, 124.6878364] },
-    { name: 'bislig1', coords:[11.292457563772857, 124.6772379129253] },
-    { name: 'bislig2', coords:[11.293430779370212, 124.67548820806826] },
-    { name: 'canal', coords:[11.2878292, 124.6825409] },
-    { name: 'uyawan', coords:[11.282287385990031, 124.68409130036338] },
-    { name: 'barayong', coords:[	11.2682, 124.6722] },
-    { name: 'lower_sogod', coords:[11.2590973, 124.6900857] },
-    { name: 'upper_sogod', coords:[11.2536, 124.6931] },
-    { name: 'candigahub', coords:[11.2504379, 124.7001859] },
-    { name: 'cutay', coords:[11.2650511, 124.6986922] },
-    { name: 'pangna', coords:[	11.2798, 124.7101] },
-    { name: 'baruguhay_sur', coords:[11.2709821,124.7004102] },
-    { name: 'bagong_lipunan', coords:[11.2843, 124.6987] },
-    { name: 'balilit', coords:[11.28736949670612, 124.69583232220117] },
-    { name: 'barugohay_central', coords:[11.2960, 124.6986] },
-    { name: 'tagak', coords:[11.2872453, 124.7160603] },
-    { name: 'rizal', coords:[11.286840266447967, 124.7166593458391] },
-    { name: 'sagkahan', coords:[11.2811415, 124.7225726] },
-    { name: 'canfabi', coords:[11.2662922, 124.7085475] },
-    { name: 'santa_fe', coords:[11.2568516, 124.7150913] },
-    { name: 'parag_um', coords:[11.257343004963658, 124.72799419450331] },
-    { name: 'cogon', coords:[11.2577, 124.7365] },
-    { name: 'binibihan', coords:[11.233367805199322, 124.73453629750668] },
-    { name: 'macalpi', coords:[11.2132913924805, 124.73425541862093] },
-    { name: 'paglaum', coords:[11.2045, 124.7188] },
-    { name: 'san_isidro', coords:[11.204579867259937, 124.70810276172983] },
+    { name: 'tigbao', coords:[11.2375868, 124.7133698], venue: 'Tigbao Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'piloro', coords:[11.236402318756134, 124.72036848648168], venue: 'Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'camansi', coords:[11.21849108135362, 124.71573441769323], venue: 'Camansi Elementary School', image: './assets/images/camansiES.jpg' },
+    { name: 'tinaguban', coords:[11.2331392, 124.7056969], venue: 'Tinaguban Elementary School', image: './assets/images/tinagubanES.jpg' },
+    { name: 'jugaban', coords:[11.2991697, 124.6943891], venue: 'JugabanPopup - Jugaban National High School', image: './assets/images/jugabanNHS.jpg' },
+    { name: 'san_mateo', coords:[11.2691869, 124.7259261], venue: 'Evacuation Center 1 (Baybay)', image: './assets/images/carigaraEC.jpg'  },
+    { name: 'guindapunan_west', coords:[11.301429126326795, 124.69863695804366], venue: 'West Guindapunan Chapell', image: './assets/images/Car.jpg'  },
+    { name: 'guindapunan_east', coords:[11.302470879288492, 124.70122314248277], venue: 'Guindapunan Elementary School', image: './assets/images/guindapunanES.jpg'  },
+    { name: 'barugohay_norte1', coords:[11.3033755,124.7075573], venue: 'Carigara National Professional School', image: './assets/images/cnvs.jpg'  },
+    { name: 'barugohay_norte2', coords:[11.3032152,124.7066521], venue: 'Eastern Visayas State University', image: './assets/images/evsucc.jpg'  },
+    { name: 'parena', coords:[11.298482428935586, 124.71232105275067], venue: 'Parena Barangay Hall', image: './assets/images/Car.jpg'  },
+    { name: 'sawang', coords:[11.2992552, 124.6869251], venue: 'Sawang Catholic Chapel', image: './assets/images/sawangchapel.jpg' },
+    { name: 'baybay', coords:[11.3001395,124.6866239], venue: 'Cong. Alberto T. Acuja Memorial Central School', image: './assets/images/ptaES.jpg' },
+    { name: 'ponong1', coords:[11.297020125112155, 124.68252689499673], venue: 'Ponong Elementary School', image: './assets/images/ponongES.jpg' },
+    { name: 'ponong2', coords:[11.2978262, 124.6824307], venue: 'Carigara National High School', image: './assets/images/carigaraNHS.jpg' },
+    { name: 'ponong3', coords:[11.3006686, 124.6863469], venue: 'Carigara Parish Church', image: './assets/images/carigarachurch.jpg' },
+    { name: 'ponong4', coords:[11.30026, 124.6851016], venue: 'Holy Cross College of Carigara', image: './assets/images/hccci.jpg' },
+    { name: 'ponong5', coords:[11.3012958, 124.6868381], venue: 'Cassidy Elementary School', image: './assets/images/cassidyES.jpg' },
+    { name: 'west_visoria2', coords:[11.30218474574454, 124.68133417635846], venue: 'Seventh Day Adventist Church', image: './assets/images/seventhadventist.jpg' },
+    { name: 'west_visoria3', coords:[11.30218474574454, 124.68133417635846], venue: 'United Christian Church of the Philippines', image: './assets/images/unitedchurch.jpg' },
+    { name: 'east_visoria', coords:[11.2989631, 124.6786982], venue: 'New Life Christian Church', image: './assets/images/newlifecarigara.jpg' },
+    { name: 'tangnan', coords:[11.297766, 124.6702727], venue: 'Tangnan Barangay Hall', image: './assets/images/tangnanBH.jpg' },
+    { name: 'nauguisan', coords:[11.294851119638508, 124.6622293581704], venue: 'Nauguisan Elementary School', image: './assets/images/nauguisanES.jpg' },
+    { name: 'san_juan', coords:[11.289751866680746, 124.66142138289877], venue: 'San Juan Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'manloy', coords:[11.274892635379118, 124.65437594384838], venue: 'Manloy Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'caghalo', coords:[11.260928247291645, 124.66692030297861], venue: 'Caghalo Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'upper_hiraan1', coords:[11.2648, 124.6759], venue: 'Upper Hiraan Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'upper_hiraan2', coords:[11.265246762928768, 124.67697129266298], venue: 'Hiraan Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'lower_hiraan', coords:[11.2795, 124.6786], venue: 'Lower Hiraan Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'libo', coords:[11.266721745379868, 124.68083971796977], venue: 'Libo Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'canlampay1', coords:[11.265940493645303, 124.68529656173274], venue: 'Canlampay Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'canlampay2', coords:[11.263751626499598, 124.68557038762572], venue: 'Canlampay Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'hiluctugan', coords:[11.2473838, 124.6878364], venue: 'Hiluctugan Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'bislig1', coords:[11.292457563772857, 124.6772379129253], venue: 'Bislig Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'bislig2', coords:[11.293430779370212, 124.67548820806826], venue: 'Bislig Evacuation Center', image: './assets/images/Car.jpg' },
+    { name: 'canal', coords:[11.2878292, 124.6825409], venue: 'Canal Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'uyawan', coords:[11.282287385990031, 124.68409130036338], venue: 'Uyawan Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'barayong', coords:[	11.2682, 124.6722], venue: 'Barayong Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'lower_sogod', coords:[11.2590973, 124.6900857], venue: 'Lower Sogod Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'upper_sogod', coords:[11.2536, 124.6931], venue: 'Upper Sogod Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'candigahub', coords:[11.2504379, 124.7001859], venue: 'Candigahub Elementary School', image: './assets/images/candigahubES.jpg' },
+    { name: 'cutay', coords:[11.2650511, 124.6986922], venue: 'Cutay Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'pangna', coords:[	11.2798, 124.7101], venue: 'Pangna Elementary School', image: './assets/images/pangnaES.jpg' },
+    { name: 'baruguhay_sur', coords:[11.2709821,124.7004102], venue: 'Barugohay Sur Elementary School', image: './assets/images/barsurES.jpg' },
+    { name: 'bagong_lipunan', coords:[11.2843, 124.6987], venue: 'Bagong Lipunan Barangay Hall', image: './assets/images/bagonglipunanBH.jpg' },
+    { name: 'balilit', coords:[11.28736949670612, 124.69583232220117], venue: 'Balilit Elementary School', image: './assets/images/balilitES.jpg' },
+    { name: 'barugohay_central', coords:[11.2960, 124.6986], venue: 'Barugohay Central Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'tagak', coords:[11.2872453, 124.7160603], venue: 'Tagak Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'rizal', coords:[11.286840266447967, 124.7166593458391], venue: 'Rizal Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'sagkahan', coords:[11.2811415, 124.7225726], venue: 'Ecoville', image: './assets/images/Car.jpg' },
+    { name: 'canfabi', coords:[11.2662922, 124.7085475], venue: 'Canfabi Elementary School', image: './assets/images/canfabiES.jpg' },
+    { name: 'santa_fe', coords:[11.2568516, 124.7150913], venue: 'Sta. Fe Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'parag_um', coords:[11.257343004963658, 124.72799419450331], venue: 'Parag-um Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'cogon', coords:[11.2577, 124.7365], venue: 'Cogon Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'binibihan', coords:[11.233367805199322, 124.73453629750668], venue: 'Binibihan Elem. School', image: './assets/images/Car.jpg' },
+    { name: 'macalpi', coords:[11.2132913924805, 124.73425541862093], venue: 'Macalpi Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'paglaum', coords:[11.2045, 124.7188], venue: 'Paglaum Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'san_isidro', coords:[11.204579867259937, 124.70810276172983], venue: 'San Isidro Barangay Hall', image: './assets/images/Car.jpg' },
   ];
 
   private initMap(): void {
@@ -254,10 +257,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Method to toggle layer visibility based on checkbox state
   public toggleLayer(layerKey: string): void {
     const layer = this.layers[layerKey];
-    console.log(layerKey);
-    console.log(layer);
     this.layerVisibility[layerKey] = !this.layerVisibility[layerKey];
-    console.log(this.layerVisibility[layerKey]);
 
     if (layerKey === 'landslide_high' || layerKey === 'landslide_moderate' || layerKey === 'landslide_low') {
       if (!this.map.hasLayer(layer)) {
@@ -842,6 +842,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onMapDoubleClick(event: L.LeafletMouseEvent): void {
+    // Clear previous nearest markers from the map
+    this.clearNearestEvacuationMarkers();
+
     if (this.currentMarker) {
       // Remove the existing marker if present
       this.map?.removeLayer(this.currentMarker);
@@ -853,20 +856,53 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     })
       .addTo(this.map)
       // .bindPopup(`Coordinates: ${event.latlng.lat}, ${event.latlng.lng}`)
-      .openPopup();
+      // .openPopup()
+      ;
+
+    // Find the nearest locations
+    const nearestLocations = this.findNearestLocations(event.latlng, 5);
+    nearestLocations.forEach(({ location, distance}) => {
+      const coords: [number, number] = [location.coords[0], location.coords[1]];
+      const pulseIcon = this.makePulseIcon(10, 'green', './assets/images/guard.png');
+      // const nearestMarker = L.marker(coords, { icon: pulseIcon }).addTo(this.map).bindPopup(location.name).openPopup();
+      const nearestMarker = L.marker(coords, { icon: pulseIcon }).addTo(this.map);
+
+      // Create the custom popup HTML content
+      const popupContent = `
+          <div class="customPopup">
+              <figure>
+                  <img src="./assets/images/Car.jpg" alt="Car">
+                  <figcaption>Barangay Evacuation Center</figcaption>
+              </figure>
+              <div>${location.venue}</div>
+              <div>Distance: ${distance.toFixed(2)} km</div>
+          </div>
+      `;
+
+      // Bind the custom popup to the marker
+      nearestMarker.bindPopup(popupContent).openPopup();
+      this.nearestEvacuationMarkers.push(nearestMarker); // Store reference to the marker
+    });
+  }
+
+  private clearNearestEvacuationMarkers() {
+    // Remove all nearest markers from the map
+    this.nearestEvacuationMarkers.forEach(marker => {
+      this.map.removeLayer(marker);
+    });
+    this.nearestEvacuationMarkers = []; // Clear the array
   }
 
   private findNearestLocations(latlng: any, count: number) {
     const distances = this.evacuationLocations.map(location => {
       const distance = this.calculateDistance(latlng.lat, latlng.lng, location.coords[0], location.coords[1]);
       return { location, distance };
-
     });
 
     // Sort by distance and get the top N
     distances.sort((a, b) => a.distance - b.distance);
-
-    return distances.slice(0, count).map(d => d.location);
+    // return distances.slice(0, count).map(d => d.location);
+    return distances.slice(0, count);
   }
 
   private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -886,6 +922,24 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private degreesToRadians(degrees: number): number {
     return degrees * (Math.PI / 180);
+  }
+
+  private makePulseIcon(radius: Number, color: string, imageUrl: string) {
+    const cssStyle = `
+      width: ${radius}px;
+      height: ${radius}px;
+      background: ${color};
+      color: ${color};
+      box-shadow: 0 0 0 ${color};
+    `
+
+    return L.divIcon({
+      html: `<div class="pulse">
+          <img src="${imageUrl}" style="width: 25px; height: 41px; position: absolute; top: 0; left: 0;"/>
+          <span style="${cssStyle}" class="pulse"/></span>
+          </div>`,
+      className: ''
+    })
   }
 
   @ViewChild('map')
