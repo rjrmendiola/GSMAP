@@ -87,7 +87,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     landslide_high: false,
     flood_high: false,
     flood_moderate: false,
-    flood_low: true
+    flood_low: false
   };
 
   // Define colors for each layer
@@ -809,6 +809,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleDisasterTypeChange(): void {
+    console.log(this.disasterType);
     if (this.disasterType && this.map) {
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
@@ -879,6 +880,20 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_moderate']);
           this.map.removeLayer(this.layers['flood_high']);
+        }
+      } else if (this.disasterType.type == 'layer') {
+        if (this.disasterType.category == 'barangay') {
+          this.toggleLayer('barangay');
+        } else if (this.disasterType.category == 'water') {
+          this.toggleLayer('water_river');
+        } else if (this.disasterType.category == 'building') {
+          this.toggleLayer('buildings');
+        } else if (this.disasterType.category == 'landcover') {
+          this.toggleLayer('landcover');
+        } else if (this.disasterType.category == 'road') {
+          this.toggleLayer('roads');
+        } else if (this.disasterType.category == 'forest') {
+          this.toggleLayer('forest');
         }
       }
     }
