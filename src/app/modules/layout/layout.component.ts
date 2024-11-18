@@ -502,6 +502,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
                                           bagong_lipunan_PunongBarangay, balilit_PunongBarangay, barugohay_central_PunongBarangay, tagak_PunongBarangay, rizal_PunongBarangay, sagkahan_PunongBarangay, canfabi_PunongBarangay,
                                           santa_fe_PunongBarangay, parag_um_PunongBarangay, cogon_PunongBarangay, binibihan_PunongBarangay, macalpi_PunongBarangay, paglaum_PunongBarangay, sanIsidro_PunongBarangay]);
 
+    groupedEvacCenter.addTo(this.map);
+
     const baseMaps = {'None': mapRemover,
                       "OpenStreetMap" : tiles,
                       "Google Satelite" : googleSatelite,
@@ -809,7 +811,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleDisasterTypeChange(): void {
-    console.log(this.disasterType);
     if (this.disasterType && this.map) {
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
@@ -842,6 +843,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toggleLayer('flood_low');
         this.toggleLayer('flood_moderate');
         this.toggleLayer('flood_high');
+
         // this.details.updateDetails(this.hazardRiskDetails.landslide.low);
         this.map.removeControl(this.details);
 
