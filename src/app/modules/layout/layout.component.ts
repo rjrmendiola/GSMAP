@@ -37,6 +37,36 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private map: any;
   private legend: any;
   private info: any;
+  private details: any;
+
+  private hazardRiskDetails = {
+    'landslide': {
+      'low': "Low - areas are generally stable, with minimal movement observed and conditions that do not easily trigger landslides",
+      'moderate': "Moderate - areas possess features that could lead to landslides under certain conditions, such as steeper inclines, loose soil, or occasional heavy rainfall",
+      'high': "High - areas are prone to frequent and severe landslides due to factors such as steep, unstable slopes, high rainfall, erodible soil, or prior landslide history"
+    },
+    'flood' : {
+      'low': "Low - areas are places where flooding is unlikely or rare, often only occurring under extreme weather conditions",
+      'moderate': "Moderate - areas are those where flooding can happen under certain conditions, such as during seasonal heavy rains or when rivers exceed their normal levels",
+      'high': "High - areas are zones where flooding is common and can be severe, often due to their proximity to rivers, lakes, coastal regions, or low-lying terrain that retains water"
+    }
+  };
+
+  private hazardCategoryDetails = {
+    'landslide': {
+      'unlikely': "Areas have minimal susceptibility, characterized by stable terrain, gentle slopes, and solid ground, where landslides are rare under typical conditions",
+      'less_likely_to_experience': "Areas may have some factors that could contribute to landslides, such as mild slopes or occasional external triggers like rain, but they do not frequently experience significant movement",
+      'moderately_susceptible': "Areas show a higher potential for landslides, often featuring steeper slopes, weaker soils, or a history of smaller landslide events",
+      'highly_susceptible': "Areas are those where landslides are common and often severe due to factors such as steep, unstable terrain, loose or erodible soil, and significant weathering"
+    },
+    'tyhoon': {
+      'tropical_depression': "Have maximum sustained wind speeds of up to 62 km/h (38 mph) and typically bring heavy rainfall but minimal wind damage",
+      'tropical_storm': "Have sustained winds between 63-118 km/h (39-73 mph), strong enough to cause moderate damage, heavy rain, and potential flooding",
+      'severe_tropical_storm': "Escalate further with winds between 89-117 km/h (55-73 mph), posing greater threats of damage and more intense rain",
+      'typhoon': "Have sustained winds of 119-177 km/h (74-110 mph), bringing significant potential for destruction, widespread flooding, and storm surges in coastal areas",
+      'super_typhoon': "Exceed 178 km/h (111 mph) and are equivalent to powerful Category 4 or 5 hurricanes"
+    }
+  };
 
   // Property to track the currently active marker
   private currentMarker: L.Marker | null = null;
@@ -57,7 +87,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     landslide_high: false,
     flood_high: false,
     flood_moderate: false,
-    flood_low: false
+    flood_low: true
   };
 
   // Define colors for each layer
@@ -157,6 +187,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
         this.map.removeControl(this.info);
+        // this.map.addControl(this.details);
+        this.details.addTo(this.map);
         this.legend.addTo(this.map);
       }
     } else if (layerKey === 'flood_high' || layerKey === 'flood_low') {
@@ -170,6 +202,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map.removeLayer(layer);
         this.map.removeControl(this.legend);
         this.map.removeControl(this.info);
+
       } else {
         this.map.addLayer(layer);
         this.legend.addTo(this.map);
@@ -555,6 +588,32 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  private addDetailsControl(layerKey?: any, category?: any): void {
+    this.details = new L.Control({ position: 'topleft' });
+
+    this.details.onAdd = () => {
+      this.details._div = L.DomUtil.create('div', 'details');
+      this.details.updateDetails();
+      return this.details._div;
+    };
+
+    this.details.updateDetails = (props?: any) => {
+      if (!this.details._div) {
+        // console.error('Info control div is not created');
+        return;
+      }
+      // this.details._div.innerHTML =
+      //   '<h4>Carigara, Leyte</h4>' +
+      //   (props
+      //     ? `<b>${props.name}</b><br />${props.population} people`
+      //     : 'Hover over a barangay');
+      this.details._div.innerHTML = "<div class='m-2'>"
+        + "<span class='font-semibold'>Hazard Details</span>"
+        + "<p>" + props + "</p>"
+        + "</div>";
+    };
+  }
+
   private getColor(d: number): string{
     return d > 5500 ? '#004529' :
            d > 3500 ? '#006837' :
@@ -655,12 +714,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     //     mouseout: this.resetHighlight.bind(this),
     //   });
     // }
-    if (layerKey !== 'roads' && layerKey !== 'waterways') {
-      layer.on({
-        mouseover: this.highlightFeature.bind(this),
-        mouseout: this.resetHighlight.bind(this),
-      });
-    }
+    var layerExceptions = [
+      'roads',
+      'waterways'
+    ];
+
+    // if (layerKey !== 'roads' && layerKey !== 'waterways') {
+    //   layer.on({
+    //     mouseover: this.highlightFeature.bind(this),
+    //     mouseout: this.resetHighlight.bind(this),
+    //   });
+    // }
 
     layer.on({
       click: this.zoomToFeature.bind(this),
@@ -731,6 +795,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.markerControl();
     this.addLegend();
     this.addInfoControl();
+    this.addDetailsControl();
   }
 
   ngOnDestroy(): void {
@@ -747,9 +812,28 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.disasterType && this.map) {
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
-        this.toggleLayer('landslide_low');
-        this.toggleLayer('landslide_moderate');
-        this.toggleLayer('landslide_high');
+        this.map.removeLayer(this.layers['flood_low']);
+        this.map.removeLayer(this.layers['flood_moderate']);
+        this.map.removeLayer(this.layers['flood_high']);
+
+        if (this.disasterType.category == 'category4') {
+          this.map.removeLayer(this.layers['landslide_low']);
+          this.map.removeLayer(this.layers['landslide_moderate']);
+          this.toggleLayer('landslide_high');
+          this.details.updateDetails(this.hazardRiskDetails.landslide.high);
+
+        } else if (this.disasterType.category == 'category3' || this.disasterType.category == 'category2') {
+          this.map.removeLayer(this.layers['landslide_low']);
+          this.map.removeLayer(this.layers['landslide_high']);
+          this.toggleLayer('landslide_moderate');
+          this.details.updateDetails(this.hazardRiskDetails.landslide.moderate);
+
+        } else {
+          this.map.removeLayer(this.layers['landslide_moderate']);
+          this.map.removeLayer(this.layers['landslide_high']);
+          this.toggleLayer('landslide_low');
+          this.details.updateDetails(this.hazardRiskDetails.landslide.low);
+        }
       } else if (this.disasterType.type == 'flood') {
         this.map.removeLayer(this.layers['landslide_low']);
         this.map.removeLayer(this.layers['landslide_moderate']);
@@ -757,6 +841,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toggleLayer('flood_low');
         this.toggleLayer('flood_moderate');
         this.toggleLayer('flood_high');
+        // this.details.updateDetails(this.hazardRiskDetails.landslide.low);
+        this.map.removeControl(this.details);
+
       } else if (this.disasterType.type == 'typhoon') {
         if (this.disasterType.category == 'category5') {
           this.map.removeLayer(this.layers['landslide_low']);
@@ -765,6 +852,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_moderate']);
           this.toggleLayer('flood_high');
+          this.details.updateDetails(this.hazardRiskDetails.flood.high);
+
         } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_high']);
@@ -772,6 +861,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_moderate');
+          this.details.updateDetails(this.hazardRiskDetails.flood.moderate);
+
         } else if (this.disasterType.category == 'category2') {
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.map.removeLayer(this.layers['landslide_high']);
@@ -779,6 +870,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['flood_moderate']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_low');
+          this.details.updateDetails(this.hazardRiskDetails.flood.low);
+
         } else {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_moderate']);

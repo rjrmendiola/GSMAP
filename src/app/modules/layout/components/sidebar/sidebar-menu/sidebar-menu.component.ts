@@ -41,6 +41,7 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   public onMenuClick(type: string, category?: string) {
+    console.log({type, category});
     this.menuClicked.emit({ type, category });
   }
 

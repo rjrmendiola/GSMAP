@@ -205,6 +205,10 @@ span {
   animation: pulse 2s infinite;
 }
 
+.details {
+  width: 200px;
+}
+
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0;
