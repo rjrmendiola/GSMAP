@@ -759,7 +759,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Style features rendered to map
   private style(feature: any, layerKey: string) {
     if (layerKey === 'barangay'){
-      var featurecolor = '#3F9B0B';
       return {
         // fillColor: this.getColor(feature.properties.population),
         fillColor: this.coloringMap.barangay,
@@ -770,57 +769,51 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         fillOpacity: 1
       };
     } else if (layerKey === 'landslide_high') {
-      var featurecolor = '#800000';
       return {
-        fillColor: featurecolor,
+        fillColor: this.coloringMap.landslide.high,
         weight: 1,
         opacity: 1,
-        color: featurecolor,
+        color: this.coloringMap.landslide.high,
         dashArray: '3',
         fillOpacity: 0.7
       };
     } else if (layerKey === 'landslide_moderate') {
-      var featurecolor = '#6B8E23';
       return {
-        fillColor: featurecolor,
+        fillColor: this.coloringMap.landslide.moderate,
         weight: 1,
         opacity: 1,
-        color: featurecolor,
+        color: this.coloringMap.landslide.moderate,
         dashArray: '3',
         fillOpacity: 0.7
       };
     } else if (layerKey === 'landslide_low') {
-      var featurecolor = '#FFFF00';
       return {
-        fillColor: featurecolor,
+        fillColor: this.coloringMap.landslide.low,
         weight: 1,
         opacity: 1,
-        color: featurecolor,
+        color: this.coloringMap.landslide.low,
         dashArray: '3',
         fillOpacity: 0.7
       };
     } else if (layerKey === 'flood_high') {
-      var featurecolor = '#7B68EE';
       return {
-        fillColor: featurecolor,
+        fillColor: this.coloringMap.flood.high,
         weight: 1,
         opacity: 1,
-        color: featurecolor,
+        color: this.coloringMap.flood.high,
         dashArray: '3',
         fillOpacity: 0.7
       };
     } else if (layerKey === 'flood_moderate') {
-      var featurecolor = '#d9f0a3';
       return {
-        fillColor: featurecolor,
+        fillColor: this.coloringMap.flood.moderate,
         weight: 1,
         opacity: 1,
-        color: featurecolor,
+        color: this.coloringMap.flood.moderate,
         dashArray: '3',
         fillOpacity: 0.7
       };
     } else if (layerKey === 'flood_low') {
-      var featurecolor = '#78c679';
       return {
         fillColor: this.coloringMap.flood.low,
         weight: 1,
@@ -1113,9 +1106,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           });
 
         } else if (this.disasterType.category == 'category2' || this.disasterType.category == 'category1') {
-          // this.map.removeLayer(this.layers['landslide_moderate']);
-          // this.map.removeLayer(this.layers['landslide_high']);
-          // this.toggleLayer('landslide_low');
           this.map.removeLayer(this.layers['flood_moderate']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_low');
