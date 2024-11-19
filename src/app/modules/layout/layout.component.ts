@@ -47,9 +47,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       high: '#483248'
     },
     landslide: {
-      low: '#FFDE21',
-      moderate: '#2E8B57',
-      high: '#FF5733'
+      // low: '#FFDE21',
+      // moderate: '#2E8B57',
+      // high: '#FF5733'
+      low: '#FFFF00',
+      moderate: '#6B8E23',
+      high: '#800000'
+
     }
   };
 
@@ -617,13 +621,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const div = L.DomUtil.create('div', 'info legend');
 
       if (this.disasterType) {
-        var colors: string[] = ['#FFFF00', '#6B8E23', '#800000'];
-        var labels: string[] = ['Low', 'Moderate', 'High'];
+        // var colors: string[] = ['#800000', '#6B8E23', '#FFFF00'];
+        var colors: string[] = [
+          this.coloringMap.landslide.high,
+          this.coloringMap.landslide.moderate,
+          this.coloringMap.landslide.low
+        ];
+        var labels: string[] = ['High', 'Moderate', 'Low'];
 
-        var legendLabel = 'Flood Hazard Level';
+        var legendLabel = 'Landslide Hazard Level';
 
         if (this.disasterType.type == 'flood' || this.disasterType.type == 'typhoon') {
-          // var colors: string[] = ['#78c679', '#d9f0a3', '#7B68EE'];
           legendLabel = 'Flood Hazard Level';
 
           var colors: string[] = [
@@ -1046,19 +1054,27 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.toggleLayer('landslide_high');
 
-          this.details.updateDetails(this.hazardRiskDetails.landslide.high);
+          this.details.updateDetails({
+            landslide: this.hazardRiskDetails.landslide.high
+          });
 
         } else if (this.disasterType.category == 'category3' || this.disasterType.category == 'category2') {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_high']);
           this.toggleLayer('landslide_moderate');
-          this.details.updateDetails(this.hazardRiskDetails.landslide.moderate);
+
+          this.details.updateDetails({
+            landslide: this.hazardRiskDetails.landslide.moderate
+          });
 
         } else {
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.map.removeLayer(this.layers['landslide_high']);
           this.toggleLayer('landslide_low');
-          this.details.updateDetails(this.hazardRiskDetails.landslide.low);
+
+          this.details.updateDetails({
+            landslide: this.hazardRiskDetails.landslide.low
+          });
         }
       } else if (this.disasterType.type == 'flood') {
         this.map.removeLayer(this.layers['landslide_low']);
@@ -1072,10 +1088,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map.removeControl(this.details);
 
       } else if (this.disasterType.type == 'typhoon') {
+        this.map.removeLayer(this.layers['landslide_low']);
+        this.map.removeLayer(this.layers['landslide_moderate']);
+        this.map.removeLayer(this.layers['landslide_high']);
+
         if (this.disasterType.category == 'category5') {
-          // this.map.removeLayer(this.layers['landslide_low']);
-          // this.map.removeLayer(this.layers['landslide_moderate']);
-          // this.toggleLayer('landslide_high');
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_moderate']);
           this.toggleLayer('flood_high');
@@ -1086,9 +1103,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           });
 
         } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
-          // this.map.removeLayer(this.layers['landslide_low']);
-          // this.map.removeLayer(this.layers['landslide_high']);
-          // this.toggleLayer('landslide_moderate');
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_moderate');
