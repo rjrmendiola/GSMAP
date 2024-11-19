@@ -39,6 +39,20 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private info: any;
   private details: any;
 
+  private coloringMap = {
+    barangay: '#8A9A5B',
+    flood: {
+      low: '#E0B0FF',
+      moderate: '#722F37',
+      high: '#483248'
+    },
+    landslide: {
+      low: '#FFDE21',
+      moderate: '#2E8B57',
+      high: '#FF5733'
+    }
+  };
+
   private hazardRiskDetails = {
     'landslide': {
       'low': "Low - areas are generally stable, with minimal movement observed and conditions that do not easily trigger landslides",
@@ -59,12 +73,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       'moderately_susceptible': "Areas show a higher potential for landslides, often featuring steeper slopes, weaker soils, or a history of smaller landslide events",
       'highly_susceptible': "Areas are those where landslides are common and often severe due to factors such as steep, unstable terrain, loose or erodible soil, and significant weathering"
     },
-    'tyhoon': {
-      'tropical_depression': "Have maximum sustained wind speeds of up to 62 km/h (38 mph) and typically bring heavy rainfall but minimal wind damage",
-      'tropical_storm': "Have sustained winds between 63-118 km/h (39-73 mph), strong enough to cause moderate damage, heavy rain, and potential flooding",
-      'severe_tropical_storm': "Escalate further with winds between 89-117 km/h (55-73 mph), posing greater threats of damage and more intense rain",
-      'typhoon': "Have sustained winds of 119-177 km/h (74-110 mph), bringing significant potential for destruction, widespread flooding, and storm surges in coastal areas",
-      'super_typhoon': "Exceed 178 km/h (111 mph) and are equivalent to powerful Category 4 or 5 hurricanes"
+    'typhoon': {
+      'tropical_depression': "Tropical Depression - have maximum sustained wind speeds of up to 62 km/h (38 mph) and typically bring heavy rainfall but minimal wind damage",
+      'tropical_storm': "Tropical Storm - have sustained winds between 63-118 km/h (39-73 mph), strong enough to cause moderate damage, heavy rain, and potential flooding",
+      'severe_tropical_storm': "Severe Tropical Storm - escalate further with winds between 89-117 km/h (55-73 mph), posing greater threats of damage and more intense rain",
+      'typhoon': "Typhoon - have sustained winds of 119-177 km/h (74-110 mph), bringing significant potential for destruction, widespread flooding, and storm surges in coastal areas",
+      'super_typhoon': "Super Typhoon - exceed 178 km/h (111 mph) and are equivalent to powerful Category 4 or 5 hurricanes"
     }
   };
 
@@ -604,17 +618,28 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (this.disasterType) {
         var colors: string[] = ['#FFFF00', '#6B8E23', '#800000'];
-
-        if (this.disasterType.type == 'flood') {
-          var colors: string[] = ['#78c679', '#d9f0a3', '#7B68EE'];
-        }
-
         var labels: string[] = ['Low', 'Moderate', 'High'];
 
-        div.innerHTML += `<h1 class="text-sm font-bold leading-3 mt-2 mb-2 text-gray-800">Hazard Level</h1>`;
+        var legendLabel = 'Flood Hazard Level';
+
+        if (this.disasterType.type == 'flood' || this.disasterType.type == 'typhoon') {
+          // var colors: string[] = ['#78c679', '#d9f0a3', '#7B68EE'];
+          legendLabel = 'Flood Hazard Level';
+
+          var colors: string[] = [
+            this.coloringMap.flood.high,
+            this.coloringMap.flood.moderate,
+            this.coloringMap.flood.low
+            ];
+
+          var labels: string[] = ['High', 'Moderate', 'Low'];
+        }
+
+        div.innerHTML += `<h1 class="text-sm font-bold leading-3 mt-2 mb-2 text-gray-800">${legendLabel}</h1>`;
         for (let i = 0; i < colors.length; i++) {
           div.innerHTML += `<div class="py-1">
-            <i style="background:${colors[i]};"></i><span style="color:${colors[i]};">${labels[i]}</span>
+            <i style="background:${colors[i]};"></i>
+            <span>${labels[i]}</span>
           </div>`;
         }
       } else {
@@ -685,10 +710,29 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       //   (props
       //     ? `<b>${props.name}</b><br />${props.population} people`
       //     : 'Hover over a barangay');
-      this.details._div.innerHTML = "<div class='m-2'>"
-        + "<span class='font-semibold'>Hazard Details</span>"
-        + "<p>" + props + "</p>"
-        + "</div>";
+
+      if (props !== undefined) {
+        this.details._div.innerHTML = "<div class='m-2'>"
+          + "<span class='font-bold'>Hazard Details</span>"
+          + "<hr>";
+
+        if (props.flood !== undefined && props.flood !== null) {
+          this.details._div.innerHTML += "<span class='m-2 font-semibold'>Flood</span>";
+          this.details._div.innerHTML += "<p class='m-2'>" + props.flood + "</p>";
+        }
+
+        if (props.typhoon !== undefined && props.typhoon !== null) {
+          this.details._div.innerHTML += "<span class='m-2 font-semibold'>Typhoon</span>";
+          this.details._div.innerHTML += "<p class='m-2'>" + props.typhoon + "</p>";
+        }
+
+        if (props.landslide !== undefined && props.landslide !== null) {
+          this.details._div.innerHTML += "<span class='m-2 font-semibold'>Landslide</span>";
+          this.details._div.innerHTML += "<p class='m-2'>" + props.landslide + "</p>";
+        }
+
+        this.details._div.innerHTML += "</div>";
+      }
     };
   }
 
@@ -710,12 +754,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       var featurecolor = '#3F9B0B';
       return {
         // fillColor: this.getColor(feature.properties.population),
-        fillColor: featurecolor,
+        fillColor: this.coloringMap.barangay,
         weight: 1.5,
         opacity: 1,
-        color: 'white',
+        color: this.coloringMap.barangay,
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 1
       };
     } else if (layerKey === 'landslide_high') {
       var featurecolor = '#800000';
@@ -770,10 +814,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (layerKey === 'flood_low') {
       var featurecolor = '#78c679';
       return {
-        fillColor: featurecolor,
+        fillColor: this.coloringMap.flood.low,
         weight: 1,
         opacity: 1,
-        color: featurecolor,
+        color: this.coloringMap.flood.low,
         dashArray: '3',
         fillOpacity: 0.7
       };
@@ -871,7 +915,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const popupContent = `
           <div class="customPopup">
               <figure>
-                  <img src="./assets/images/Car.jpg" alt="Car">
+                  <img src="${location.image}" alt="Car">
                   <figcaption>Barangay Evacuation Center</figcaption>
               </figure>
               <div>${location.venue}</div>
@@ -1001,6 +1045,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.toggleLayer('landslide_high');
+
           this.details.updateDetails(this.hazardRiskDetails.landslide.high);
 
         } else if (this.disasterType.category == 'category3' || this.disasterType.category == 'category2') {
@@ -1016,7 +1061,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.details.updateDetails(this.hazardRiskDetails.landslide.low);
         }
       } else if (this.disasterType.type == 'flood') {
-        console.log('flood');
         this.map.removeLayer(this.layers['landslide_low']);
         this.map.removeLayer(this.layers['landslide_moderate']);
         this.map.removeLayer(this.layers['landslide_high']);
@@ -1035,7 +1079,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_moderate']);
           this.toggleLayer('flood_high');
-          this.details.updateDetails(this.hazardRiskDetails.flood.high);
+
+          this.details.updateDetails({
+            flood: this.hazardRiskDetails.flood.high,
+            typhoon: this.hazardCategoryDetails.typhoon.super_typhoon
+          });
 
         } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
           // this.map.removeLayer(this.layers['landslide_low']);
@@ -1044,16 +1092,24 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_moderate');
-          this.details.updateDetails(this.hazardRiskDetails.flood.moderate);
 
-        } else if (this.disasterType.category == 'category2') {
+          this.details.updateDetails({
+            flood: this.hazardRiskDetails.flood.moderate,
+            typhoon: (this.disasterType.category == 'category4') ? this.hazardCategoryDetails.typhoon.typhoon : this.hazardCategoryDetails.typhoon.severe_tropical_storm
+          });
+
+        } else if (this.disasterType.category == 'category2' || this.disasterType.category == 'category1') {
           // this.map.removeLayer(this.layers['landslide_moderate']);
           // this.map.removeLayer(this.layers['landslide_high']);
           // this.toggleLayer('landslide_low');
           this.map.removeLayer(this.layers['flood_moderate']);
           this.map.removeLayer(this.layers['flood_high']);
           this.toggleLayer('flood_low');
-          this.details.updateDetails(this.hazardRiskDetails.flood.low);
+
+          this.details.updateDetails({
+            flood: this.hazardRiskDetails.flood.low,
+            typhoon: (this.disasterType.category == 'category2') ? this.hazardCategoryDetails.typhoon.tropical_storm : this.hazardCategoryDetails.typhoon.tropical_depression
+          });
 
         } else {
           this.map.removeLayer(this.layers['landslide_low']);
