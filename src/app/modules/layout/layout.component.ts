@@ -833,12 +833,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onEachFeature(feature: any, layer: any, layerKey: string): void {
-    // if (layerKey === 'barangay') {
-    //   layer.on({
-    //     mouseover: this.highlightFeature.bind(this),
-    //     mouseout: this.resetHighlight.bind(this),
-    //   });
-    // }
     var layerExceptions = [
       'roads',
       'waterways'
@@ -851,6 +845,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     //   });
     // }
 
+    if (layerKey === 'barangay') {
+      layer.on({
+        mouseover: this.highlightFeature.bind(this),
+        mouseout: this.resetHighlight.bind(this),
+      });
+    }
+
     layer.on({
       click: this.zoomToFeature.bind(this),
     });
@@ -859,12 +860,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Highlight feature on mouseover
   private highlightFeature(e: any) {
     const layer = e.target;
-    layer.setStyle({
-      weight: 3,
-      //color: '#666',
-      //dashArray: '',
-      //fillOpacity: 0.8,
-    });
+    // layer.setStyle({
+    //   weight: 3,
+    //   color: '#666',
+    //   dashArray: '',
+    //   fillOpacity: 0.8,
+    // });
     //layer.bringToFront();
     this.info.updateInfo(layer.feature.properties);
   }
@@ -1035,6 +1036,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleDisasterTypeChange(): void {
+    this.info.updateInfo();
+
     if (this.disasterType && this.map) {
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
