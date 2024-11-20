@@ -691,6 +691,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.error('Info control div is not created');
         return;
       }
+
       this.info._div.innerHTML =
         '<div><span class="font-semibold">Carigara, Leyte</span><br/><span>Pop. Density</span></div>' +
         '<hr class="m-2">' +
@@ -877,7 +878,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private resetHighlight(e: any) {
     const layer = e.target;
     this.layers['barangay'].resetStyle(layer);
-    this.info.updateInfo(layer.feature.properties);
+    // this.info.updateInfo(layer.feature.properties);
+    this.info.updateInfo();
   }
 
   // Zoom to the feature on click
