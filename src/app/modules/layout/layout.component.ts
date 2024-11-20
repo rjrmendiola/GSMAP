@@ -692,11 +692,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       this.info._div.innerHTML =
-        '<h4>Carigara, Leyte</h4>' +
+        '<div><span class="font-semibold">Carigara, Leyte</span><br/><span>Pop. Density</span></div>' +
+        '<hr class="m-2">' +
         (props
-          ? `<b>${props.name}</b><br />${props.population} people`
+          ? `<b>${props.name}</b><br />${Number(props.population).toLocaleString()} people`
           : 'Hover over a barangay');
     };
+
+    this.info.addTo(this.map);
   }
 
   private addDetailsControl(layerKey?: any, category?: any): void {
@@ -764,7 +767,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         fillColor: this.coloringMap.barangay,
         weight: 1.5,
         opacity: 1,
-        color: this.coloringMap.barangay,
+        color: '#FEFEFE',
         dashArray: '3',
         fillOpacity: 1
       };
@@ -1036,8 +1039,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleDisasterTypeChange(): void {
-    this.info.updateInfo();
-
     if (this.disasterType && this.map) {
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
