@@ -280,7 +280,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (layerKey === 'landslide_high' || layerKey === 'landslide_moderate' || layerKey === 'landslide_low') {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
-        this.map.removeControl(this.info);
+        // this.map.removeControl(this.info);
         // this.map.addControl(this.details);
         this.details.addTo(this.map);
         this.legend.addTo(this.map);
@@ -288,7 +288,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (layerKey === 'flood_high' || layerKey === 'flood_moderate' || layerKey === 'flood_low') {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
-        this.map.removeControl(this.info);
+        // this.map.removeControl(this.info);
         this.details.addTo(this.map);
         this.legend.addTo(this.map);
       }
@@ -296,7 +296,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.map.hasLayer(layer)) {
         this.map.removeLayer(layer);
         this.map.removeControl(this.legend);
-        this.map.removeControl(this.info);
+        // this.map.removeControl(this.info);
       } else {
         this.map.addLayer(layer);
         // this.legend.addTo(this.map);
@@ -691,6 +691,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.error('Info control div is not created');
         return;
       }
+
       this.info._div.innerHTML =
         '<div><span class="font-semibold">Carigara, Leyte</span><br/><span>Pop. Density</span></div>' +
         '<hr class="m-2">' +
@@ -877,7 +878,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private resetHighlight(e: any) {
     const layer = e.target;
     this.layers['barangay'].resetStyle(layer);
-    this.info.updateInfo(layer.feature.properties);
+    // this.info.updateInfo(layer.feature.properties);
+    this.info.updateInfo();
   }
 
   // Zoom to the feature on click
