@@ -986,7 +986,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return L.divIcon({
       html: `<div class="pulse">
-          <img src="${imageUrl}" style="width: 25px; height: 41px; position: absolute; top: 0; left: 0;"/>
+          <img src="${imageUrl}" style="width: 25px; height: 41px; position: absolute; top: calc(50% - 20.5px); left: calc(50% - 12.5px);"/>
           <span style="${cssStyle}" class="pulse"/></span>
           </div>`,
       className: ''
