@@ -131,7 +131,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private evacuationLocations = [
     { name: 'tigbao', coords:[11.2375868, 124.7133698], venue: 'Tigbao Elementary School', image: './assets/images/Car.jpg' },
-    { name: 'piloro', coords:[11.236402318756134, 124.72036848648168], venue: 'Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'piloro', coords:[11.236402318756134, 124.72036848648168], venue: 'Piloro Barangay Hall', image: './assets/images/Car.jpg' },
     { name: 'camansi', coords:[11.21849108135362, 124.71573441769323], venue: 'Camansi Elementary School', image: './assets/images/camansiES.jpg' },
     { name: 'tinaguban', coords:[11.2331392, 124.7056969], venue: 'Tinaguban Elementary School', image: './assets/images/tinagubanES.jpg' },
     { name: 'jugaban', coords:[11.2991697, 124.6943891], venue: 'JugabanPopup - Jugaban National High School', image: './assets/images/jugabanNHS.jpg' },
@@ -153,26 +153,26 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'east_visoria', coords:[11.2989631, 124.6786982], venue: 'New Life Christian Church', image: './assets/images/newlifecarigara.jpg' },
     { name: 'tangnan', coords:[11.297766, 124.6702727], venue: 'Tangnan Barangay Hall', image: './assets/images/tangnanBH.jpg' },
     { name: 'nauguisan', coords:[11.294851119638508, 124.6622293581704], venue: 'Nauguisan Elementary School', image: './assets/images/nauguisanES.jpg' },
-    { name: 'san_juan', coords:[11.289751866680746, 124.66142138289877], venue: 'San Juan Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'san_juan', coords:[11.289751866680746, 124.66142138289877], venue: 'San Juan Barangay Hall', image: './assets/images/sanjuanBH.jpg' },
     { name: 'manloy', coords:[11.274892635379118, 124.65437594384838], venue: 'Manloy Elementary School', image: './assets/images/Car.jpg' },
-    { name: 'caghalo', coords:[11.260928247291645, 124.66692030297861], venue: 'Caghalo Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'caghalo', coords:[11.260928247291645, 124.66692030297861], venue: 'Caghalo Elementary School', image: './assets/images/caghaloES.jpg' },
     { name: 'upper_hiraan1', coords:[11.2648, 124.6759], venue: 'Upper Hiraan Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'upper_hiraan2', coords:[11.265246762928768, 124.67697129266298], venue: 'Hiraan Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'upper_hiraan2', coords:[11.265246762928768, 124.67697129266298], venue: 'Hiraan Elementary School', image: './assets/images/hiraanES.jpg' },
     { name: 'lower_hiraan', coords:[11.2795, 124.6786], venue: 'Lower Hiraan Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'libo', coords:[11.266721745379868, 124.68083971796977], venue: 'Libo Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'libo', coords:[11.266721745379868, 124.68083971796977], venue: 'Libo Barangay Hall', image: './assets/images/liboBH.jpg' },
     { name: 'canlampay1', coords:[11.265940493645303, 124.68529656173274], venue: 'Canlampay Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'canlampay2', coords:[11.263751626499598, 124.68557038762572], venue: 'Canlampay Elementary School', image: './assets/images/Car.jpg' },
-    { name: 'hiluctugan', coords:[11.2473838, 124.6878364], venue: 'Hiluctugan Elementary School', image: './assets/images/Car.jpg' },
-    { name: 'bislig1', coords:[11.292457563772857, 124.6772379129253], venue: 'Bislig Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'bislig2', coords:[11.293430779370212, 124.67548820806826], venue: 'Bislig Evacuation Center', image: './assets/images/Car.jpg' },
-    { name: 'canal', coords:[11.2878292, 124.6825409], venue: 'Canal Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'uyawan', coords:[11.282287385990031, 124.68409130036338], venue: 'Uyawan Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'barayong', coords:[	11.2682, 124.6722], venue: 'Barayong Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'lower_sogod', coords:[11.2590973, 124.6900857], venue: 'Lower Sogod Elementary School', image: './assets/images/Car.jpg' },
-    { name: 'upper_sogod', coords:[11.2536, 124.6931], venue: 'Upper Sogod Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'canlampay2', coords:[11.263751626499598, 124.68557038762572], venue: 'Canlampay Elementary School', image: './assets/images/canlampayES.jpg' },
+    { name: 'hiluctogan', coords:[11.2473838, 124.6878364], venue: 'Hiluctogan Elementary School', image: './assets/images/hiluctoganES.jpg' },
+    { name: 'bislig1', coords:[11.292457563772857, 124.6772379129253], venue: 'Bislig Barangay Hall', image: './assets/images/bisligBH.jpg' },
+    { name: 'bislig2', coords:[11.293430779370212, 124.67548820806826], venue: 'Bislig Evacuation Center', image: './assets/images/bisligEvac.jpg' },
+    { name: 'canal', coords:[11.2878292, 124.6825409], venue: 'Canal Barangay Hall', image: './assets/images/canalBH.jpg' },
+    { name: 'uyawan', coords:[11.282287385990031, 124.68409130036338], venue: 'Uyawan Barangay Hall', image: './assets/images/uyawanBH.jpg' },
+    { name: 'barayong', coords:[  11.2682, 124.6722], venue: 'Barayong Barangay Hall', image: './assets/images/barayongBH.jpg' },
+    { name: 'lower_sogod', coords:[11.2590973, 124.6900857], venue: 'Lower Sogod Elementary School', image: './assets/images/sogodES.jpg' },
+    { name: 'upper_sogod', coords:[11.2536, 124.6931], venue: 'Upper Sogod Barangay Hall', image: './assets/images/uppersogodBH.jpg' },
     { name: 'candigahub', coords:[11.2504379, 124.7001859], venue: 'Candigahub Elementary School', image: './assets/images/candigahubES.jpg' },
-    { name: 'cutay', coords:[11.2650511, 124.6986922], venue: 'Cutay Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'pangna', coords:[	11.2798, 124.7101], venue: 'Pangna Elementary School', image: './assets/images/pangnaES.jpg' },
+    { name: 'cutay', coords:[11.2650511, 124.6986922], venue: 'Cutay Barangay Hall', image: './assets/images/cutayBH.jpg' },
+    { name: 'pangna', coords:[  11.2798, 124.7101], venue: 'Pangna Elementary School', image: './assets/images/pangnaES.jpg' },
     { name: 'baruguhay_sur', coords:[11.2709821,124.7004102], venue: 'Barugohay Sur Elementary School', image: './assets/images/barsurES.jpg' },
     { name: 'bagong_lipunan', coords:[11.2843, 124.6987], venue: 'Bagong Lipunan Barangay Hall', image: './assets/images/bagonglipunanBH.jpg' },
     { name: 'balilit', coords:[11.28736949670612, 124.69583232220117], venue: 'Balilit Elementary School', image: './assets/images/balilitES.jpg' },
@@ -185,7 +185,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'parag_um', coords:[11.257343004963658, 124.72799419450331], venue: 'Parag-um Barangay Hall', image: './assets/images/Car.jpg' },
     { name: 'cogon', coords:[11.2577, 124.7365], venue: 'Cogon Barangay Hall', image: './assets/images/Car.jpg' },
     { name: 'binibihan', coords:[11.233367805199322, 124.73453629750668], venue: 'Binibihan Elem. School', image: './assets/images/Car.jpg' },
-    { name: 'macalpi', coords:[11.2132913924805, 124.73425541862093], venue: 'Macalpi Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'macalpi', coords:[11.2132913924805, 124.73425541862093], venue: 'Macalpi Elementary School', image: './assets/images/macalpiES.jpg' },
     { name: 'paglaum', coords:[11.2045, 124.7188], venue: 'Paglaum Barangay Hall', image: './assets/images/Car.jpg' },
     { name: 'san_isidro', coords:[11.204579867259937, 124.70810276172983], venue: 'San Isidro Barangay Hall', image: './assets/images/Car.jpg' },
   ];
@@ -693,11 +693,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       this.info._div.innerHTML =
-        '<div><span class="font-semibold">Carigara, Leyte</span><br/><span>Pop. Density</span></div>' +
+        '<div><span class="font-semibold">Carigara, Leyte</span><br/><span>Population Density</span></div>' +
         '<hr class="m-2">' +
         (props
           ? `<b>${props.name}</b><br />${Number(props.population).toLocaleString()} people`
-          : 'Hover over a barangay');
+          : 'Hover over a barangay and <br/>double click your location to <br/>show nearest evacuation centers.');
     };
 
     this.info.addTo(this.map);
