@@ -38,6 +38,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private legend: any;
   private info: any;
   private details: any;
+  private affectedBarangays: any;
 
   private coloringMap = {
     barangay: '#8A9A5B',
@@ -190,6 +191,38 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'san_isidro', coords:[11.204579867259937, 124.70810276172983], venue: 'San Isidro Barangay Hall', image: './assets/images/Car.jpg' },
   ];
 
+  private hazardAffectedBarangays = {
+    'landslide': {
+      // 'unlikely': "Areas have minimal susceptibility, characterized by stable terrain, gentle slopes, and solid ground, where landslides are rare under typical conditions",
+      'less_likely_to_experience': [
+        'tinaguban', 'hiluctugan', 'canlampay', 'libo', 'upper_hiraan', 'caghalo', 'manloy', 'san_isidro', 'paglaum', 'camansi'
+      ],
+      'moderately_susceptible': [
+        'tinaguban', 'hiluctugan', 'canlampay', 'libo', 'upper_hiraan', 'caghalo', 'manloy', 'san_isidro', 'paglaum', 'camansi'
+      ],
+      'highly_susceptible': [
+        'caghalo', 'paglaum', 'san_isidro', 'tinaguban', 'libo'
+      ]
+    },
+    'typhoon': {
+      'tropical_depression': [
+        'san_mateo', 'guindapunan_west', 'guindapunan_east', 'jugaban', 'balilit', 'barugohay_sur', 'cutay', 'bislig', 'barayong', 'manloy', 'barugohay_central', 'nauguisan', 'canal'
+      ],
+      'tropical_storm': [
+        'san_mateo', 'guindapunan_west', 'guindapunan_east', 'jugaban', 'balilit', 'barugohay_sur', 'cutay', 'bislig', 'barayong', 'manloy', 'barugohay_central', 'nauguisan', 'canal'
+      ],
+      'severe_tropical_storm': [
+        'tangnan', 'nauguisan', 'san_juan', 'west_visoria', 'east_visoria', 'ponong', 'baybay', 'jugaban', 'canal', 'uyawan', 'tagak', 'rizal', 'sagkahan', 'pangna', 'bislig'
+      ],
+      'typhoon': [
+        'tangnan', 'nauguisan', 'san_juan', 'west_visoria', 'east_visoria', 'ponong', 'baybay', 'jugaban', 'canal', 'uyawan', 'tagak', 'rizal', 'sagkahan', 'pangna', 'bislig'
+      ],
+      'super_typhoon': [
+        'bislig', 'canal', 'uyawan', 'lower_hiraan', 'canlampay', 'parena', 'upper_sogod', 'lower_sogod', 'binibihan', 'macalpi'
+      ]
+    }
+  };
+
   private initMap(): void {
     this.map = L.map('map', {
       center: [11.232084301848886, 124.7057818628441],
@@ -284,6 +317,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.map.addControl(this.details);
         this.details.addTo(this.map);
         this.legend.addTo(this.map);
+        this.affectedBarangays.addTo(this.map);
       }
     } else if (layerKey === 'flood_high' || layerKey === 'flood_moderate' || layerKey === 'flood_low') {
       if (!this.map.hasLayer(layer)) {
@@ -291,6 +325,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.map.removeControl(this.info);
         this.details.addTo(this.map);
         this.legend.addTo(this.map);
+        this.affectedBarangays.addTo(this.map);
       }
     } else {
       if (this.map.hasLayer(layer)) {
@@ -748,6 +783,50 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  private addAffectedBarangaysControl(): void {
+    this.affectedBarangays = new L.Control({ position: 'topleft' });
+
+    this.affectedBarangays.onAdd = () => {
+      this.affectedBarangays._div = L.DomUtil.create('div', 'affected-brgy-details');
+      this.affectedBarangays.updateDetails();
+      return this.affectedBarangays._div;
+    };
+
+    this.affectedBarangays.updateDetails = (props?: any) => {
+      if (!this.affectedBarangays._div) {
+        return;
+      }
+
+      if (props !== undefined) {
+        this.affectedBarangays._div.innerHTML = "<div class='m-2'>"
+          + "<span class='font-bold'>Affected Barangays</span>"
+          + "<hr>";
+
+        if (props.barangays !== undefined) {
+          const barangayList = props.barangays
+            .map((barangay: string) =>
+              barangay
+                .replace(/_/g, ' ') // Replace underscores with spaces
+                .split(' ') // Split the string into words
+                .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
+                .join(' ') // Join the words back into a single string
+            )
+            .join(', '); // Join all barangays with a comma and space
+
+          // Add the list to the div
+          this.affectedBarangays._div.innerHTML += `
+            <div class='m-2'>
+              <p class=''>${barangayList}</p>
+            </div>
+          `;
+
+          // Close the flex container
+          this.affectedBarangays._div.innerHTML += "</div>";
+        }
+      }
+    };
+  }
+
   private getColor(d: number): string{
     return d > 5500 ? '#004529' :
            d > 3500 ? '#006837' :
@@ -1028,6 +1107,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addLegend();
     this.addInfoControl();
     this.addDetailsControl();
+    this.addAffectedBarangaysControl();
   }
 
   ngOnDestroy(): void {
@@ -1057,6 +1137,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             landslide: this.hazardRiskDetails.landslide.high
           });
 
+          this.affectedBarangays.updateDetails({
+            barangays: this.hazardAffectedBarangays.landslide.highly_susceptible
+          });
+
         } else if (this.disasterType.category == 'category3' || this.disasterType.category == 'category2') {
           this.map.removeLayer(this.layers['landslide_low']);
           this.map.removeLayer(this.layers['landslide_high']);
@@ -1066,6 +1150,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             landslide: this.hazardRiskDetails.landslide.moderate
           });
 
+          this.affectedBarangays.updateDetails({
+            barangays: this.hazardAffectedBarangays.landslide.moderately_susceptible
+          });
+
         } else {
           this.map.removeLayer(this.layers['landslide_moderate']);
           this.map.removeLayer(this.layers['landslide_high']);
@@ -1073,6 +1161,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.details.updateDetails({
             landslide: this.hazardRiskDetails.landslide.low
+          });
+
+          this.affectedBarangays.updateDetails({
+            barangays: this.hazardAffectedBarangays.landslide.less_likely_to_experience
           });
         }
       } else if (this.disasterType.type == 'flood') {
@@ -1101,6 +1193,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             typhoon: this.hazardCategoryDetails.typhoon.super_typhoon
           });
 
+          this.affectedBarangays.updateDetails({
+            barangays: this.hazardAffectedBarangays.typhoon.super_typhoon
+          });
+
         } else if (this.disasterType.category == 'category4' || this.disasterType.category == 'category3') {
           this.map.removeLayer(this.layers['flood_low']);
           this.map.removeLayer(this.layers['flood_high']);
@@ -1111,6 +1207,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             typhoon: (this.disasterType.category == 'category4') ? this.hazardCategoryDetails.typhoon.typhoon : this.hazardCategoryDetails.typhoon.severe_tropical_storm
           });
 
+          this.affectedBarangays.updateDetails({
+            barangays: this.hazardAffectedBarangays.typhoon.typhoon
+          });
+
         } else if (this.disasterType.category == 'category2' || this.disasterType.category == 'category1') {
           this.map.removeLayer(this.layers['flood_moderate']);
           this.map.removeLayer(this.layers['flood_high']);
@@ -1119,6 +1219,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.details.updateDetails({
             flood: this.hazardRiskDetails.flood.low,
             typhoon: (this.disasterType.category == 'category2') ? this.hazardCategoryDetails.typhoon.tropical_storm : this.hazardCategoryDetails.typhoon.tropical_depression
+          });
+
+          this.affectedBarangays.updateDetails({
+            barangays: this.hazardAffectedBarangays.typhoon.tropical_depression
           });
 
         } else {

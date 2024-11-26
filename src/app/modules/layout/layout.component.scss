@@ -23,9 +23,9 @@ html, body {
   background-color: beige;
   position: relative;
   margin: 30px;
-  border: 2px solid #ccc; 
+  border: 2px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .header {
@@ -223,7 +223,8 @@ span {
   animation: pulse 2s infinite;
 }
 
-.details {
+.details,
+.affected-brgy-details {
   width: 200px;
 }
 
