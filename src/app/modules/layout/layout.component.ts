@@ -1096,6 +1096,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       nearestMarker.bindPopup(popupContent).openPopup();
       this.nearestEvacuationMarkers.push(nearestMarker); // Store reference to the marker
     });
+
+    this.currentMarker.on('click', () => {
+      this.map?.removeLayer(this.currentMarker);
+      this.clearNearestEvacuationMarkers();
+    });
   }
 
   private clearNearestEvacuationMarkers() {
