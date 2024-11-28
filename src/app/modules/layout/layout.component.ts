@@ -900,7 +900,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private addAffectedBarangaysControl(): void {
-    this.affectedBarangays = new L.Control({ position: 'topleft' });
+    this.affectedBarangays = new L.Control({ position: 'topright' });
 
     this.affectedBarangays.onAdd = () => {
       this.affectedBarangays._div = L.DomUtil.create('div', 'affected-brgy-details');
