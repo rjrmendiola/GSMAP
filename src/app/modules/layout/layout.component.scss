@@ -123,11 +123,12 @@ span {
 /* Info control styling */
 .info {
   padding: 10px; /* Add some padding */
-  font-size: 14px; /* Set base font size */
+  font-size: 12px; /* Set base font size */
   background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
   border: 1px solid #ccc; /* Border for definition */
   border-radius: 5px; /* Rounded corners */
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  max-width: 200px;
 }
 
 /* Info heading styling */
