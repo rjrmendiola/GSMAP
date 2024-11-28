@@ -88,6 +88,29 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
+  private typhoonRainfallImpactDetails = {
+    'tropical_depression': {
+      'range': "50-150 mm in 24 hours",
+      'impact': "Light to moderate rain over wide areas. Some localized flooding is possible, especially in low-lying or poorly drained areas."
+    },
+    'tropical_storm': {
+      'range': "100-200 mm in 24 hours",
+      'impact': "Moderate to heavy rains may cause flash floods and landslides in mountainous areas."
+    },
+    'severe_tropical_storm': {
+      'range': "150-300 mm in 24 hours",
+      'impact': "Widespread heavy rains could lead to significant flooding and landslides."
+    },
+    'typhoon': {
+      'range': "200-400 mm in 24 hours",
+      'impact': "Intense rains can cause severe flooding, landslides, and river overflows. Coastal areas may also face storm surges."
+    },
+    'super_typhoon': {
+      'range': "300-500 mm or more in 24 hours",
+      'impact': "Catastrophic rainfall can result in massive flooding, landslides, and widespread destruction. Communities in low-lying and mountainous areas are at the highest risk."
+    },
+  };
+
   // Property to track the currently active marker
   private currentMarker: L.Marker | null = null;
 
@@ -861,6 +884,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.details._div.innerHTML += "<p class='m-2'>" + props.landslide + "</p>";
         }
 
+        if (props.rainfall !== undefined && props.rainfall !== null) {
+          this.details._div.innerHTML += "<div class='m-2'>";
+          this.details._div.innerHTML += "<p class='m-2 font-semibold'>Rainfall</p>";
+          this.details._div.innerHTML += "<p class='mx-2 mt-2 font-semibold'>Range</p>";
+          this.details._div.innerHTML += "<p class='mx-2'>" + props.rainfall.range + "</p>";
+          this.details._div.innerHTML += "<p class='mx-2 mt-2 font-semibold'>Impact</p>";
+          this.details._div.innerHTML += "<p class='mx-2'>" + props.rainfall.impact + "</p>";
+          this.details._div.innerHTML += "</div>";
+        }
+
         this.details._div.innerHTML += "</div>";
       }
     };
@@ -1313,7 +1346,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.details.updateDetails({
               flood: this.hazardRiskDetails.flood.high,
-              typhoon: this.hazardCategoryDetails.typhoon.super_typhoon
+              typhoon: this.hazardCategoryDetails.typhoon.super_typhoon,
+              rainfall: this.typhoonRainfallImpactDetails.super_typhoon
             });
 
             this.affectedBarangays.updateDetails({
@@ -1336,7 +1370,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.details.updateDetails({
               flood: this.hazardRiskDetails.flood.moderate,
-              typhoon: (this.disasterType.category == 'category4') ? this.hazardCategoryDetails.typhoon.typhoon : this.hazardCategoryDetails.typhoon.severe_tropical_storm
+              typhoon: (this.disasterType.category == 'category4') ? this.hazardCategoryDetails.typhoon.typhoon : this.hazardCategoryDetails.typhoon.severe_tropical_storm,
+              rainfall: (this.disasterType.category == 'category4') ? this.typhoonRainfallImpactDetails.typhoon : this.typhoonRainfallImpactDetails.severe_tropical_storm,
             });
 
             this.affectedBarangays.updateDetails({
@@ -1358,7 +1393,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.details.updateDetails({
               flood: this.hazardRiskDetails.flood.low,
-              typhoon: (this.disasterType.category == 'category2') ? this.hazardCategoryDetails.typhoon.tropical_storm : this.hazardCategoryDetails.typhoon.tropical_depression
+              typhoon: (this.disasterType.category == 'category2') ? this.hazardCategoryDetails.typhoon.tropical_storm : this.hazardCategoryDetails.typhoon.tropical_depression,
+              rainfall: (this.disasterType.category == 'category2') ? this.typhoonRainfallImpactDetails.tropical_storm : this.typhoonRainfallImpactDetails.tropical_depression,
             });
 
             this.affectedBarangays.updateDetails({
