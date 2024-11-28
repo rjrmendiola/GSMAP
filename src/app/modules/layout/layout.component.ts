@@ -18,13 +18,14 @@ import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.js';
 // import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 import { DisasterService } from 'src/app/core/services/disaster.service';
+import { SidebarDetailsComponent } from "./components/sidebar/sidebar-details/sidebar-details.component";
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   standalone: true,
-  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent],
+  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent, SidebarDetailsComponent],
   encapsulation: ViewEncapsulation.None,
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
