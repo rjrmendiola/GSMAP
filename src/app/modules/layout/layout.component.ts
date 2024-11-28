@@ -280,7 +280,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'nauguisan', pop_density: 2800.57, livelihood: 'Agriculture/Crops mixed with Coconut Plantation', area: 0.352 },
     { name: 'paglaum', pop_density: 162.57, livelihood: 'Agriculture/Crops mixed with Coconut Plantation', area: 1.71 },
     { name: 'pangna', pop_density: 850.85, livelihood: 'Agriculture/Coconut Plantation', area: 1.18 },
-    { name: 'parag_um', pop_density: 1646.15, livelihood: 'Agriculture/Crops mixed with Coconut Plantation', area: 1.30 },
+    { name: 'parag-um', pop_density: 1646.15, livelihood: 'Agriculture/Crops mixed with Coconut Plantation', area: 1.30 },
     { name: 'parena', pop_density: 2111.83, livelihood: 'Fishery/Fishponds and Mangroves', area: 0.381 },
     { name: 'piloro', pop_density: 535.71, livelihood: 'Agriculture/Crops mixed with Coconut Plantation', area: 1.12 },
     { name: 'ponong', pop_density: 47184, livelihood: 'Trading', area: 0.0515 },
