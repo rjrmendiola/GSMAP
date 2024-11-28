@@ -131,7 +131,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   nearestEvacuationMarkers: L.Marker[] = [];
 
   private evacuationLocations = [
-    { name: 'tigbao', coords:[11.2375868, 124.7133698], venue: 'Tigbao Elementary School', image: './assets/images/Car.jpg' },
+    { name: 'tigbao', coords:[11.2375868, 124.7133698], venue: 'Tigbao Elementary School', image: './assets/images/tigbaoES.jpg' },
     { name: 'piloro', coords:[11.236402318756134, 124.72036848648168], venue: 'Piloro Barangay Hall', image: './assets/images/Car.jpg' },
     { name: 'camansi', coords:[11.21849108135362, 124.71573441769323], venue: 'Camansi Elementary School', image: './assets/images/camansiES.jpg' },
     { name: 'tinaguban', coords:[11.2331392, 124.7056969], venue: 'Tinaguban Elementary School', image: './assets/images/tinagubanES.jpg' },
@@ -183,12 +183,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'sagkahan', coords:[11.2811415, 124.7225726], venue: 'Ecoville', image: './assets/images/Car.jpg' },
     { name: 'canfabi', coords:[11.2662922, 124.7085475], venue: 'Canfabi Elementary School', image: './assets/images/canfabiES.jpg' },
     { name: 'santa_fe', coords:[11.2568516, 124.7150913], venue: 'Sta. Fe Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'parag_um', coords:[11.257343004963658, 124.72799419450331], venue: 'Parag-um Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'parag_um', coords:[11.257343004963658, 124.72799419450331], venue: 'Parag-um Barangay Hall', image: './assets/images/paglaumBH.jpg' },
     { name: 'cogon', coords:[11.2577, 124.7365], venue: 'Cogon Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'binibihan', coords:[11.233367805199322, 124.73453629750668], venue: 'Binibihan Elem. School', image: './assets/images/Car.jpg' },
+    { name: 'binibihan', coords:[11.233367805199322, 124.73453629750668], venue: 'Binibihan Elem. School', image: './assets/images/binibihanES.jpg' },
     { name: 'macalpi', coords:[11.2132913924805, 124.73425541862093], venue: 'Macalpi Elementary School', image: './assets/images/macalpiES.jpg' },
-    { name: 'paglaum', coords:[11.2045, 124.7188], venue: 'Paglaum Barangay Hall', image: './assets/images/Car.jpg' },
-    { name: 'san_isidro', coords:[11.204579867259937, 124.70810276172983], venue: 'San Isidro Barangay Hall', image: './assets/images/Car.jpg' },
+    { name: 'paglaum', coords:[11.2045, 124.7188], venue: 'Paglaum Barangay Hall', image: './assets/images/paglaumBH.jpg' },
+    { name: 'san_isidro', coords:[11.204579867259937, 124.70810276172983], venue: 'San Isidro Barangay Hall', image: './assets/images/sanisidroBH.jpg' },
   ];
 
   private hazardAffectedBarangays = {
@@ -362,7 +362,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     const mapRemover = L.layerGroup([]);
 
     //Evacuation Center Popup
-    const tigbaoPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Tigbao Elementary School </a></div></div>';
+    const tigbaoPopup = '<div class="customPopup"><figure><img src="./assets/images/tigbaoES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Tigbao Elementary School </a></div></div>';
     const piloroPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Barangay Hall</a></div></div>';
     const camansiPopup = '<div class="customPopup"><figure><img src="./assets/images/camansiES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Camansi Elementary School</a></div></div>';
     const tinagubanPopup = '<div class="customPopup"><figure><img src="./assets/images/tinagubanES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Tinaguban Elementary School </a></div></div>';
@@ -385,25 +385,25 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     const eastVisoriaPopup = '<div class="customPopup"><figure><img src="./assets/images/newlifecarigara.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>New Life Christian Church </a></div></div>';
     const tangnanPopup = '<div class="customPopup"><figure><img src="./assets/images/tangnanBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Tangnan Barangay Hall </a></div></div>';
     const nauguisanPopup = '<div class="customPopup"><figure><img src="./assets/images/nauguisanES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Nauguisan Elementary School </a></div></div>';
-    const sanJuanPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>San Juan Barangay Hall</a></div></div>';
+    const sanJuanPopup = '<div class="customPopup"><figure><img src="./assets/images/sanjuanBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>San Juan Barangay Hall</a></div></div>';
     const manloyPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Manloy Elementary School</a></div></div>';
-    const caghaloPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Caghalo Elementary School</a></div></div>';
+    const caghaloPopup = '<div class="customPopup"><figure><img src="./assets/images/caghaloES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Caghalo Elementary School</a></div></div>';
     const upperHiraan1Popup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Upper Hiraan Barangay Hall </a></div></div>';
-    const upperHiraan2Popup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Hiraan Elementary School</a></div></div>';
+    const upperHiraan2Popup = '<div class="customPopup"><figure><img src="./assets/images/hiraanES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Hiraan Elementary School</a></div></div>';
     const lowerHiraanPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Lower Hiraan Barangay Hall</a></div></div>';
-    const liboPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Libo Barangay Hall</a></div></div>';
+    const liboPopup = '<div class="customPopup"><figure><img src="./assets/images/liboBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Libo Barangay Hall</a></div></div>';
     const canlampay1Popup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Canlampay Barangay Hall</a></div></div>';
-    const canlampay2Popup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Canlampay Elementary School</a></div></div>';
-    const hiluctuganPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Hiluctugan Elementary School </a></div></div>';
-    const bislig1Popup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Bislig Barangay Hall </a></div></div>';
-    const bislig2Popup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Bislig Evacuation Center </a></div></div>';
-    const canalPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Canal Barangay Hall</a></div></div>';
-    const uyawanPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Uyawan Barangay Hall </a></div></div>';
-    const barayongPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Barayong Barangay Hall </a></div></div>';
-    const lowerSogodPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Lower Sogod Elementary School</a></div></div>';
-    const upperSogodPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Upper Sogod Barangay Hall</a></div></div>';
+    const canlampay2Popup = '<div class="customPopup"><figure><img src="./assets/images/canlampayES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Canlampay Elementary School</a></div></div>';
+    const hiluctuganPopup = '<div class="customPopup"><figure><img src="./assets/images/hiluctoganES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Hiluctogan Elementary School </a></div></div>';
+    const bislig1Popup = '<div class="customPopup"><figure><img src="./assets/images/bisligBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Bislig Barangay Hall </a></div></div>';
+    const bislig2Popup = '<div class="customPopup"><figure><img src="./assets/images/bisligEvac.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Bislig Evacuation Center </a></div></div>';
+    const canalPopup = '<div class="customPopup"><figure><img src="./assets/images/canal.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Canal Barangay Hall</a></div></div>';
+    const uyawanPopup = '<div class="customPopup"><figure><img src="./assets/images/uyawanBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Uyawan Barangay Hall </a></div></div>';
+    const barayongPopup = '<div class="customPopup"><figure><img src="./assets/images/barayongBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Barayong Barangay Hall </a></div></div>';
+    const lowerSogodPopup = '<div class="customPopup"><figure><img src="./assets/images/sogodES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Lower Sogod Elementary School</a></div></div>';
+    const upperSogodPopup = '<div class="customPopup"><figure><img src="./assets/images/uppersogodBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Upper Sogod Barangay Hall</a></div></div>';
     const candigahubPopup = '<div class="customPopup"><figure><img src="./assets/images/candigahubES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Candigahub Elementary School</a></div></div>';
-    const cutayPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Cutay Barangay Hall</a></div></div>';
+    const cutayPopup = '<div class="customPopup"><figure><img src="./assets/images/cutayBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Cutay Barangay Hall</a></div></div>';
     const pangnaPopup = '<div class="customPopup"><figure><img src="./assets/images/pangnaES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Pangna Elementary School</a></div></div>';
     const baruguhaySurPopup = '<div class="customPopup"><figure><img src="./assets/images/barsurES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Barugohay Sur Elementary School</a></div></div>';
     const bagongLipunanPopup = '<div class="customPopup"><figure><img src="./assets/images/bagonglipunanBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Bagong Lipunan Barangay Hall</a></div></div>';
@@ -414,12 +414,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     const sagkahanPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Ecoville</a></div></div>';
     const canfabiPopup = '<div class="customPopup"><figure><img src="./assets/images/canfabiES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Canfabi Elementary School</a></div></div>';
     const santaFePopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Sta. Fe Barangay Hall </a></div></div>';
-    const paragUmPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Parag-um Barangay Hall</a></div></div>';
+    const paragUmPopup = '<div class="customPopup"><figure><img src="./assets/images/paragumBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Parag-um Barangay Hall</a></div></div>';
     const cogonPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Cogon Barangay Hall</a></div></div>';
-    const binibihanPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Binibihan Elem. School </a></div></div>';
-    const macalpiPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Macalpi Elementary School</a></div></div>';
-    const paglaumPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Paglaum Barangay Hall </a></div></div>';
-    const sanIsidroPopup = '<div class="customPopup"><figure><img src="./assets/images/Car.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>San Isidro Barangay Hall</a></div></div>';
+    const binibihanPopup = '<div class="customPopup"><figure><img src="./assets/images/binibihanES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Binibihan Elem. School </a></div></div>';
+    const macalpiPopup = '<div class="customPopup"><figure><img src="./assets/images/macalpiES.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Macalpi Elementary School</a></div></div>';
+    const paglaumPopup = '<div class="customPopup"><figure><img src="./assets/images/paglaumBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>Paglaum Barangay Hall </a></div></div>';
+    const sanIsidroPopup = '<div class="customPopup"><figure><img src="./assets/images/sanisidroBH.jpg" alt="Car"><figcaption>Barangay Evacuation Center</figcaption></figure><div>San Isidro Barangay Hall</a></div></div>';
 
     //barangay officials Popup
     const tigbaoOfficial = '<div class="customPopup"><figure><figcaption>Punong Barangay</figcaption></figure><div>Benjamin I. Engrato</a></div></div>';
