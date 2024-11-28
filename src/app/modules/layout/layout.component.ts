@@ -871,12 +871,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (props.flood !== undefined && props.flood !== null) {
           this.details._div.innerHTML += "<span class='m-2 font-semibold'>Flood</span>";
-          this.details._div.innerHTML += "<p class='m-2'>" + props.flood + "</p>";
+          this.details._div.innerHTML += "<p class='mx-2'>" + props.flood + "</p>";
         }
 
         if (props.typhoon !== undefined && props.typhoon !== null) {
           this.details._div.innerHTML += "<span class='m-2 font-semibold'>Typhoon</span>";
-          this.details._div.innerHTML += "<p class='m-2'>" + props.typhoon + "</p>";
+          this.details._div.innerHTML += "<p class='mx-2'>" + props.typhoon + "</p>";
         }
 
         if (props.landslide !== undefined && props.landslide !== null) {
