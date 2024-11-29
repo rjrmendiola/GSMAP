@@ -343,6 +343,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('flood_high', './assets/data/flood/hazard_flood_high.geojson');
     this.loadGeoJsonLayer('flood_moderate', './assets/data/flood/hazard_flood_moderate.geojson');
     this.loadGeoJsonLayer('flood_low', './assets/data/flood/hazard_flood_low.geojson');
+    this.loadGeoJsonLayer('flood_landslide', './assets/data/hazard_flood_landslide.geojson');
 
     L.control.scale({imperial: true,}).addTo(this.map);
 
@@ -815,8 +816,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           .map((word: string) => word.toLowerCase()) // Convert each word to lowercase
           .join('_'); // Join the words with underscores
         ;
-
-        console.log(barangayName);
 
         var barangay = this.barangayDetails.find(detail => detail.name === barangayName);
 
