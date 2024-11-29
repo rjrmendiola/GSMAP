@@ -396,7 +396,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.map.addControl(this.details);
         this.details.addTo(this.map);
         this.legend.addTo(this.map);
-        this.affectedBarangays.addTo(this.map);
+        // this.affectedBarangays.addTo(this.map);
       }
     } else if (layerKey === 'flood_high' || layerKey === 'flood_moderate' || layerKey === 'flood_low') {
       if (!this.map.hasLayer(layer)) {
@@ -404,7 +404,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.map.removeControl(this.info);
         this.details.addTo(this.map);
         this.legend.addTo(this.map);
-        this.affectedBarangays.addTo(this.map);
+        // this.affectedBarangays.addTo(this.map);
       }
     } else {
       if (this.map.hasLayer(layer)) {
