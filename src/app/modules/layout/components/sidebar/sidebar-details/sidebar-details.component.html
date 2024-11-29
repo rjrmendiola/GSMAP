@@ -20,7 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="p-4 text-muted-foreground text-xs" *ngIf="floodLandslideDetails.length > 0">
+      <div class="p-4 text-muted-foreground text-xs">
         <div class="overflow-x-auto">
           <table class="min-w-full">
             <thead>
@@ -29,7 +29,7 @@
                 <th class="text-left py-4 px-4 border-b border-gray-800 font-bold text-gray-200">Risk Factor</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="floodLandslideDetails.length > 0">
               <tr class="hover:bg-gray-600" *ngFor="let barangayDetails of floodLandslideDetails">
                 <td class="py-2 px-4 border-b border-gray-800 text-gray-200">{{ barangayDetails.barangay }}</td>
                 <!-- <td class="py-2 px-4 border-b border-gray-800 text-yellow-600" *ngIf="disasterType; else noDisasterType"> -->
