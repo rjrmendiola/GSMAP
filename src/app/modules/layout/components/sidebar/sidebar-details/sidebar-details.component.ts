@@ -153,8 +153,6 @@ export class SidebarDetailsComponent {
     this.floodLandslideDetailsBarangayList = [];
     this.floodLandslideDetails = [];
 
-    console.log(this.disasterType);
-
     this.loadFloodLandslideDetails();
   }
 }
