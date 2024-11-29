@@ -47,22 +47,95 @@ export class SidebarDetailsComponent {
         const layer = L.geoJson(data, {
           onEachFeature: (feature, layer) => {
             const barangay = feature.properties.barangay;
-            console.log(feature.properties);
+            // console.log(feature.properties);
             // console.log(barangay);
             // console.log(this.floodLandslideDetailsBarangayList.includes(barangay));
 
             if (!this.floodLandslideDetailsBarangayList.includes(barangay)) {
-              this.floodLandslideDetails.push({
-                barangay: barangay,
-                flood: {
-                  risk: '',
-                  level: feature.properties.landslide_level
-                },
-                landslide: {
-                  risk: '',
-                  level: feature.properties.flood_level
+              var floodLevel = 'Low';
+              if (feature.properties.flood_level.includes(',')) {
+                var levels = feature.properties.flood_level.split(',');
+                if (levels.includes('Moderate')) {
+                  floodLevel = 'Moderate';
+                } else if (levels.includes('High')) {
+                  floodLevel = 'High';
                 }
-              });
+              }
+
+              var floodRisk = 25;
+              if (floodLevel == 'Moderate') {
+                floodRisk = 50;
+              } else if (floodLevel == 'High') {
+                floodRisk = 100;
+              }
+
+              var landslideLevel = 'Low';
+              if (feature.properties.landslide_level.includes(',')) {
+                var levels = feature.properties.landslide_level.split(',');
+                if (levels.includes('Moderate')) {
+                  landslideLevel = 'Moderate';
+                } else if (levels.includes('High')) {
+                  landslideLevel = 'High';
+                }
+              }
+
+              var landslideRisk = 25;
+              if (landslideLevel == 'Moderate') {
+                landslideRisk = 50;
+              } else if (landslideLevel == 'High') {
+                landslideRisk = 100;
+              }
+
+              if (typeof this.disasterType === 'undefined') {
+                this.floodLandslideDetails.push({
+                  barangay: barangay,
+                  flood: {
+                    risk: floodRisk,
+                    level: floodLevel
+                  },
+                  landslide: {
+                    risk: landslideRisk,
+                    level: landslideLevel
+                  }
+                });
+              } else {
+                var savable = false;
+                if (this.disasterType.type === 'typhoon') {
+                  if (this.disasterType.category === 'category1' && floodLevel === 'Low') {
+                    savable = true;
+                  } else if (this.disasterType.category === 'category2' && floodLevel === 'Low') {
+                    savable = true;
+                  } else if (this.disasterType.category === 'category3' && floodLevel === 'Moderate') {
+                    savable = true;
+                  } else if (this.disasterType.category === 'category4' && floodLevel === 'Moderate') {
+                    savable = true;
+                  } else if (this.disasterType.category === 'category5' && floodLevel === 'High') {
+                    savable = true;
+                  }
+                } else if (this.disasterType.type === 'landslide') {
+                  if (this.disasterType.category === 'category1' && landslideLevel === 'Low') {
+                    savable = true;
+                  } else if (this.disasterType.category === 'category3' && landslideLevel === 'Moderate') {
+                    savable = true;
+                  } else if (this.disasterType.category === 'category4' && landslideLevel === 'High') {
+                    savable = true;
+                  }
+                }
+
+                if (savable) {
+                  this.floodLandslideDetails.push({
+                    barangay: barangay,
+                    flood: {
+                      risk: floodRisk,
+                      level: floodLevel
+                    },
+                    landslide: {
+                      risk: landslideRisk,
+                      level: landslideLevel
+                    }
+                  });
+                }
+              }
 
               this.floodLandslideDetailsBarangayList.push(barangay);
             }
@@ -79,6 +152,8 @@ export class SidebarDetailsComponent {
   ngOnChanges(): void {
     this.floodLandslideDetailsBarangayList = [];
     this.floodLandslideDetails = [];
+
+    console.log(this.disasterType);
 
     this.loadFloodLandslideDetails();
   }

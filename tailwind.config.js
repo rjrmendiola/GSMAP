@@ -84,6 +84,13 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        customFloodHigh: '#483248',
+        customFloodModerate: '#722F37',
+        customFloodLow: '#E0B0FF',
+        customLandslideHigh: '#800000',
+        customLandslideModerate: '#6B8E23',
+        customLandslideLow: '#FFFF00',
+
       },
     },
     fontFamily: {
