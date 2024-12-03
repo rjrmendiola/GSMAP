@@ -13,17 +13,6 @@ import * as L from 'leaflet';
 export class SidebarDetailsComponent {
   @Input() disasterType!: { type: string; category?: string };
   floodLandslideDetailsBarangayList!: string[];
-  // floodLandslideDetails?: {
-  //   barangay: '',
-  //   flood: {
-  //     risk: '',
-  //     level: ''
-  //   },
-  //   landslide: {
-  //     risk: '',
-  //     level: ''
-  //   }
-  // };
   floodLandslideDetails!: any[];
 
   private fetchGeoJson(url: string): Promise<any> {
@@ -47,9 +36,8 @@ export class SidebarDetailsComponent {
         const layer = L.geoJson(data, {
           onEachFeature: (feature, layer) => {
             const barangay = feature.properties.barangay;
-            // console.log(feature.properties);
-            // console.log(barangay);
-            // console.log(this.floodLandslideDetailsBarangayList.includes(barangay));
+            const remarks = feature.properties.remarks.split('.');
+            remarks.pop();
 
             if (!this.floodLandslideDetailsBarangayList.includes(barangay)) {
               var floodLevel = 'Low';
@@ -96,7 +84,9 @@ export class SidebarDetailsComponent {
                   landslide: {
                     risk: landslideRisk,
                     level: landslideLevel
-                  }
+                  },
+                  remarks: remarks,
+                  showremarks: false
                 });
               } else {
                 var savable = false;
@@ -132,7 +122,9 @@ export class SidebarDetailsComponent {
                     landslide: {
                       risk: landslideRisk,
                       level: landslideLevel
-                    }
+                    },
+                    remarks: remarks,
+                    showremarks: false
                   });
                 }
               }
@@ -145,6 +137,10 @@ export class SidebarDetailsComponent {
       .catch((error) => {
         console.error(`Failed to load GeoJSON from ${url}:`, error);
       });
+  }
+
+  public toggleRemarks(barangayDetails: any): void {
+    barangayDetails.showremarks = !barangayDetails.showremarks;
   }
 
   ngOnInit(): void {}

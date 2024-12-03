@@ -1,4 +1,13 @@
 #sidebar-details {
   // flex: 1;
   overflow: auto;
+  max-width: 350px;
+}
+
+.hidden {
+  display: none;
+}
+
+ul li {
+  list-style-type: circle;
 }
