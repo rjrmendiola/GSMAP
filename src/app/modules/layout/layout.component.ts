@@ -1192,6 +1192,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  public zoomToBarangay(event: { barangay: string, coordinates: [number, number] }): void {
+    if (this.map) {
+      this.map.setView(event.coordinates, 15);
+    }
+  }
+
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 

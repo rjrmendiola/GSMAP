@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgFor, NgIf } from '@angular/common';
 import * as L from 'leaflet';
+import { Point } from 'geojson';
 
 @Component({
   selector: 'app-sidebar-details',
@@ -12,6 +13,8 @@ import * as L from 'leaflet';
 })
 export class SidebarDetailsComponent {
   @Input() disasterType!: { type: string; category?: string };
+  @Output() rowClicked = new EventEmitter<{ barangay: string, coordinates: [number, number] }>();
+
   floodLandslideDetailsBarangayList!: string[];
   floodLandslideDetails!: any[];
 
@@ -37,6 +40,7 @@ export class SidebarDetailsComponent {
           onEachFeature: (feature, layer) => {
             const barangay = feature.properties.barangay;
             const remarks = feature.properties.remarks.split('.');
+            const coordinates = (feature.geometry as Point).coordinates;
             remarks.pop();
 
             if (!this.floodLandslideDetailsBarangayList.includes(barangay)) {
@@ -85,6 +89,7 @@ export class SidebarDetailsComponent {
                     risk: landslideRisk,
                     level: landslideLevel
                   },
+                  coordinates: coordinates,
                   remarks: remarks,
                   showremarks: false
                 });
@@ -123,6 +128,7 @@ export class SidebarDetailsComponent {
                       risk: landslideRisk,
                       level: landslideLevel
                     },
+                    coordinates: coordinates,
                     remarks: remarks,
                     showremarks: false
                   });
@@ -141,6 +147,11 @@ export class SidebarDetailsComponent {
 
   public toggleRemarks(barangayDetails: any): void {
     barangayDetails.showremarks = !barangayDetails.showremarks;
+
+    this.rowClicked.emit({
+      barangay: barangayDetails.barangay,
+      coordinates: barangayDetails.coordinates
+    });
   }
 
   ngOnInit(): void {}
