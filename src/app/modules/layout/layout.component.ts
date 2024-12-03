@@ -44,9 +44,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private coloringMap = {
     barangay: '#8A9A5B',
     flood: {
-      low: '#E0B0FF',
+      // low: '#E0B0FF',
+      low: '#EE82EE',
       moderate: '#722F37',
-      high: '#483248'
+      // high: '#483248'
+      high: '#800080'
     },
     landslide: {
       // low: '#FFDE21',
@@ -1000,7 +1002,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         opacity: 1,
         color: this.coloringMap.flood.high,
         dashArray: '3',
-        fillOpacity: 0.7
+        // fillOpacity: 0.7
       };
     } else if (layerKey === 'flood_moderate') {
       return {
@@ -1018,7 +1020,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         opacity: 1,
         color: this.coloringMap.flood.low,
         dashArray: '3',
-        fillOpacity: 0.7
+        // fillOpacity: 0.7
       };
     }
 
