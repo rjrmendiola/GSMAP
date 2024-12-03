@@ -10,9 +10,15 @@
     <div class="flex flex-col space-y-1">
       <div class="p-4">
         <div class="group relative text-muted-foreground">
-          <div class="text-muted-foreground/50 pointer-events-none absolute m-2">
-            <svg-icon src="assets/icons/heroicons/outline/Flood-Fill--Streamline-Sharp-Fill-Material-Symbols.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+          <div class="text-muted-foreground/50 pointer-events-none absolute m-2" *ngIf="disasterType && disasterType.type == 'landslide'; else noDisasterType">
+            <svg-icon src="assets/icons/heroicons/outline/Landslide-Fill--Streamline-Sharp-Fill-Material-Symbols.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
           </div>
+
+          <ng-template #noDisasterType>
+            <div class="text-muted-foreground/50 pointer-events-none absolute m-2">
+              <svg-icon src="assets/icons/heroicons/outline/Flood-Fill--Streamline-Sharp-Fill-Material-Symbols.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+            </div>
+          </ng-template>
           <div class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
             <a class="ml-10 truncate text-sm font-semibold tracking-wide focus:outline-none">
               Barangays Susceptible to Hazards
