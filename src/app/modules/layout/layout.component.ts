@@ -42,6 +42,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private affectedBarangays: any;
   private barangayPolygons: { [key: string]: any } = {};
   private highlightLayer: L.GeoJSON | null = null;
+  private labelMarker: L.Marker | null = null;
 
   private coloringMap = {
     barangay: '#8A9A5B',
@@ -1204,11 +1205,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   public zoomToBarangay(event: { barangay: string, coordinates: [number, number] }): void {
     if (this.map) {
       this.map.setView(event.coordinates, 15);
-      this.highlightBarangay(event.barangay);
+      this.highlightBarangay(event.barangay, event.coordinates);
     }
   }
 
-  public highlightBarangay(barangayName: string): void {
+  public highlightBarangay(barangayName: string, coordinates: any[]): void {
     if (this.highlightLayer) {
       this.map.removeLayer(this.highlightLayer);
     }
@@ -1224,7 +1225,50 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }).addTo(this.map);
 
       this.map.fitBounds(this.highlightLayer.getBounds());
+
+      // Calculate the center of the barangay
+      const center = this.calculateCentroid(barangayGeoJSON.geometry);
+
+      if (this.labelMarker) {
+        this.map.removeLayer(this.labelMarker);
+        this.labelMarker = null; // Reset to avoid dangling references
+      }
+
+      // Add a label at the center
+      this.labelMarker = L.marker(center, {
+        icon: L.divIcon({
+          className: 'barangay-label',
+          html: `<span>${barangayName}</span>`,
+          iconSize: [0, 0], // No default marker size
+        }),
+      }).addTo(this.map);
     }
+  }
+
+  private calculateCentroid(geometry: any): [number, number] {
+    let totalLat = 0;
+    let totalLng = 0;
+    let points = 0;
+
+    if (geometry.type === 'Polygon') {
+      // Process the first ring of the polygon
+      geometry.coordinates[0].forEach((point: [number, number]) => {
+        totalLng += point[0];
+        totalLat += point[1];
+        points++;
+      });
+    } else if (geometry.type === 'MultiPolygon') {
+      // Process the first polygon of the multipolygon
+      geometry.coordinates[0][0].forEach((point: [number, number]) => {
+        totalLng += point[0];
+        totalLat += point[1];
+        points++;
+      });
+    } else {
+      throw new Error('Unexpected geometry type: ' + geometry.type);
+    }
+
+    return [totalLat / points, totalLng / points];
   }
 
   @ViewChild('map')

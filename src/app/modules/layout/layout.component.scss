@@ -229,6 +229,17 @@ span {
   width: 200px;
 }
 
+.barangay-label {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+}
+
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0;
