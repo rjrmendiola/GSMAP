@@ -40,6 +40,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private info: any;
   private details: any;
   private affectedBarangays: any;
+  private barangayPolygons: { [key: string]: any } = {};
+  private highlightLayer: L.GeoJSON | null = null;
 
   private coloringMap = {
     barangay: '#8A9A5B',
@@ -1046,6 +1048,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
 
     if (layerKey === 'barangay') {
+      const barangayName = feature.properties.name;
+      if (barangayName) {
+        this.barangayPolygons[barangayName] = feature;
+      }
+
       layer.on({
         mouseover: this.highlightFeature.bind(this),
         mouseout: this.resetHighlight.bind(this),
@@ -1197,6 +1204,26 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   public zoomToBarangay(event: { barangay: string, coordinates: [number, number] }): void {
     if (this.map) {
       this.map.setView(event.coordinates, 15);
+      this.highlightBarangay(event.barangay);
+    }
+  }
+
+  public highlightBarangay(barangayName: string): void {
+    if (this.highlightLayer) {
+      this.map.removeLayer(this.highlightLayer);
+    }
+
+    const barangayGeoJSON = this.barangayPolygons[barangayName];
+    if (barangayGeoJSON) {
+      this.highlightLayer = L.geoJSON(barangayGeoJSON, {
+        style: {
+          color: 'yellow',
+          weight: 3,
+          fillOpacity: 0.3,
+        },
+      }).addTo(this.map);
+
+      this.map.fitBounds(this.highlightLayer.getBounds());
     }
   }
 
