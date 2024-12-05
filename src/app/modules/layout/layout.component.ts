@@ -19,6 +19,7 @@ import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.js';
 import { Subscription } from 'rxjs';
 import { DisasterService } from 'src/app/core/services/disaster.service';
 import { SidebarDetailsComponent } from "./components/sidebar/sidebar-details/sidebar-details.component";
+import introJs from 'intro.js';
 
 @Component({
   selector: 'app-layout',
@@ -1298,6 +1299,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     );
+
+    this.startTour();
   }
 
   ngAfterViewInit(): void {
@@ -1504,4 +1507,47 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
+
+  public startTour() {
+    const intro = introJs();
+
+    intro.setOptions({
+      steps: [
+        {
+          element: '#welcome',
+          intro: "Welcome to the GISMDS app! This tool is designed to provide detailed information about various hazards and their potential impact. Let's walk through the app and explore its features.",
+          position: 'bottom'
+        },
+        {
+          element: '#hazard-section',
+          intro: "Here, you can choose the type of hazard you are concerned about, such as typhoons, floods, or landslides. Additionally, you can select the severity level to refine the details and focus on specific risk levels.",
+          position: 'left'
+        },
+        {
+          element: '#layers-section',  // Section where users can add more details
+          intro: "The Layers section allows you to add more detailed layers of information to the map. This includes additional data points that can help you analyze the situation in greater depth, such as flood depth, rainfall, or typhoon paths.",
+          position: 'left'
+        },
+        // {
+        //   element: '#additional-map-layers',  // Section where more map layers are available
+        //   intro: "This section provides additional map layers, such as satellite imagery, terrain, and other map types. You can overlay these on the hazard map to get a more detailed and accurate view of the area you're concerned about.",
+        //   position: 'top'
+        // },
+        {
+          element: '#sidebar-details',  // Section where users can view hazard susceptibility information
+          intro: "In this section, you can view the susceptibility of different areas to various hazards. This includes detailed risk assessments based on historical data, local geography, and more, helping you understand which areas are most at risk.",
+          position: 'right'
+        }
+      ],
+      showProgress: true,
+      showButtons: true,
+      exitOnOverlayClick: false,
+      nextLabel: 'Next',
+      prevLabel: 'Back',
+      // skipLabel: 'Skip Tour'
+    });
+
+    intro.start();
+  }
+
 }

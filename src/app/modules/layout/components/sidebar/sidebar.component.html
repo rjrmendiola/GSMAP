@@ -1,7 +1,7 @@
 <nav
   [ngClass]="menuService.showSideBar ? 'w-52 xl:w-64' : 'w-[70px]'"
   class="scrollbar-thumb-rounded scrollbar-track-rounded hidden h-full flex-col justify-between overflow-auto bg-background pt-3 transition-all duration-300 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-card lg:flex">
-  <div class="px-4">
+  <div class="px-4" id="hazard-section">
     <!-- Logo -->
     <div class="relative h-10">
       <div class="flex items-center" *ngIf="menuService.showSideBar">
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Menu Items -->
-    <app-sidebar-menu (menuClicked)="onSidebarMenuClick($event)"></app-sidebar-menu>
+    <app-sidebar-menu (menuClicked)="onSidebarMenuClick($event)" id="layers-section"></app-sidebar-menu>
   </div>
 
   <div class="mx-4 my-4 space-y-1">
@@ -42,7 +42,7 @@
         <span class="rounded-lg bg-primary/10 px-2 font-semibold text-primary">v{{ appJson.version }}</span>
       </div>
 
-      <div class="fixed w-full" *ngIf="!menuService.showSideBar">
+      <div class="fixed w-full" *ngIf="!menuService.showSideBar" id="welcome">
         <span
           class="z-1 absolute left-12 -top-4 w-auto min-w-max origin-left scale-0 rounded-md bg-foreground p-2 text-xs font-bold text-background shadow-md transition-all duration-200 group-hover:scale-100">
           v{{ appJson.version }}

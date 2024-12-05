@@ -34,7 +34,8 @@
               "src/styles.scss",
               "node_modules/leaflet/dist/leaflet.css",
               "node_modules/leaflet-minimap/dist/Control.MiniMap.min.css",
-              "node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css"
+              "node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css",
+              "node_modules/intro.js/minified/introjs.min.css"
             ],
             "scripts": [
               "node_modules/apexcharts/dist/apexcharts.min.js",
