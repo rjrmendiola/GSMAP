@@ -251,3 +251,29 @@ span {
       box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   }
 }
+
+.introjs-tooltip {
+  background-color: #2b3e50;
+  color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  text-align: justify;
+  padding: 10px;
+  border-radius: 15px;
+  width: 800px ;   
+}
+
+.introjs-progress {
+  background-color: #4caf50 ; 
+}
+
+.tooltip-content {
+  align-items: center;
+  gap: 2px;
+}
+
+.welcome-image {
+  margin-top: 5px;
+  align-items: center;
+  border-radius: 2px; 
+}
+

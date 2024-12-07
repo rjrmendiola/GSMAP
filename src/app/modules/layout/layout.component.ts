@@ -1515,17 +1515,23 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       steps: [
         {
           element: '#welcome',
-          intro: "Welcome to the GISMDS app! This tool is designed to provide detailed information about various hazards and their potential impact. Let's walk through the app and explore its features.",
+          intro: '<div class="tooltip-content"> <img src="assets/images/hello.svg" alt="Welcome Illustration" class="welcome-image"> Welcome to the GISMDS app! Navigate this tool to explore flood and landslide-prone areas for informed disaster preparedness and community safety.</div> ',
           position: 'bottom'
         },
         {
           element: '#hazard-section',
-          intro: "Here, you can choose the type of hazard you are concerned about, such as typhoons, floods, or landslides. Additionally, you can select the severity level to refine the details and focus on specific risk levels.",
+          intro: "Here, you can choose the type of hazard you are concerned about, such as typhoon categories along with floods, or landslide. Additionally, you can select the severity level to refine the details and focus on specific risk levels.",
           position: 'left'
         },
         {
           element: '#layers-section',  // Section where users can add more details
-          intro: "The Layers section allows you to add more detailed layers of information to the map. This includes additional data points that can help you analyze the situation in greater depth, such as flood depth, rainfall, or typhoon paths.",
+          intro: `
+                  <div style="display: flex; align-items: center;">
+                    <img src="assets/images/way.svg" alt="Welcome Illustration" style="width: 100px; height: 100px; margin-right: 5px; border-radius: 8px;">
+                    <p style="margin: 0; line-height: 1.5;">
+                      The Layers section allows you to add detailed thematic layers of information to the map. These include data such as roads, barangay boundaries, forests, and buildings for comprehensive view for analysis.
+                    </p>
+                  </div>`,
           position: 'left'
         },
         // {
