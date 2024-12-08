@@ -259,11 +259,11 @@ span {
   text-align: justify;
   padding: 10px;
   border-radius: 15px;
-  width: 800px ;   
+  width: 800px ;
 }
 
 .introjs-progress {
-  background-color: #4caf50 ; 
+  background-color: #4caf50 ;
 }
 
 .tooltip-content {
@@ -272,8 +272,22 @@ span {
 }
 
 .welcome-image {
-  margin-top: 5px;
+  height: 200px;
+  margin: 5px 0px;
   align-items: center;
-  border-radius: 2px; 
+  border-radius: 2px;
+}
+
+
+/* Adjust height for mobile screens (max-width: 640px) */
+@media (max-width: 640px) {
+  #map {
+    min-height: 400px; /* Minimum height for the map */
+    height: 100%; /* Full height of its parent */
+  }
+
+  nav {
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
 }
 
