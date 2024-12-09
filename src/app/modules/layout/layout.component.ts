@@ -1515,37 +1515,53 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       steps: [
         {
           element: '#welcome',
-          intro: '<div class="tooltip-content"> <img src="assets/images/hello.svg" alt="Welcome Illustration" class="welcome-image"> Welcome to the GISMDS app! Navigate this tool to explore flood and landslide-prone areas for informed disaster preparedness and community safety.</div> ',
+          intro: '<div class="tooltip-content"> <img src="assets/images/hello.svg" alt="Welcome Illustration" class="welcome-image"><p> Welcome to the GISMDS app! Navigate this tool to explore flood and landslide-prone areas for informed disaster preparedness and community safety.</p></div> ',
           position: 'bottom'
         },
         {
           element: '#hazard-section',
-          intro: "Here, you can choose the type of hazard you are concerned about, such as typhoon categories along with floods, or landslide. Additionally, you can select the severity level to refine the details and focus on specific risk levels.",
+          intro:`
+                <div style="display: flex; align-items: center;">
+                <p style="margin: 0; line-height: 1.5;">
+                  Here, you can choose the type of hazard you are concerned about, such as typhoon categories along with floods, or landslides. Additionally, you can select the severity level to refine the details and focus on specific risk levels. 
+                </p>
+                  <img src="assets/images/map.svg" style="width: 200px; height: 200px; margin-right: 5px; border-radius: 8px;">
+
+                </div>`,
+          tooltipClass: 'customTooltip',
           position: 'left'
         },
         {
           element: '#layers-section',  // Section where users can add more details
           intro: `
                   <div style="display: flex; align-items: center;">
-                    <img src="assets/images/way.svg" alt="Welcome Illustration" style="width: 100px; height: 100px; margin-right: 5px; border-radius: 8px;">
+                    <img src="assets/images/way.svg" style="width: 200px; height: 200px; margin-right: 5px; border-radius: 8px;">
                     <p style="margin: 0; line-height: 1.5;">
-                      The Layers section allows you to add detailed thematic layers of information to the map. These include data such as roads, barangay boundaries, forests, and buildings for comprehensive view for analysis.
+                      The layers section allows you to add detailed thematic layers of information to the map. These include data such as roads, barangay boundaries, and more for comprehensive view for analysis.
                     </p>
                   </div>`,
+          tooltipClass: 'customTooltip',
           position: 'left'
         },
         // {
         //   element: '#additional-map-layers',  // Section where more map layers are available
-        //   intro: "This section provides additional map layers, such as satellite imagery, terrain, and other map types. You can overlay these on the hazard map to get a more detailed and accurate view of the area you're concerned about.",
+        //   intro: "This section provides additional map layers, such as satellite imagery, topography, and other map types. You can overlay these on the hazard map to get a more detailed and accurate view of the area you're concerned about.",
         //   position: 'top'
         // },
         {
-          element: '#sidebar-details',  // Section where users can view hazard susceptibility information
-          intro: "In this section, you can view the susceptibility of different areas to various hazards. This includes detailed risk assessments based on historical data, local geography, and more, helping you understand which areas are most at risk.",
+          element: '#sidebar-details',
+          intro: `
+                  <div style="display: flex; align-items: center;">
+                  <p style="margin: 0; line-height: 1.5;">
+                      In this section, you can view the susceptibility of different areas to various hazards. This includes detailed risk assessments based on historical data, local geography, and more, helping you understand which areas are most at risk.
+                    </p>
+                    <img src="assets/images/details.svg" style="width: 230px; height: 230; margin-right: 5px; border-radius: 8px;">     
+                  </div>`,
+          tooltipClass: 'customTooltip',
           position: 'right'
         }
       ],
-      showProgress: true,
+      showProgress: false,
       showButtons: true,
       exitOnOverlayClick: false,
       nextLabel: 'Next',
