@@ -48,8 +48,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private coloringMap = {
     barangay: '#8A9A5B',
     flood: {
-      // low: '#E0B0FF',
-      low: '#EE82EE',
+      low: '#E0B0FF',
+      //low: '#EE82EE',
       moderate: '#722F37',
       // high: '#483248'
       high: '#800080'
