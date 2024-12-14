@@ -5,7 +5,7 @@
     <!-- Logo -->
     <div class="relative h-10">
       <!-- <div class="flex items-center justify-center h-full" *ngIf="menuService.showSideBar"> -->
-      <div class="flex items-center h-full space-x-2" *ngIf="menuService.showSideBar">
+      <div class="flex items-center justify-center h-full space-x-2" *ngIf="menuService.showSideBar">
         <div class="icon-wrapper">
           <svg-icon src="assets/icons/compass-symbol-svgrepo-com.svg"></svg-icon>
         </div>
@@ -13,12 +13,12 @@
           {{ appJson.displayName }}
         </b>
       </div>
-       <button
+       <!-- <button
         (click)="toggleSidebar()"
         class="absolute top-2 right-2 h-5 w-5 items-center justify-center rounded text-muted-foreground/50 transition-all duration-200 focus:outline-none hover:text-muted-foreground hidden sm:block"
         [ngClass]="{ 'rotate-180': !menuService.showSideBar }">
         <svg-icon src="assets/icons/heroicons/solid/chevron-double-left.svg"> </svg-icon>
-      </button>
+      </button> -->
     </div>
 
     <!-- Separator -->
