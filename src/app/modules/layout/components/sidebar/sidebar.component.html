@@ -4,7 +4,11 @@
   <div class="px-4" id="hazard-section">
     <!-- Logo -->
     <div class="relative h-10">
-      <div class="flex items-center justify-center h-full" *ngIf="menuService.showSideBar">
+      <!-- <div class="flex items-center justify-center h-full" *ngIf="menuService.showSideBar"> -->
+      <div class="flex items-center h-full space-x-2" *ngIf="menuService.showSideBar">
+        <div class="icon-wrapper">
+          <svg-icon src="assets/icons/compass-symbol-svgrepo-com.svg"></svg-icon>
+        </div>
         <b class="text-lg font-bold text-center text-foreground">
           {{ appJson.displayName }}
         </b>
