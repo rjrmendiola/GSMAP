@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 import { DisasterService } from 'src/app/core/services/disaster.service';
 import { SidebarDetailsComponent } from "./components/sidebar/sidebar-details/sidebar-details.component";
 import introJs from 'intro.js';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-layout',
@@ -33,6 +34,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // @Input() disasterType!: { type: string; category?: string };
   private disasterTypeSubscription!: Subscription;
   disasterType!: { type: string; category?: string };
+
+  isMobile: boolean = false;
+  isHazardDetailsMinimized: boolean = false;
 
   isDropdownOpen: boolean = false;
   private mainContent: HTMLElement | null = null;
@@ -860,7 +864,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.details.updateDetails = (props?: any) => {
       if (!this.details._div) {
-        // console.error('Info control div is not created');
         return;
       }
       // this.details._div.innerHTML =
@@ -869,37 +872,88 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       //     ? `<b>${props.name}</b><br />${props.population} people`
       //     : 'Hover over a barangay');
 
-      if (props !== undefined) {
-        this.details._div.innerHTML = "<div class='m-2'>"
-          + "<span class='font-bold'>Hazard Details</span>"
-          + "<hr>";
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-        if (props.flood !== undefined && props.flood !== null) {
-          this.details._div.innerHTML += "<span class='m-2 font-semibold'>Flood</span>";
-          this.details._div.innerHTML += "<p class='mx-2'>" + props.flood + "</p>";
+      if (isMobile) {
+        this.details._div.classList.add('minimized');
+      }
+
+      // if (props !== undefined) {
+      //   this.details._div.innerHTML = "<div class='m-2'>"
+      //     + "<span class='font-bold'>Hazard Details</span>"
+      //     + "<hr>";
+
+      //   if (props.flood !== undefined && props.flood !== null) {
+      //     this.details._div.innerHTML += "<span class='m-2 font-semibold'>Flood</span>";
+      //     this.details._div.innerHTML += "<p class='mx-2'>" + props.flood + "</p>";
+      //   }
+
+      //   if (props.typhoon !== undefined && props.typhoon !== null) {
+      //     this.details._div.innerHTML += "<span class='m-2 font-semibold'>Typhoon</span>";
+      //     this.details._div.innerHTML += "<p class='mx-2'>" + props.typhoon + "</p>";
+      //   }
+
+      //   if (props.landslide !== undefined && props.landslide !== null) {
+      //     this.details._div.innerHTML += "<span class='m-2 font-semibold'>Landslide</span>";
+      //     this.details._div.innerHTML += "<p class='m-2'>" + props.landslide + "</p>";
+      //   }
+
+      //   if (props.rainfall !== undefined && props.rainfall !== null) {
+      //     this.details._div.innerHTML += "<div class='m-2'>";
+      //     this.details._div.innerHTML += "<p class='m-2 font-semibold'>Rainfall</p>";
+      //     this.details._div.innerHTML += "<p class='mx-2 mt-2 font-semibold'>Range</p>";
+      //     this.details._div.innerHTML += "<p class='mx-2'>" + props.rainfall.range + "</p>";
+      //     this.details._div.innerHTML += "<p class='mx-2 mt-2 font-semibold'>Impact</p>";
+      //     this.details._div.innerHTML += "<p class='mx-2'>" + props.rainfall.impact + "</p>";
+      //     this.details._div.innerHTML += "</div>";
+      //   }
+
+      //   this.details._div.innerHTML += "</div>";
+      // }
+
+      if (props) {
+        const hazardDetails = [];
+        hazardDetails.push(`
+          <div class='m-2'>
+            <span class='font-bold'>Hazard Details</span>
+            <hr>
+        `);
+
+        if (props.flood) {
+          hazardDetails.push(`
+            <span class='m-2 font-semibold'>Flood</span>
+            <p class='mx-2'>${props.flood}</p>
+          `);
         }
 
-        if (props.typhoon !== undefined && props.typhoon !== null) {
-          this.details._div.innerHTML += "<span class='m-2 font-semibold'>Typhoon</span>";
-          this.details._div.innerHTML += "<p class='mx-2'>" + props.typhoon + "</p>";
+        if (props.typhoon) {
+          hazardDetails.push(`
+            <span class='m-2 font-semibold'>Typhoon</span>
+            <p class='mx-2'>${props.typhoon}</p>
+          `);
         }
 
-        if (props.landslide !== undefined && props.landslide !== null) {
-          this.details._div.innerHTML += "<span class='m-2 font-semibold'>Landslide</span>";
-          this.details._div.innerHTML += "<p class='m-2'>" + props.landslide + "</p>";
+        if (props.landslide) {
+          hazardDetails.push(`
+            <span class='m-2 font-semibold'>Landslide</span>
+            <p class='m-2'>${props.landslide}</p>
+          `);
         }
 
-        if (props.rainfall !== undefined && props.rainfall !== null) {
-          this.details._div.innerHTML += "<div class='m-2'>";
-          this.details._div.innerHTML += "<p class='m-2 font-semibold'>Rainfall</p>";
-          this.details._div.innerHTML += "<p class='mx-2 mt-2 font-semibold'>Range</p>";
-          this.details._div.innerHTML += "<p class='mx-2'>" + props.rainfall.range + "</p>";
-          this.details._div.innerHTML += "<p class='mx-2 mt-2 font-semibold'>Impact</p>";
-          this.details._div.innerHTML += "<p class='mx-2'>" + props.rainfall.impact + "</p>";
-          this.details._div.innerHTML += "</div>";
+        if (props.rainfall) {
+          hazardDetails.push(`
+            <div class='m-2'>
+              <p class='m-2 font-semibold'>Rainfall</p>
+              <p class='mx-2 mt-2 font-semibold'>Range</p>
+              <p class='mx-2'>${props.rainfall.range}</p>
+              <p class='mx-2 mt-2 font-semibold'>Impact</p>
+              <p class='mx-2'>${props.rainfall.impact}</p>
+            </div>
+          `);
         }
 
-        this.details._div.innerHTML += "</div>";
+        hazardDetails.push(`</div>`);
+        this.details._div.innerHTML = hazardDetails.join('');
       }
     };
   }
@@ -1277,7 +1331,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private disasterService: DisasterService
+    private disasterService: DisasterService,
+    private breakPointObserver: BreakpointObserver
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1299,6 +1354,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     );
+
+    this.breakPointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      this.isMobile = result.matches;
+      if (this.isMobile) {
+        this.isHazardDetailsMinimized = true; // Minimize on mobile
+      }
+    });
 
     this.startTour();
   }
@@ -1523,7 +1585,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           intro:`
                 <div style="display: flex; align-items: center;">
                 <p style="margin: 0; line-height: 1.5;">
-                  Here, you can choose the type of hazard you are concerned about, such as typhoon categories along with floods, or landslides. Additionally, you can select the severity level to refine the details and focus on specific risk levels. 
+                  Here, you can choose the type of hazard you are concerned about, such as typhoon categories along with floods, or landslides. Additionally, you can select the severity level to refine the details and focus on specific risk levels.
                 </p>
                   <img src="assets/images/map.svg" style="width: 200px; height: 200px; margin-right: 5px; border-radius: 8px;">
 
@@ -1555,7 +1617,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
                   <p style="margin: 0; line-height: 1.5;">
                       In this section, you can view the susceptibility of different areas to various hazards. This includes detailed risk assessments based on historical data, local geography, and more, helping you understand which areas are most at risk.
                     </p>
-                    <img src="assets/images/details.svg" style="width: 230px; height: 230; margin-right: 5px; border-radius: 8px;">     
+                    <img src="assets/images/details.svg" style="width: 230px; height: 230; margin-right: 5px; border-radius: 8px;">
                   </div>`,
           tooltipClass: 'customTooltip',
           position: 'right'
@@ -1572,4 +1634,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     intro.start();
   }
 
+  toggleHazardDetails(): void {
+    this.isHazardDetailsMinimized = !this.isHazardDetailsMinimized;
+  }
 }

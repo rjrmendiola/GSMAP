@@ -259,17 +259,17 @@ span {
   text-align: justify;
   padding: 10px;
   border-radius: 15px;
-  width: 800px ;   
+  width: 800px ;
 }
 
 .introjs-progress {
-  background-color: #4caf50 ; 
+  background-color: #4caf50 ;
 }
 
 .introjs-nextbutton, .introjs-prevbutton{
   background-color: #007bff;
-  color: #fff;  
-  border: none; 
+  color: #fff;
+  border: none;
   transition: background-color 0.3s ease;
   font-size: 14px;
   outline: none;
@@ -278,8 +278,8 @@ span {
 
 .introjs-nextbutton:hover,
 .introjs-prevbutton:hover{
-  color: #fff;  
-  border: none; 
+  color: #fff;
+  border: none;
   background-color: #0056b3;
   outline: none;
 }
@@ -299,6 +299,16 @@ span {
 .customTooltip {
   max-width: 500px;
   text-align: left;
+}
+
+.minimized {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.minimized.expanded {
+  max-height: 500px;
 }
 
 
