@@ -311,6 +311,22 @@ span {
   max-height: 500px;
 }
 
+.map-toggle-icon {
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(47, 47, 47, 0.2);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// .map-toggle-icon i {
+//   font-size: 20px;
+//   color: #007bff;
+// }
+
 
 /* Adjust height for mobile screens (max-width: 640px) */
 @media (max-width: 640px) {

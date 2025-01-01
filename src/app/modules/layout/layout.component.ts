@@ -942,7 +942,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (props.rainfall) {
           hazardDetails.push(`
-            <div class='m-2'>
+            <div class=''>
               <p class='m-2 font-semibold'>Rainfall</p>
               <p class='mx-2 mt-2 font-semibold'>Range</p>
               <p class='mx-2'>${props.rainfall.range}</p>
@@ -1396,6 +1396,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.map.setView([11.232084301848886, 124.7057818628441], 12);
 
+      this.addToggleIcon();
+
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
         this.map.removeLayer(this.layers['flood_low']);
@@ -1646,5 +1648,49 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleHazardDetails(): void {
     this.isHazardDetailsMinimized = !this.isHazardDetailsMinimized;
+  }
+
+  addToggleIcon(): void {
+    if (!this.map) {
+      console.error('Map is not initialized.');
+      return;
+    }
+
+    if (!this.isMobile) {
+      return;
+    }
+
+    const ToggleControl = L.Control.extend({
+      onAdd: () => {
+        const div = L.DomUtil.create('div', 'map-toggle-icon');
+        div.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        `;
+        div.style.cursor = 'pointer';
+        div.style.width = '30px';
+        div.style.height = '30px';
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'center';
+
+        // Add click event to toggle the visibility of the details section
+        div.onclick = () => {
+          this.isHazardDetailsMinimized = !this.isHazardDetailsMinimized;
+
+          if (this.details._div.classList.contains('minimized')) {
+            this.details._div.classList.remove('minimized')
+          } else {
+            this.details._div.classList.add('minimized');
+          }
+        };
+
+        return div;
+      }
+    });
+
+    const toggleControl = new ToggleControl({ position: 'topleft' });
+    toggleControl.addTo(this.map);
   }
 }
