@@ -1386,6 +1386,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleDisasterTypeChange(): void {
     if (this.disasterType && this.map) {
+      if (this.highlightLayer) {
+        this.map.removeLayer(this.highlightLayer);
+      }
+
+      if (this.labelMarker) {
+        this.map.removeLayer(this.labelMarker);
+      }
+
+      this.map.setView([11.232084301848886, 124.7057818628441], 12);
+
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
         this.map.removeLayer(this.layers['flood_low']);
