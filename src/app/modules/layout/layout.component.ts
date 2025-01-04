@@ -48,6 +48,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private barangayPolygons: { [key: string]: any } = {};
   private highlightLayer: L.GeoJSON | null = null;
   private labelMarker: L.Marker | null = null;
+  private toggleControl: any;
 
   private coloringMap = {
     barangay: '#8A9A5B',
@@ -1396,7 +1397,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.map.setView([11.232084301848886, 124.7057818628441], 12);
 
-      this.addToggleIcon();
+      if (!this.toggleControl && this.disasterType.type != 'layer') {
+        this.addToggleIcon();
+        // this.map.removeLayer(this.toggleControl);
+      }
 
       // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
@@ -1690,7 +1694,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    const toggleControl = new ToggleControl({ position: 'topleft' });
-    toggleControl.addTo(this.map);
+    this.toggleControl = new ToggleControl({ position: 'topleft' });
+    this.toggleControl.addTo(this.map);
   }
 }
