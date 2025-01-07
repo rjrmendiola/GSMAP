@@ -100,12 +100,30 @@ export class SidebarDetailsComponent {
                     savable = true;
                   } else if (this.disasterType.category === 'category2' && floodLevel === 'Low') {
                     savable = true;
-                  } else if (this.disasterType.category === 'category3' && floodLevel === 'Moderate') {
-                    savable = true;
-                  } else if (this.disasterType.category === 'category4' && floodLevel === 'Moderate') {
-                    savable = true;
-                  } else if (this.disasterType.category === 'category5' && floodLevel === 'High') {
-                    savable = true;
+                  } else if (this.disasterType.category === 'category3') {
+                    if (floodLevel === 'Moderate') {
+                      savable = true;
+                      floodRisk = 70;
+                    } else if (floodLevel === 'Low') {
+                      savable = true;
+                      floodRisk = 50;
+                    }
+                  } else if (this.disasterType.category === 'category4') {
+                    if (floodLevel === 'Moderate') {
+                      savable = true;
+                      floodRisk = 70;
+                    } else if (floodLevel === 'Low') {
+                      savable = true;
+                      floodRisk = 50;
+                    }
+                  } else if (this.disasterType.category === 'category5') {
+                    if (floodLevel === 'High') {
+                      savable = true;
+                      floodRisk = 100;
+                    } else if (floodLevel === 'Moderate') {
+                      savable = true;
+                      floodRisk = 70;
+                    }
                   }
                 } else if (this.disasterType.type === 'landslide') {
                   if (this.disasterType.category === 'category1' && landslideLevel === 'Low') {
