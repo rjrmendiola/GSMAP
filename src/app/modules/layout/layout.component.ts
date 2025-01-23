@@ -21,6 +21,7 @@ import { DisasterService } from 'src/app/core/services/disaster.service';
 import { SidebarDetailsComponent } from "./components/sidebar/sidebar-details/sidebar-details.component";
 import introJs from 'intro.js';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { EvacuationCenterService, EvacuationCenter } from 'src/app/core/services/evacuation-center.service';
 
 @Component({
   selector: 'app-layout',
@@ -164,6 +165,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Store references to nearest markers
   nearestEvacuationMarkers: L.Marker[] = [];
+
+  // Get the evacuation centers from the database
+  evacuationCenters: any[] = [];
 
   private evacuationLocations = [
     { name: 'tigbao', coords:[11.2375868, 124.7133698], venue: 'Tigbao Elementary School', image: './assets/images/tigbaoES.jpg' },
@@ -430,6 +434,30 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private generatePopup(center: any) {
+    return `
+      <div class="customPopup">
+        <figure>
+          <img src="${center.image}" alt="${center.name}">
+          <figcaption>Barangay Evacuation Center</figcaption>
+        </figure>
+        <div>${center.venue}</div>
+      </div>
+    `;
+  }
+
+  private generateOfficial(center: any) {
+    return `
+      <div class="customPopup">
+        <figure>
+          <figcaption>Punong Barangay</figcaption>
+        </figure>
+        <div>${center.punongBarangay}</div>
+      </div>
+    `;
+  }
+
+
   private markerControl(): void {
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -644,16 +672,27 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           san_isidro = L.marker([11.204579867259937, 124.70810276172983], {icon: pulseIcon}).bindPopup(sanIsidroPopup).on("click", this.clickZoom.bind(this));
 
     //Grouped Layers of Barangay Ecacuation Center
-    const groupedEvacCenter = L.layerGroup([tigbao, piloro, camansi, tinaguban, jugaban,
-                                          san_mateo, guindapunan_west, guindapunan_east, barugohay_norte1, barugohay_norte2, parena,
-                                          sawang, baybay, ponong1, ponong2, ponong3, ponong4, ponong5, west_visoria2, west_visoria3, east_visoria,
-                                          tangnan, nauguisan, san_juan, manloy, caghalo,
-                                          upper_hiraan1, upper_hiraan2, lower_hiraan, libo, canlampay1, canlampay2, hiluctugan,
-                                          bislig1, bislig2, canal, uyawan, barayong, lower_sogod,
-                                          upper_sogod, candigahub, cutay, pangna, baruguhay_sur,
-                                          bagong_lipunan, balilit, barugohay_central, tagak, rizal,
-                                          sagkahan, canfabi, santa_fe, parag_um, cogon,
-                                          binibihan, macalpi, paglaum, san_isidro]);
+    // const groupedEvacCenter = L.layerGroup([tigbao, piloro, camansi, tinaguban, jugaban,
+    //                                       san_mateo, guindapunan_west, guindapunan_east, barugohay_norte1, barugohay_norte2, parena,
+    //                                       sawang, baybay, ponong1, ponong2, ponong3, ponong4, ponong5, west_visoria2, west_visoria3, east_visoria,
+    //                                       tangnan, nauguisan, san_juan, manloy, caghalo,
+    //                                       upper_hiraan1, upper_hiraan2, lower_hiraan, libo, canlampay1, canlampay2, hiluctugan,
+    //                                       bislig1, bislig2, canal, uyawan, barayong, lower_sogod,
+    //                                       upper_sogod, candigahub, cutay, pangna, baruguhay_sur,
+    //                                       bagong_lipunan, balilit, barugohay_central, tagak, rizal,
+    //                                       sagkahan, canfabi, santa_fe, parag_um, cogon,
+    //                                       binibihan, macalpi, paglaum, san_isidro]);
+
+    // With DB integration
+    const popupMarkers = this.evacuationCenters.map((center) => {
+      return L.marker(center.coords, { icon: pulseIcon })
+        .bindPopup(this.generatePopup(center))
+        .on("click", this.clickZoom.bind(this));
+    });
+
+    // Create a grouped layer from the markers
+    const groupedEvacCenter = L.layerGroup(popupMarkers);
+
     const personIcon = L.icon({
       iconUrl: './assets/images/official.png',
       iconSize: [28, 35],
@@ -713,13 +752,25 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           paglaum_PunongBarangay = L.marker([11.2045, 124.7188], {icon: personIcon}).bindPopup(paglaumOfficial).on("click", this.clickZoom.bind(this)),
           sanIsidro_PunongBarangay = L.marker([11.2054, 124.7082], {icon: personIcon}).bindPopup(san_isidroOfficial).on("click", this.clickZoom.bind(this));
 
-    const groupedOfficial = L.layerGroup([tigbao_PunongBarangay, piloro_PunongBarangay, camansi_PunongBarangay, tinaguban_PunongBarangay, jugaban_PunongBarangay, san_mateo_PunongBarangay, guindapunan_west_PunongBarangay,
-                                          guindapunan_east_PunongBarangay, barugohay_norte_PunongBarangay, parena_PunongBarangay, sawang_PunongBarangay, baybay_PunongBarangay, ponong_PunongBarangay, west_visoria_PunongBarangay,
-                                          east_visoria_PunongBarangay, tangnan_PunongBarangay, nauguisan_PunongBarangay, san_juan_PunongBarangay, manloy_PunongBarangay, caghalo_PunongBarangay, upper_hiraan_PunongBarangay,
-                                          lower_hiraan_PunongBarangay, libo_PunongBarangay, canlampay_PunongBarangay, hiluctugan_PunongBarangay, bislig_PunongBarangay, canal_PunongBarangay, uyawan_PunongBarangay,
-                                          barayong_PunongBarangay, lower_sogod_PunongBarangay, upper_sogod_PunongBarangay, candigahub_PunongBarangay, cutay_PunongBarangay, pangna_PunongBarangay, baruguhay_sur_PunongBarangay,
-                                          bagong_lipunan_PunongBarangay, balilit_PunongBarangay, barugohay_central_PunongBarangay, tagak_PunongBarangay, rizal_PunongBarangay, sagkahan_PunongBarangay, canfabi_PunongBarangay,
-                                          santa_fe_PunongBarangay, parag_um_PunongBarangay, cogon_PunongBarangay, binibihan_PunongBarangay, macalpi_PunongBarangay, paglaum_PunongBarangay, sanIsidro_PunongBarangay]);
+
+    // const groupedOfficial = L.layerGroup([tigbao_PunongBarangay, piloro_PunongBarangay, camansi_PunongBarangay, tinaguban_PunongBarangay, jugaban_PunongBarangay, san_mateo_PunongBarangay, guindapunan_west_PunongBarangay,
+    //                                       guindapunan_east_PunongBarangay, barugohay_norte_PunongBarangay, parena_PunongBarangay, sawang_PunongBarangay, baybay_PunongBarangay, ponong_PunongBarangay, west_visoria_PunongBarangay,
+    //                                       east_visoria_PunongBarangay, tangnan_PunongBarangay, nauguisan_PunongBarangay, san_juan_PunongBarangay, manloy_PunongBarangay, caghalo_PunongBarangay, upper_hiraan_PunongBarangay,
+    //                                       lower_hiraan_PunongBarangay, libo_PunongBarangay, canlampay_PunongBarangay, hiluctugan_PunongBarangay, bislig_PunongBarangay, canal_PunongBarangay, uyawan_PunongBarangay,
+    //                                       barayong_PunongBarangay, lower_sogod_PunongBarangay, upper_sogod_PunongBarangay, candigahub_PunongBarangay, cutay_PunongBarangay, pangna_PunongBarangay, baruguhay_sur_PunongBarangay,
+    //                                       bagong_lipunan_PunongBarangay, balilit_PunongBarangay, barugohay_central_PunongBarangay, tagak_PunongBarangay, rizal_PunongBarangay, sagkahan_PunongBarangay, canfabi_PunongBarangay,
+    //                                       santa_fe_PunongBarangay, parag_um_PunongBarangay, cogon_PunongBarangay, binibihan_PunongBarangay, macalpi_PunongBarangay, paglaum_PunongBarangay, sanIsidro_PunongBarangay]);
+
+    // With DB integration
+
+    const officialMarkers = this.evacuationCenters.map((center) => {
+      return L.marker(center.coords, { icon: personIcon })
+        .bindPopup(this.generateOfficial(center))
+        .on("click", this.clickZoom.bind(this));
+    });
+
+    // Create a grouped layer from the markers
+    const groupedOfficial = L.layerGroup(officialMarkers);
 
     // groupedEvacCenter.addTo(this.map);
 
@@ -1210,7 +1261,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private findNearestLocations(latlng: any, count: number) {
-    const distances = this.evacuationLocations.map(location => {
+    // const distances = this.evacuationLocations.map(location => {
+    //   const distance = this.calculateDistance(latlng.lat, latlng.lng, location.coords[0], location.coords[1]);
+    //   return { location, distance };
+    // });
+    const distances = this.evacuationCenters.map(location => {
       const distance = this.calculateDistance(latlng.lat, latlng.lng, location.coords[0], location.coords[1]);
       return { location, distance };
     });
@@ -1333,7 +1388,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private router: Router,
     private disasterService: DisasterService,
-    private breakPointObserver: BreakpointObserver
+    private breakPointObserver: BreakpointObserver,
+    private evacuationCenterService: EvacuationCenterService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1346,6 +1402,29 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.mainContent = document.querySelector('.main-content');
+
+    this.evacuationCenterService.getEvacuationCenters().subscribe({
+      next: (data) => {
+        this.evacuationCenters = data.map((center: EvacuationCenter) => ({
+          name: center.name.toLowerCase(),
+          coords: [parseFloat(center.latitude.toString()), parseFloat(center.longitude.toString())],
+          venue: center.venue,
+          image: center.image ? './assets/images/' + center.image : '',
+          punongBarangay: center.punong_barangay
+        }));
+
+        if (this.map) {
+          this.markerControl();
+          this.addLegend();
+          this.addInfoControl();
+          this.addDetailsControl();
+          this.addAffectedBarangaysControl();
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching evacuation centers:', err);
+      }
+    });
 
     this.disasterTypeSubscription = this.disasterService.disasterType$.subscribe(
       (disasterType) => {
@@ -1368,11 +1447,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.markerControl();
-    this.addLegend();
-    this.addInfoControl();
-    this.addDetailsControl();
-    this.addAffectedBarangaysControl();
+    // this.markerControl();
+    // this.addLegend();
+    // this.addInfoControl();
+    // this.addDetailsControl();
+    // this.addAffectedBarangaysControl();
   }
 
   ngOnDestroy(): void {
