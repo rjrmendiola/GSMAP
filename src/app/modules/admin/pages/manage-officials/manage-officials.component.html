@@ -1,0 +1,41 @@
+<div class="max-w-2xl mx-auto space-y-6 my-6">
+  <h2 class="text-xl font-bold text-gray-900 dark:text-white">Manage Barangay Officials</h2>
+
+  <form [formGroup]="officialForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <input formControlName="barangay_name" placeholder="Barangay Name" class="input" />
+    <input formControlName="name" placeholder="Name" class="input" />
+    <input formControlName="position" placeholder="Position" class="input" />
+
+    <div class="space-x-2">
+      <button type="submit" class="btn bg-blue-600 text-white px-4 py-2 rounded">
+        {{ isEditing ? 'Update' : 'Add' }}
+      </button>
+      <button type="button" (click)="resetForm()" class="btn border px-4 py-2 text-gray-900 dark:text-white">Clear</button>
+    </div>
+  </form>
+
+  <div *ngIf="officials.length > 0" class="mt-8">
+    <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">List of Officials</h3>
+    <table class="table-auto w-full border">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="p-2 border">Barangay</th>
+          <th class="p-2 border">Name</th>
+          <th class="p-2 border">Position</th>
+          <th class="p-2 border">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let official of officials" class="text-center">
+          <td class="border p-2 text-gray-900 dark:text-white">{{ official.barangay_name }}</td>
+          <td class="border p-2 text-gray-900 dark:text-white">{{ official.name }}</td>
+          <td class="border p-2 text-gray-900 dark:text-white">{{ official.position }}</td>
+          <td class="border p-2 space-x-2 text-gray-900 dark:text-white">
+            <button class="text-blue-600" (click)="onEdit(official)">Edit</button>
+            <button class="text-red-600" (click)="onDelete(official.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

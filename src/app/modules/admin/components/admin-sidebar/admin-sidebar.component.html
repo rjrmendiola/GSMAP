@@ -1,0 +1,89 @@
+<!-- <mat-sidenav-container class="admin-layout">
+  <mat-sidenav mode="side" opened>
+    <mat-toolbar>Admin Panel</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/admin/officials">Manage Officials</a>
+      <a mat-list-item routerLink="/admin/users">Manage Users</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+<nav class="w-full text-white scrollbar-thumb-rounded scrollbar-track-rounded h-full flex flex-col justify-between overflow-auto bg-background pt-3 transition-all duration-300 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-card sm:flex lg:flex">
+  <div class="px-4" id="hazard-section">
+    <!-- Logo -->
+    <div class="relative h-10">
+      <!-- <div class="flex items-center justify-center h-full space-x-2" *ngIf="menuService.showSideBar"> -->
+      <div class="flex items-center justify-center h-full space-x-2">
+        <div class="icon-wrapper">
+          <svg-icon src="assets/icons/compass-symbol-svgrepo-com.svg"></svg-icon>
+        </div>
+        <b class="text-lg font-bold text-center text-foreground">
+          {{ appJson.displayName }}
+        </b>
+      </div>
+       <!-- <button
+        (click)="toggleSidebar()"
+        class="absolute top-2 right-2 h-5 w-5 items-center justify-center rounded text-muted-foreground/50 transition-all duration-200 focus:outline-none hover:text-muted-foreground hidden sm:block"
+        [ngClass]="{ 'rotate-180': !menuService.showSideBar }">
+        <svg-icon src="assets/icons/heroicons/solid/chevron-double-left.svg"> </svg-icon>
+      </button> -->
+    </div>
+
+    <!-- Separator -->
+    <div class="pt-3">
+      <hr class="border-dashed border-muted" />
+    </div>
+
+    <div class="pt-4">
+      <div class="mx-1 mb-2 flex items-center justify-between">
+        <small class="text-xs font-semibold text-muted-foreground/50">
+          Management
+        </small>
+      </div>
+      <ul class="flex flex-col space-y-1">
+        <li *ngFor="let link of links">
+          <div class="group relative text-muted-foreground">
+            <div
+              class="text-muted-foreground/50 pointer-events-none absolute m-2">
+              <svg-icon src="assets/icons/heroicons/outline/Flood-Fill--Streamline-Sharp-Fill-Material-Symbols.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+            </div>
+
+            <div class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+              <a [routerLink]="link.path" routerLinkActive="font-bold" class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none">
+                {{ link.label }}
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="mx-4 my-4 space-y-1 hidden sm:block">
+      <!-- Version -->
+      <a
+        target="_blank"
+        href="#"
+        class="group flex h-9 cursor-pointer items-center justify-start rounded p-2 hover:bg-card">
+        <svg-icon
+          src="assets/icons/heroicons/outline/information-circle.svg"
+          [svgClass]="'h-5 w-5 text-muted-foreground/50'">
+        </svg-icon>
+
+        <div class="ml-3 truncate text-[10px] font-semibold tracking-wide focus:outline-none">
+          <span class="rounded-lg bg-primary/10 px-2 font-semibold text-primary">v{{ appJson.version }}</span>
+        </div>
+
+        <!-- <div class="fixed w-full" *ngIf="!menuService.showSideBar" id="welcome"> -->
+        <div class="fixed w-full" id="welcome">
+          <span
+            class="z-1 absolute left-12 -top-4 w-auto min-w-max origin-left scale-0 rounded-md bg-foreground p-2 text-xs font-bold text-background shadow-md transition-all duration-200 group-hover:scale-100">
+            v{{ appJson.version }}
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</nav>
