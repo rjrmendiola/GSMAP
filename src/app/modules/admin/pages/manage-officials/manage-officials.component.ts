@@ -39,14 +39,53 @@ export class ManageOfficialsComponent {
     position: ['', Validators.required],
   });
 
+  isModalOpen = false;
+
+  searchQuery = '';
+
+  page = 1;
+  limit = 20;
+  total = 0;
+
   ngOnInit() {
     this.fetchOfficials();
   }
 
   fetchOfficials() {
-    this.http.get<BarangayOfficial[]>(`${environment.apiUrl}/barangayofficials`).subscribe((data) => {
-      this.officials = data;
+    // this.http.get<BarangayOfficial[]>(`${environment.apiUrl}/barangayofficials`).subscribe((data) => {
+    //   this.officials = data;
+    // });
+
+    const params = {
+      page: this.page.toString(),
+      limit: this.limit.toString(),
+      search: this.searchQuery
+    };
+
+    this.http.get<any>(`${environment.apiUrl}/barangayofficials`, { params }).subscribe(response => {
+      this.officials = response.officials || [];
+      this.total = response.total || 0;
     });
+  }
+
+  openModal(official?: BarangayOfficial) {
+    this.isEditing = !!official;
+    this.selectedId = official?.id ?? null;
+
+    this.officialForm.reset({
+      barangay_name: official?.barangay_name || '',
+      name: official?.name || '',
+      position: official?.position || ''
+    });
+
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.officialForm.reset();
+    this.isEditing = false;
+    this.selectedId = null;
   }
 
   onSubmit() {
@@ -87,4 +126,27 @@ export class ManageOfficialsComponent {
     this.isEditing = false;
     this.selectedId = null;
   }
+
+  onSearch() {
+    // const params = this.searchQuery
+    //   ? { params: { search: this.searchQuery } }
+    //   : {};
+
+    // this.http.get<BarangayOfficial[]>(`${environment.apiUrl}/barangayofficials/`, params).subscribe(data => {
+    //   this.officials = data;
+    // });
+
+    this.page = 1;
+    this.fetchOfficials();
+  }
+
+  onPageChange(newPage: number) {
+    this.page = newPage;
+    this.fetchOfficials();
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.total / this.limit);
+  }
+
 }
