@@ -1,12 +1,5 @@
-<!-- <div class="w-52 xl:w-64 scrollbar-thumb-rounded scrollbar-track-rounded hidden justify-between overflow-auto bg-background pt-3 transition-all duration-300 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-card lg:flex"> -->
-<!-- flex grow flex-col content-start overflow-hidden bg-card -->
 <div id="sidebar-details" class="">
   <div class="pt-6">
-    <!-- <div class="mx-1 mb-2 flex items-center justify-between">
-      <small class="text-xs font-semibold text-muted-foreground/50">
-        Hazards
-      </small>
-    </div> -->
     <div class="flex flex-col space-y-1">
       <div class="p-4">
         <div class="group relative text-muted-foreground">
@@ -27,81 +20,190 @@
         </div>
       </div>
       <div class="p-4 text-muted-foreground text-xs">
-        <!-- <div class="overflow-x-auto"> -->
         <div class="h-screen scrollbar-thumb-rounded scrollbar-track-rounded grow overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted">
-          <table class="min-w-full">
-            <thead>
-              <tr>
-                <th class="text-left py-4 px-4 border-b border-gray-800 font-bold text-gray-200">Barangay</th>
-                <th class="text-left py-4 px-4 border-b border-gray-800 font-bold text-gray-200">Risk Factor</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="floodLandslideDetails.length > 0">
-              <ng-container *ngFor="let barangayDetails of floodLandslideDetails">
-                <tr class="hover:bg-gray-600" (click)="toggleRemarks(barangayDetails)">
-                  <td class="py-2 px-4 border-b border-gray-800 text-gray-200">{{ barangayDetails.barangay }}</td>
-                  <td class="py-2 px-4 border-b border-gray-800" *ngIf="disasterType; else noDisasterType">
-                    <div *ngIf="disasterType.type == 'typhoon'">
-                      <p class="text-customFloodHigh" *ngIf="disasterType.category == 'category5'">Risk: {{ barangayDetails.flood.risk }} %</p>
-                      <p class="text-customFloodModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Risk: {{ barangayDetails.flood.risk }} %</p>
-                      <p class="text-customFloodLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Risk: {{ barangayDetails.flood.risk }} %</p>
+          
+          <!-- Loading Indicator -->
+          <div *ngIf="isLoadingWeather" class="pt-4 text-center">
+            <p class="text-blue-400 font-semibold">Loading weather data...</p>
+          </div>
 
-                      <p class="text-customFloodHigh" *ngIf="disasterType.category == 'category5'">Flood Level: {{ barangayDetails.flood.level }}</p>
-                      <p class="text-customFloodModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Flood Level: {{ barangayDetails.flood.level }}</p>
-                      <p class="text-customFloodLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Flood Level: {{ barangayDetails.flood.level }}</p>
+          <!-- Weather Overview for All Barangays -->
+          <div class="pt-4" *ngIf="weatherData && !isLoadingWeather">
+            <h3 class="text-blue-400 font-semibold mb-4">Current Weather Overview</h3>
+            <div class="grid grid-cols-1 gap-4 mb-6">
+              <div *ngFor="let barangay of barangayNames" class="bg-gray-800 p-3 rounded-lg">
+                <h4 class="text-blue-300 font-medium mb-2">{{ barangay }}</h4>
+                <ng-container *ngIf="getCurrentWeatherConditions(barangay) as currentWeather">
+                  <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div class="text-gray-300">
+                      <span class="font-medium">Temp:</span> {{ currentWeather.temperature | number:'1.1-1' }}°C
                     </div>
-                    <div class="pt-2" *ngIf="disasterType.type == 'landslide'">
-                      <p class="text-customLandslideHigh" *ngIf="disasterType.category == 'category5'">Risk: {{ barangayDetails.landslide.risk }} %</p>
-                      <p class="text-customLandslideModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Risk: {{ barangayDetails.landslide.risk }} %</p>
-                      <p class="text-customLandslideLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Risk: {{ barangayDetails.landslide.risk }} %</p>
-
-                      <p class="text-customLandslideHigh" *ngIf="disasterType.category == 'category5'">Landslide Level: {{ barangayDetails.landslide.level }}</p>
-                      <p class="text-customLandslideModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Landslide Level: {{ barangayDetails.landslide.level }}</p>
-                      <p class="text-customLandslideLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Landslide Level: {{ barangayDetails.landslide.level }}</p>
+                    <div class="text-gray-300">
+                      <span class="font-medium">Humidity:</span> {{ currentWeather.humidity | number:'1.0-0' }}%
                     </div>
-                  </td>
+                    <div class="text-gray-300">
+                      <span class="font-medium">Rain Chance:</span> {{ currentWeather.precipitationProbability | number:'1.0-0' }}%
+                    </div>
+                    <div class="text-gray-300">
+                      <span class="font-medium">Wind:</span> {{ currentWeather.windSpeed | number:'1.1-1' }} km/h
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
 
-                  <ng-template #noDisasterType>
-                    <td class="py-2 px-4 border-b border-gray-800">
-                      <div>
-                        <p>Risk: {{ barangayDetails.flood.risk }}%</p>
-                        <p>Flood Level: {{ barangayDetails.flood.level }}</p>
+          <!-- Detailed Weather for Selected Barangay -->
+          <div class="pt-4" *ngIf="selectedBarangay && selectedBarangayWeather">
+            <h3 class="text-green-400 font-semibold mb-4">Detailed Forecast - {{ selectedBarangay }}</h3>
+            
+            <!-- Current Conditions -->
+            <div class="bg-gray-800 p-4 rounded-lg mb-4">
+              <h4 class="text-green-300 font-medium mb-3">Current Conditions</h4>
+              <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="text-gray-300">
+                  <span class="font-medium">Temperature:</span> {{ selectedBarangayWeather['temperature_2m']?.[0] | number:'1.1-1' }}°C
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Feels Like:</span> {{ selectedBarangayWeather['apparent_temperature']?.[0] | number:'1.1-1' }}°C
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Humidity:</span> {{ selectedBarangayWeather['relative_humidity_2m']?.[0] | number:'1.0-0' }}%
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Dew Point:</span> {{ selectedBarangayWeather['dew_point_2m']?.[0] | number:'1.1-1' }}°C
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Precipitation:</span> {{ selectedBarangayWeather['precipitation_probability']?.[0] | number:'1.0-0' }}%
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Rain:</span> {{ selectedBarangayWeather['rain']?.[0] | number:'1.1-1' }} mm
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Wind Speed:</span> {{ selectedBarangayWeather['wind_speed_10m']?.[0] | number:'1.1-1' }} km/h
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Wind Direction:</span> {{ selectedBarangayWeather['wind_direction_10m']?.[0] | number:'1.0-0' }}°
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Pressure:</span> {{ selectedBarangayWeather['pressure_msl']?.[0] | number:'1.1-1' }} hPa
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Cloud Cover:</span> {{ selectedBarangayWeather['cloudcover']?.[0] | number:'1.0-0' }}%
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Visibility:</span> {{ (selectedBarangayWeather['visibility']?.[0] || 0) / 1000 | number:'1.1-1' }} km
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">UV Index:</span> {{ selectedBarangayWeather['uv_index']?.[0] || 'N/A' }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 24-Hour Forecast -->
+            <div class="bg-gray-800 p-4 rounded-lg mb-4">
+              <h4 class="text-green-300 font-medium mb-3">24-Hour Forecast</h4>
+              <div class="max-h-64 overflow-y-auto">
+                <div *ngFor="let forecast of get24HourForecast(selectedBarangay); let i = index" 
+                     class="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0">
+                  <div class="text-gray-300 text-sm">
+                    {{ forecast.time | date:'MMM d, h:mm a' }}
+                  </div>
+                  <div class="text-right text-sm">
+                    <div class="text-gray-200">{{ forecast.temperature | number:'1.1-1' }}°C</div>
+                    <div class="text-blue-300">{{ forecast.precipitationProbability | number:'1.0-0' }}%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Soil Conditions (if available) -->
+            <div class="bg-gray-800 p-4 rounded-lg mb-4" *ngIf="selectedBarangayWeather?.['soil_temperature_0cm']">
+              <h4 class="text-orange-300 font-medium mb-3">Soil Conditions</h4>
+              <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="text-gray-300">
+                  <span class="font-medium">Surface Temp:</span> {{ selectedBarangayWeather['soil_temperature_0cm']?.[0] | number:'1.1-1' }}°C
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">6cm Temp:</span> {{ selectedBarangayWeather['soil_temperature_6cm']?.[0] | number:'1.1-1' }}°C
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Surface Moisture:</span> {{ selectedBarangayWeather['soil_moisture_0_to_1cm']?.[0] | number:'1.2-2' }} m³/m³
+                </div>
+                <div class="text-gray-300">
+                  <span class="font-medium">Deep Moisture:</span> {{ selectedBarangayWeather['soil_moisture_1_to_3cm']?.[0] | number:'1.2-2' }} m³/m³
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hazard Information Table -->
+          <div class="mt-6">
+            <h3 class="text-red-400 font-semibold mb-4">Hazard Risk Assessment</h3>
+            <table class="min-w-full">
+              <thead>
+                <tr>
+                  <th class="text-left py-4 px-4 border-b border-gray-800 font-bold text-gray-200">Barangay</th>
+                  <th class="text-left py-4 px-4 border-b border-gray-800 font-bold text-gray-200">Risk Factor</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="floodLandslideDetails.length > 0">
+                <ng-container *ngFor="let barangayDetails of floodLandslideDetails">
+                  <tr class="hover:bg-gray-600 cursor-pointer" (click)="toggleRemarks(barangayDetails)">
+                    <td class="py-2 px-4 border-b border-gray-800 text-gray-200">
+                      {{ barangayDetails.barangay }}
+                      <span *ngIf="selectedBarangay === barangayDetails.barangay" class="ml-2 text-green-400 text-xs">
+                        (Selected)
+                      </span>
+                    </td>
+                    <td class="py-2 px-4 border-b border-gray-800" *ngIf="disasterType; else noDisasterType">
+                      <div *ngIf="disasterType.type == 'typhoon'">
+                        <p class="text-customFloodHigh" *ngIf="disasterType.category == 'category5'">Risk: {{ barangayDetails.flood.risk }} %</p>
+                        <p class="text-customFloodModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Risk: {{ barangayDetails.flood.risk }} %</p>
+                        <p class="text-customFloodLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Risk: {{ barangayDetails.flood.risk }} %</p>
+
+                        <p class="text-customFloodHigh" *ngIf="disasterType.category == 'category5'">Flood Level: {{ barangayDetails.flood.level }}</p>
+                        <p class="text-customFloodModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Flood Level: {{ barangayDetails.flood.level }}</p>
+                        <p class="text-customFloodLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Flood Level: {{ barangayDetails.flood.level }}</p>
                       </div>
-                      <div class="pt-2">
-                        <p>Risk: {{ barangayDetails.flood.risk }}%</p>
-                        <p>Landslide Level: {{ barangayDetails.flood.level }}</p>
+                      <div class="pt-2" *ngIf="disasterType.type == 'landslide'">
+                        <p class="text-customLandslideHigh" *ngIf="disasterType.category == 'category5'">Risk: {{ barangayDetails.landslide.risk }} %</p>
+                        <p class="text-customLandslideModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Risk: {{ barangayDetails.landslide.risk }} %</p>
+                        <p class="text-customLandslideLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Risk: {{ barangayDetails.landslide.risk }} %</p>
+
+                        <p class="text-customLandslideHigh" *ngIf="disasterType.category == 'category5'">Landslide Level: {{ barangayDetails.landslide.level }}</p>
+                        <p class="text-customLandslideModerate" *ngIf="disasterType.category == 'category4' || disasterType.category == 'category3'">Landslide Level: {{ barangayDetails.landslide.level }}</p>
+                        <p class="text-customLandslideLow" *ngIf="disasterType.category == 'category2' || disasterType.category == 'category1'">Landslide Level: {{ barangayDetails.landslide.level }}</p>
                       </div>
                     </td>
-                  </ng-template>
-                </tr>
-                <tr [class.hidden]="!barangayDetails.showremarks" class="risk-factors">
-                  <td colspan="2" class="py-2 px-4 border-b border-gray-800 text-gray-400">
-                    <p class="mb-2 font-bold">Risk Factors</p>
-                    <ul *ngFor="let remark of barangayDetails.remarks">
-                      <li class="m-2">{{ remark }}</li>
-                    </ul>
-                  </td>
-                </tr>
-              </ng-container>
-              <!-- <tr class="hover:bg-gray-50">
-                <td class="py-2 px-4 border-b border-gray-800 text-gray-200">Paglaum</td>
-                <td class="py-2 px-4 border-b border-gray-800 text-green-600">
-                  <p>Risk: 20%</p>
-                  <p>Flood Level: Low</p>
-                </td>
-              </tr>
-              <tr class="hover:bg-gray-50">
-                <td class="py-2 px-4 border-b border-gray-800 text-gray-200">Barangay 3</td>
-                <td class="py-2 px-4 border-b border-gray-800 text-red-600">
-                  <p>Risk: 100%</p>
-                  <p>Flood Level: High</p>
-                </td>
-              </tr> -->
-            </tbody>
-          </table>
+
+                    <ng-template #noDisasterType>
+                      <td class="py-2 px-4 border-b border-gray-800">
+                        <div>
+                          <p>Flood Risk: {{ barangayDetails.flood.risk }}%</p>
+                          <p>Flood Level: {{ barangayDetails.flood.level }}</p>
+                        </div>
+                        <div class="pt-2">
+                          <p>Landslide Risk: {{ barangayDetails.landslide.risk }}%</p>
+                          <p>Landslide Level: {{ barangayDetails.landslide.level }}</p>
+                        </div>
+                      </td>
+                    </ng-template>
+                  </tr>
+                  <tr [class.hidden]="!barangayDetails.showremarks" class="risk-factors">
+                    <td colspan="2" class="py-2 px-4 border-b border-gray-800 text-gray-400">
+                      <p class="mb-2 font-bold">Risk Factors</p>
+                      <ul *ngFor="let remark of barangayDetails.remarks">
+                        <li class="m-2">{{ remark }}</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-

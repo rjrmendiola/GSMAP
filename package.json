@@ -55,6 +55,7 @@
     "maplibre-gl": "^1.15.2",
     "ng-apexcharts": "^1.7.1",
     "ngx-sonner": "^2.0.1",
+    "openmeteo": "^1.2.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
