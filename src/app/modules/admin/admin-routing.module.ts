@@ -4,6 +4,7 @@ import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.
 import { ManageOfficialsComponent } from './pages/manage-officials/manage-officials.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 import { AdminLayoutComponent } from './layout/admin-layout.component';
+import { ManageEvacuationCentersComponent } from './pages/manage-evacuation-centers/manage-evacuation-centers.component';
 
 const routes: Routes = [
   // {
@@ -18,6 +19,7 @@ const routes: Routes = [
     data: { role: 'admin' },
     children: [
       { path: 'officials', component: ManageOfficialsComponent },
+      { path: 'evacuation-centers', component: ManageEvacuationCentersComponent },
       { path: 'users', component: ManageUsersComponent },
       // { path: '', redirectTo: 'officials', pathMatch: 'full' }
     ]

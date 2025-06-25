@@ -21,11 +21,31 @@ export interface EvacuationCenter {
 })
 export class EvacuationCenterService {
   // private apiUrl = 'http://localhost:3000/api/evacuationcenters';
-  private apiUrl = `${environment.apiUrl}/evacuationcenters`;
+  private baseUrl = `${environment.apiUrl}/evacuationcenters`;
 
   constructor(private http: HttpClient) {}
 
   getEvacuationCenters(): Observable<EvacuationCenter[]> {
-    return this.http.get<EvacuationCenter[]>(this.apiUrl);
+    return this.http.get<EvacuationCenter[]>(this.baseUrl);
+  }
+
+  getAll() {
+    return this.http.get<EvacuationCenter[]>(this.baseUrl);
+  }
+
+  getById(id: number) {
+    return this.http.get<EvacuationCenter>(`${this.baseUrl}/${id}`);
+  }
+
+  create(center: Partial<EvacuationCenter>) {
+    return this.http.post(this.baseUrl, center);
+  }
+
+  update(id: number, center: Partial<EvacuationCenter>) {
+    return this.http.put(`${this.baseUrl}/${id}`, center);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }
