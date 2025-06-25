@@ -47,6 +47,7 @@ export class SignInComponent implements OnInit {
       return;
     }
 
-    this._router.navigate(['/']);
+    // this._router.navigate(['/']);
+    this._router.navigate(['/admin']);
   }
 }
