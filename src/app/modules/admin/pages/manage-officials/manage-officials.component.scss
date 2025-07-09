@@ -1,0 +1,21 @@
+th {
+  vertical-align: middle;
+  border-right-style: var(--tw-border-style);
+  border-right-width: 1px;
+  border-bottom-style: var(--tw-border-style);
+  border-bottom-width: 1px;
+  border-color: color-mix(in oklab, var(--color-muted) 20%, transparent);
+  background-color: color-mix(in oklab, var(--color-muted) 5%, transparent);
+  padding: .625rem 1rem;
+  font-size: .8125rem;
+  font-weight: 500;
+  line-height: 1.125rem;
+}
+
+td {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+    border-color: color-mix(in oklab, var(--color-muted) 20%, transparent);
+    padding: .75rem 1rem;
+    font-size: .85rem;
+}
