@@ -5,6 +5,7 @@ import { ManageOfficialsComponent } from './pages/manage-officials/manage-offici
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 import { AdminLayoutComponent } from './layout/admin-layout.component';
 import { ManageEvacuationCentersComponent } from './pages/manage-evacuation-centers/manage-evacuation-centers.component';
+import { ManageBarangaysComponent } from './pages/manage-barangays/manage-barangays.component';
 
 const routes: Routes = [
   // {
@@ -18,6 +19,7 @@ const routes: Routes = [
     // canActivate: [AuthGuard],
     data: { role: 'admin' },
     children: [
+      { path: 'barangays', component: ManageBarangaysComponent },
       { path: 'officials', component: ManageOfficialsComponent },
       { path: 'evacuation-centers', component: ManageEvacuationCentersComponent },
       { path: 'users', component: ManageUsersComponent },

@@ -7,6 +7,7 @@ import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.
 import { ManageOfficialsComponent } from './pages/manage-officials/manage-officials.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ManageBarangaysComponent } from './pages/manage-barangays/manage-barangays.component';
 
 @NgModule({
   declarations: [],
@@ -15,6 +16,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     AdminRoutingModule,
     MaterialModule,
     AdminSidebarComponent,
+    ManageBarangaysComponent,
     ManageOfficialsComponent,
     ManageUsersComponent,
     AngularSvgIconModule.forRoot()
