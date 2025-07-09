@@ -1,16 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-manage-officials',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './manage-officials.component.html',
-//   styleUrl: './manage-officials.component.scss'
-// })
-// export class ManageOfficialsComponent {
-
-// }
-
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,23 +5,27 @@ import { HttpClient } from '@angular/common/http';
 import { BarangayOfficial } from 'src/app/shared/models/barangay-official.model';
 import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { Barangay } from 'src/app/shared/models/barangay.model';
 
 @Component({
   selector: 'app-manage-officials',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [AngularSvgIconModule, CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './manage-officials.component.html',
+  styleUrl: './manage-officials.component.scss'
 })
 export class ManageOfficialsComponent {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
 
   officials: BarangayOfficial[] = [];
+  barangays: Barangay[] = [];
   isEditing = false;
   selectedId: number | null = null;
 
   officialForm = this.fb.group({
-    barangay_name: ['', Validators.required],
+    barangay_id: [null as number | null, Validators.required],
     name: ['', Validators.required],
     position: ['', Validators.required],
   });
@@ -48,7 +39,14 @@ export class ManageOfficialsComponent {
   total = 0;
 
   ngOnInit() {
+    this.fetchBarangays();
     this.fetchOfficials();
+  }
+
+  fetchBarangays() {
+    this.http.get<any>(`${environment.apiUrl}/barangays`, {}).subscribe(response => {
+      this.barangays = response.barangays || [];
+    });
   }
 
   fetchOfficials() {
@@ -73,7 +71,8 @@ export class ManageOfficialsComponent {
     this.selectedId = official?.id ?? null;
 
     this.officialForm.reset({
-      barangay_name: official?.barangay_name || '',
+      // barangay_id: official?.barangay_id || null,
+      barangay_id: official?.barangay_id ? Number(official.barangay_id) : null,
       name: official?.name || '',
       position: official?.position || ''
     });
@@ -147,6 +146,39 @@ export class ManageOfficialsComponent {
 
   get totalPages(): number {
     return Math.ceil(this.total / this.limit);
+  }
+
+  getBarangayName(barangay_id: number): string {
+    const barangay = this.barangays.find(b => b.id === barangay_id);
+    return barangay ? barangay.name : 'Unknown';
+  }
+
+  get pageNumbers(): (number | string)[] {
+    const pages: (number | string)[] = [];
+    const maxDisplayed = 5;  // Max number of pages to display (excluding first, last, and ellipsis)
+
+    if (this.totalPages <= 7) {
+      // If total pages are small, show all
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (this.page <= 4) {
+        pages.push(1, 2, 3, 4, 5, '...', this.totalPages);
+      } else if (this.page >= this.totalPages - 3) {
+        pages.push(1, '...', this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1, this.totalPages);
+      } else {
+        pages.push(1, '...', this.page - 1, this.page, this.page + 1, '...', this.totalPages);
+      }
+    }
+
+    return pages;
+  }
+
+  handlePageClick(p: number | string) {
+    if (p !== '...') {
+      this.onPageChange(p as number);
+    }
   }
 
 }
