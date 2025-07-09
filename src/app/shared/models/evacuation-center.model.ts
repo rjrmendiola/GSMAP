@@ -1,9 +1,16 @@
+import { BarangayOfficial } from "./barangay-official.model";
+import { Barangay } from "./barangay.model";
+
 export interface EvacuationCenter {
   id?: number;
   name: string;
-  location: string;
+  barangay_id: number;
+  barangay_official_id: number;
   latitude: number;
   longitude: number;
-  capacity: number;
-  barangay_id: number;
+  venue: string;
+  image: string;
+
+  barangay?: Barangay;
+  barangayOfficial?: BarangayOfficial;
 }
