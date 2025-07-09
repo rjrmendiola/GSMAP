@@ -1,83 +1,121 @@
-<div class="mb-4 flex justify-between">
+<div class="flex justify-between mx-auto px-4 py-4 sm:px-8 lg:container">
   <div class="inline-block">
     <h3 class="font-semibold text-foreground">Barangays</h3>
-    <div class="space-x-1 text-xs font-medium text-muted-foreground">
-      <a href="" class="hover:text-primary">All Barangays:</a>
-      <span class="text-foreground">49,053</span>
-    </div>
   </div>
   <div class="inline-block space-x-4">
-    <!-- <button
-      class="flex-none rounded-md bg-muted px-4 py-2.5 text-xs font-semibold text-muted-foreground hover:text-foreground">
-      Import CSV
-    </button> -->
-    <button class="flex-none rounded-md bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground">
+    <button class="flex-none rounded-md bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground" (click)="openModal()">
       Add barangay
     </button>
   </div>
 </div>
 
 <div class="flex min-w-full flex-col rounded-xl border border-muted/20 bg-background p-2">
-  <!-- <app-table-action></app-table-action> -->
   <div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
-    <h3 class="text-sm font-medium text-muted-foreground">Showing 08 of 100 users</h3>
+    <h3 class="text-sm font-medium text-muted-foreground">Showing {{barangays.length}} of {{total}} barangays</h3>
     <div class="flex flex-wrap gap-2">
       <div class="flex">
         <label class="relative text-muted-foreground">
           <div class="absolute left-2.5 top-2.5">
             <svg-icon src="assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
           </div>
-          <input class="py-2 pl-8 pr-2" placeholder="Search users" type="text" value="" />
+          <input class="py-2 pl-8 pr-2" placeholder="Search barangays" type="text" [(ngModel)]="searchQuery" (input)="onSearch()"/>
         </label>
       </div>
-      <!-- <div class="flex flex-wrap gap-2.5">
-        <select class="w-28 p-2 text-muted-foreground">
-          <option value="1">Active</option>
-          <option value="2">Disabled</option>
-          <option value="2">Pending</option>
-        </select>
-        <select class="w-28 p-2 text-muted-foreground">
-          <option value="1">Latest</option>
-          <option value="2">Older</option>
-          <option value="3">Oldest</option>
-        </select>
-      </div> -->
     </div>
   </div>
 
   <div class="overflow-x-auto">
     <table class="table w-full table-auto border-collapse border-0 text-left align-middle leading-5 text-muted-foreground">
       <thead class="border border-muted/20 text-xs text-muted-foreground">
-        <!-- <tr app-table-header (onCheck)="toggleUsers($event)"></tr> -->
         <tr>
-          <th class="min-w-[300px]">Name</th>
-          <th class="min-w-[180px]">Slug</th>
-          <th class="min-w-[180px]">Action</th>
+          <th class="min-w-[20px]">Name</th>
+          <th class="min-w-[100px]">Slug</th>
+          <th class="min-w-[100px]">Action</th>
         </tr>
       </thead>
       <tbody>
-        <!-- <tr class="hover:bg-card/50" app-table-row [user]="user"></tr> -->
         <tr *ngFor="let barangay of barangays" class="hover:bg-card/50">
-          <td>{{ barangay.name }}</td>
+          <td>
+            <div class="flex items-center gap-2.5">
+              <div class="flex flex-col">
+                <a class="text-sm font-semibold text-foreground hover:text-primary" href="#"> {{ barangay.name }} </a>
+              </div>
+            </div>
+          </td>
           <td>
             {{ barangay.slug }}
           </td>
-          <td class="text-center">
-            <button
-              class="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground">
-              <svg-icon src="./assets/icons/heroicons/outline/ellipsis-vertical.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
-            </button>
+          <td class="flex items-center gap-5 text-center">
+            <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground" (click)="openModal(barangay)">Edit</button>
+            <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground text-red-600" (click)="onDelete(barangay.id!)">Delete</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <!-- <app-table-footer></app-table-footer> -->
+
+  <div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5 text-xs text-muted-foreground">
+    <div class="order-1 flex items-center gap-4 md:order-2">
+      <span>{{page * limit}}-{{page * limit + barangays.length}} of {{total}}</span>
+      <div class="inline-flex items-center gap-1">
+        <button
+          class="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-sm disabled:opacity-50"
+          (click)="onPageChange(page - 1)"
+          [disabled]="page <= 1">
+          <svg-icon src="./assets/icons/heroicons/outline/arrow-long-left.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+        </button>
+        <button
+          *ngFor="let p of pageNumbers"
+          class="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-sm"
+          [ngClass]="{
+            'bg-muted-foreground/10': p === page,
+            'hover:bg-muted-foreground/10': p !== page && p !== '...'
+          }"
+          (click)="handlePageClick(p)">
+          {{ p }}
+        </button>
+        <button
+          class="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-sm hover:bg-muted-foreground/10"
+          (click)="onPageChange(page + 1)"
+          [disabled]="page >= totalPages">
+          <svg-icon src="./assets/icons/heroicons/outline/arrow-long-right.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="bg-white p-6 rounded-md w-[90%] max-w-md shadow-lg">
+    <h2 class="text-lg font-semibold mb-4">
+      {{ isEditing ? 'Edit Barangay' : 'Add Barangay' }}
+    </h2>
+
+    <form [formGroup]="barangayForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label class="block mb-1 font-medium">Name</label>
+        <input
+          formControlName="name"
+          class="input input-bordered w-full"
+          placeholder="Enter Name"
+        />
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button type="button" (click)="closeModal()" class="btn btn-outline">Cancel</button>
+        <button type="submit" class="flex-none rounded-md bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground" [disabled]="barangayForm.invalid">
+          {{ isEditing ? 'Update' : 'Add' }}
+        </button>
+
+      </div>
+    </form>
+  </div>
 </div>
 
 <ng-template #noData>
   <p class="text-gray-500">No results found.</p>
   <tr>
-          <td class="py-4 text-center text-sm" colspan="7">No data found</td>
-        </tr>
+    <td class="py-4 text-center text-sm" colspan="7">No data found</td>
+  </tr>
 </ng-template>
