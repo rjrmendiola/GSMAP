@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Barangay } from 'src/app/shared/models/barangay.model';
 import { environment } from 'src/environments/environment';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-manage-barangays',
   standalone: true,
-  imports: [AngularSvgIconModule, NgFor],
+  imports: [AngularSvgIconModule, NgIf, NgFor, NgClass, ReactiveFormsModule, FormsModule],
   templateUrl: './manage-barangays.component.html',
   styleUrl: './manage-barangays.component.scss'
 })
@@ -48,8 +48,6 @@ export class ManageBarangaysComponent {
     this.http.get<any>(`${environment.apiUrl}/barangays`, { params }).subscribe(response => {
       this.barangays = response.barangays || [];
       this.total = response.total || 0;
-
-      console.log(response);
     });
   }
 
@@ -111,4 +109,48 @@ export class ManageBarangaysComponent {
     this.selectedId = null;
   }
 
+  onSearch() {
+    this.page = 1;
+    this.fetchBarangays();
+  }
+
+  onPageChange(newPage: number) {
+    // this.page = newPage;
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.page = newPage;
+    }
+    this.fetchBarangays();
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.total / this.limit);
+  }
+
+  get pageNumbers(): (number | string)[] {
+    const pages: (number | string)[] = [];
+    const maxDisplayed = 5;  // Max number of pages to display (excluding first, last, and ellipsis)
+
+    if (this.totalPages <= 7) {
+      // If total pages are small, show all
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (this.page <= 4) {
+        pages.push(1, 2, 3, 4, 5, '...', this.totalPages);
+      } else if (this.page >= this.totalPages - 3) {
+        pages.push(1, '...', this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1, this.totalPages);
+      } else {
+        pages.push(1, '...', this.page - 1, this.page, this.page + 1, '...', this.totalPages);
+      }
+    }
+
+    return pages;
+  }
+
+  handlePageClick(p: number | string) {
+    if (p !== '...') {
+      this.onPageChange(p as number);
+    }
+  }
 }
