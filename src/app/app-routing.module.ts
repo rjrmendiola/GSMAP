@@ -19,12 +19,12 @@ const routes: Routes = [
   //   path: 'errors',
   //   loadChildren: () => import('./modules/error/error.module').then((m) => m.ErrorModule),
   // },
-  // {
-  //   path: 'admin',
-  //   loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
-  //   // canActivate: [AuthGuard],
-  //   data: { role: 'admin' }
-  // },
+  {
+    path: 'admin',
+    loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
+    // canActivate: [AuthGuard],
+    data: { role: 'admin' }
+  },
   // { path: '**', redirectTo: 'errors/404' }
   { path: '**', redirectTo: '' }
 ];
