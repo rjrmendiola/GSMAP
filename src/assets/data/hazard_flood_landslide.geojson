@@ -1471,28 +1471,6 @@
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [11.3005, 124.6931944]
-      },
-      "properties": {
-        "barangay": "Jugaban",
-        "purok_sitio": "Carigara Elementary School",
-        "landslide_level": "Low",
-        "flood_level": "Low",
-        "remarks": "The area is flat and is flooded due to lack of proper drainage canals and drainage outlets. However the area can be utilized as a temporary evacuation center.",
-        "recommendation": [
-          "Construction of appropriate drainage canals throughout the barangay especially on Barangay roads, Schools and evacuation centers to prevent soil erosion and to drain excess water in the area.",
-          "Periodic cleaning of creeks, canals, rivers and all forms of drainage systems to prevent clogging of debris and siltation.",
-          "Strictly implement 40 meters No Build Zone along the coastal from the highest tide and a 20 meter buffer zone along riverbanks.",
-          "Residents must be vigilant during heavy rainfall and/or extreme weather condition for sudden rise of seawater especially along coastal areas.",
-          "A high seawall (short term protection) is recommended to prevent big waves from entering the area.",
-          "Mangroves plantation is encouraged to break and slow down waves as itapproaches the area."
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
         "coordinates": [11.30158333, 124.6921111]
       },
       "properties": {
