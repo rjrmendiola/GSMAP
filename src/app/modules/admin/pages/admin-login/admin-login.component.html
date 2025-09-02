@@ -1,0 +1,27 @@
+<div class="flex h-screen w-screen">
+  <div class="auth-bg hidden flex-1 items-center justify-center bg-primary bg-cover lg:flex">
+    <div class="max-w-2xl space-y-4 p-8 text-center text-white">
+      <div class="flex justify-center items-center">
+        <svg-icon
+          src="assets/icons/compass-symbol-svgrepo-com.svg"
+          [svgClass]="'h-[200px] w-auto'">
+        </svg-icon>
+      </div>
+      <h1 class="text-4xl font-bold">GISMDS</h1>
+      <p class="text-xs font-light">
+        Navigating Risk: GIS-Powered Flood and Landslide Mapping for Carigara, Leyte
+      </p>
+    </div>
+  </div>
+  <div class="flex flex-1 items-center justify-center bg-background">
+    <div class="max-w-md overflow-y-auto px-4 sm:w-[500px]">
+      <!-- logo -->
+      <div class="flex items-center justify-center">
+        <b class="text-md pl-3 font-bold text-foreground">GISMDS</b>
+      </div>
+
+      <!-- reuse the actual login form -->
+      <app-sign-in></app-sign-in>
+    </div>
+  </div>
+</div>

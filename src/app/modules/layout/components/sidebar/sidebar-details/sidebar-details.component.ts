@@ -21,13 +21,13 @@ export class SidebarDetailsComponent {
   floodLandslideDetails!: any[];
 
   // Updated weather data properties - flexible typing to match service return
-  public weatherData?: { 
-    [barangay: string]: { 
+  public weatherData?: {
+    [barangay: string]: {
       time: Date[];
       [key: string]: any; // Flexible typing for all weather parameters
-    } 
+    }
   };
-  
+
   public barangayNames: string[] = [];
   public selectedBarangay?: string;
   public selectedBarangayWeather?: {
@@ -53,13 +53,27 @@ export class SidebarDetailsComponent {
   }
 
   public loadFloodLandslideDetails(): void {
-    var url = './assets/data/hazard_flood_landslide.geojson';
+    // var url = './assets/data/hazard_flood_landslide.geojson';
+    var url = 'http://localhost:3000/api/hazardRiskAssessments/geojson'
     this.fetchGeoJson(url)
       .then((data) => {
         const layer = L.geoJson(data, {
           onEachFeature: (feature, layer) => {
             const barangay = feature.properties.barangay;
-            const remarks = feature.properties.remarks.split('.');
+
+            var remarks = [];
+            if (Array.isArray(feature.properties.remarks)) {
+              remarks = feature.properties.remarks;
+              // feature.properties.remarks.forEach((remark: string) => {
+              //   // do something with each remark
+              // });
+            } else if (typeof feature.properties.remarks === 'string') {
+              remarks = feature.properties.remarks.split('.');
+              // feature.properties.remarks.split(',').forEach((remark: string) => {
+              //   // fallback if string
+              // });
+            }
+
             const coordinates = (feature.geometry as Point).coordinates;
             remarks.pop();
 
@@ -219,7 +233,7 @@ export class SidebarDetailsComponent {
 
     const data = this.weatherData[barangay];
     const currentIndex = 0; // You might want to find the current time index
-    
+
     return {
       temperature: data['temperature_2m']?.[currentIndex] || 0,
       humidity: data['relative_humidity_2m']?.[currentIndex] || 0,
@@ -243,7 +257,7 @@ export class SidebarDetailsComponent {
 
     const data = this.weatherData[barangay];
     const forecast = [];
-    
+
     // Get next 24 hours (assuming hourly data)
     for (let i = 0; i < Math.min(24, data.time.length); i++) {
       forecast.push({
@@ -256,7 +270,7 @@ export class SidebarDetailsComponent {
         weatherCode: data['weather_code']?.[i] || 0
       });
     }
-    
+
     return forecast;
   }
 
@@ -277,7 +291,7 @@ export class SidebarDetailsComponent {
       // Load coordinates first
       await this.weatherService.loadCoordinates();
       console.log('Coordinates loaded successfully');
-      
+
       // Load all weather data after coordinates are loaded
       await this.loadAllWeatherData();
     } catch (error) {
