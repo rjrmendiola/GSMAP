@@ -22,6 +22,7 @@ import { SidebarDetailsComponent } from "./components/sidebar/sidebar-details/si
 import introJs from 'intro.js';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { EvacuationCenterService, EvacuationCenter } from 'src/app/core/services/evacuation-center.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -38,6 +39,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isMobile: boolean = false;
   isHazardDetailsMinimized: boolean = false;
+
+  isLoggedIn: boolean = false;
 
   isDropdownOpen: boolean = false;
   private mainContent: HTMLElement | null = null;
@@ -1389,7 +1392,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private disasterService: DisasterService,
     private breakPointObserver: BreakpointObserver,
-    private evacuationCenterService: EvacuationCenterService
+    private evacuationCenterService: EvacuationCenterService,
+    private authService: AuthService,
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1442,7 +1446,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    this.startTour();
+    this.isLoggedIn = this.authService.isLoggedIn();
+
+    if (!this.isLoggedIn) {
+      this.startTour();
+    }
   }
 
   ngAfterViewInit(): void {
