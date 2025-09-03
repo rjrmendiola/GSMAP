@@ -5,6 +5,7 @@ import { SidebarSubmenuComponent } from '../sidebar-submenu/sidebar-submenu.comp
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgFor, NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 interface DisasterType {
   type: string;
@@ -33,8 +34,12 @@ export class SidebarMenuComponent implements OnInit {
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
   isLandslideCategoriesVisible: boolean = false;
+  user: any;
 
-  constructor(public menuService: MenuService) {}
+  constructor(
+    public menuService: MenuService,
+    private authService: AuthService
+  ) {}
 
   public toggleMenu(subMenu: SubMenuItem) {
     this.menuService.toggleMenu(subMenu);
@@ -55,5 +60,8 @@ export class SidebarMenuComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user = this.authService.getUser();
+    console.log('User in SidebarMenuComponent:', this.user);
+  }
 }

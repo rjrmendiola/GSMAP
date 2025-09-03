@@ -7,7 +7,15 @@ import { AdminGuard } from 'src/app/core/guards/admin.guard';
 
 const routes: Routes = [
   { path: 'login', component: AdminLoginComponent },
-  { path: '', component: AdminDashboardComponent, canActivate: [AdminGuard] }
+  {
+    path: '',
+    component: AdminDashboardComponent,
+    canActivate: [AdminGuard],
+    children: [
+      { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
+      { path: 'barangays', loadComponent: () => import('./pages/manage-barangays/manage-barangays.component').then(m => m.ManageBarangaysComponent) },
+    ]
+  }
 ];
 
 @NgModule({

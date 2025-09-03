@@ -13,7 +13,7 @@
 </mat-sidenav-container> -->
 
 <nav class="w-full text-white scrollbar-thumb-rounded scrollbar-track-rounded h-full flex flex-col justify-between overflow-auto bg-background pt-3 transition-all duration-300 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-card sm:flex lg:flex">
-  <div class="px-4" id="hazard-section">
+  <div class="flex-1 px-4" id="hazard-section">
     <!-- Logo -->
     <div class="relative h-10">
       <!-- <div class="flex items-center justify-center h-full space-x-2" *ngIf="menuService.showSideBar"> -->
@@ -60,6 +60,22 @@
           </div>
         </li>
       </ul>
+    </div>
+  </div>
+
+  <div class="p-4 m-4">
+    <div>
+      <button
+        class="w-full px-3 py-2 bg-blue-500 hover:bg-blue-600 rounded mb-2 text-xs"
+        routerLink="/"
+      >
+        Go to Map
+      </button>
+    </div>
+    <div>
+      <button class="w-full px-3 py-2 bg-red-500 hover:bg-red-600 rounded text-xs" (click)="logout()">
+        Logout
+      </button>
     </div>
     <div class="mx-4 my-4 space-y-1 hidden sm:block">
       <!-- Version -->
