@@ -23,13 +23,17 @@ import introJs from 'intro.js';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { EvacuationCenterService, EvacuationCenter } from 'src/app/core/services/evacuation-center.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { FormsModule } from '@angular/forms';
+import { BarangayService } from 'src/app/core/services/barangay.service';
+import { Barangay, BarangayResponse } from 'src/app/shared/models/barangay.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   standalone: true,
-  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent, SidebarDetailsComponent],
+  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent, SidebarDetailsComponent, FormsModule, CommonModule],
   encapsulation: ViewEncapsulation.None,
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -169,8 +173,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Store references to nearest markers
   nearestEvacuationMarkers: L.Marker[] = [];
 
-  // Get the evacuation centers from the database
+  // Get the objects from the database
   evacuationCenters: any[] = [];
+  barangays: Barangay[] = [];
+
+  selectedBarangay: number | null = null;
+
+  filters = {
+    evacuationCenters: false,
+    officials: false,
+  };
 
   private evacuationLocations = [
     { name: 'tigbao', coords:[11.2375868, 124.7133698], venue: 'Tigbao Elementary School', image: './assets/images/tigbaoES.jpg' },
@@ -1392,6 +1404,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private disasterService: DisasterService,
     private breakPointObserver: BreakpointObserver,
+    private barangayService: BarangayService,
     private evacuationCenterService: EvacuationCenterService,
     private authService: AuthService,
   ) {
@@ -1407,28 +1420,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.mainContent = document.querySelector('.main-content');
 
-    this.evacuationCenterService.getEvacuationCenters().subscribe({
-      next: (data) => {
-        this.evacuationCenters = data.map((center: EvacuationCenter) => ({
-          name: center.name.toLowerCase(),
-          coords: [parseFloat(center.latitude.toString()), parseFloat(center.longitude.toString())],
-          venue: center.venue,
-          image: center.image ? './assets/images/' + center.image : '',
-          punongBarangay: center.punong_barangay
-        }));
-
-        if (this.map) {
-          this.markerControl();
-          this.addLegend();
-          this.addInfoControl();
-          this.addDetailsControl();
-          this.addAffectedBarangaysControl();
-        }
-      },
-      error: (err) => {
-        console.error('Error fetching evacuation centers:', err);
-      }
-    });
+    this.loadBarangays();
+    this.loadEvacuationCenters();
 
     this.disasterTypeSubscription = this.disasterService.disasterType$.subscribe(
       (disasterType) => {
@@ -1783,5 +1776,67 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.toggleControl = new ToggleControl({ position: 'topleft' });
     this.toggleControl.addTo(this.map);
+  }
+
+  private loadBarangays(): void {
+    // this.barangayService.getBarangays().subscribe({
+    //   next: (response: BarangayResponse) => {
+    //     // this.barangays = data.map((brgy: Barangay) => ({
+    //     //   name: brgy.name,
+    //     //   slug: brgy.slug
+    //     // }));
+    //     this.barangays = response.barangays;
+    //     this.barangays.sort((a, b) => a.name.localeCompare(b.name));
+    //   },
+    //   error: (err) => {
+    //     console.error('Error fetching barangay details:', err);
+    //   }
+    // });
+    this.barangayService.getAllBarangays().subscribe({
+      next: (response) => {
+        this.barangays = response;
+        this.barangays.sort((a, b) => a.name.localeCompare(b.name));
+      },
+      error: (err) => {
+        console.error('Error fetching barangay details:', err);
+      }
+    });
+  }
+
+  private loadEvacuationCenters(): void {
+    this.evacuationCenterService.getEvacuationCenters().subscribe({
+      next: (data) => {
+        this.evacuationCenters = data.map((center: EvacuationCenter) => ({
+          name: center.name.toLowerCase(),
+          coords: [parseFloat(center.latitude.toString()), parseFloat(center.longitude.toString())],
+          venue: center.venue,
+          image: center.image ? './assets/images/' + center.image : '',
+          punongBarangay: center.punong_barangay
+        }));
+
+        if (this.map) {
+          this.markerControl();
+          this.addLegend();
+          this.addInfoControl();
+          this.addDetailsControl();
+          this.addAffectedBarangaysControl();
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching evacuation centers:', err);
+      }
+    });
+  }
+
+
+
+  onBarangayChange() {
+    console.log('Selected Barangay:', this.selectedBarangay);
+    // Later: zoom to this barangay using coordinates from API or stored geojson
+  }
+
+  onFilterChange() {
+    console.log('Filters updated:', this.filters);
+    // Show/hide evacuation center or officials layers
   }
 }
