@@ -340,13 +340,20 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // Add the fullscreen control
-    this.map.addControl(new L.Control.Fullscreen({
+    // this.map.addControl(new L.Control.Fullscreen({
+    //   content: '<i class="fa fa-expand"></i>',
+    //   title: {
+    //     'false': 'View Fullscreen',
+    //     'true': 'Exit Fullscreen'},
+    //   contentCancel: '<i class="fa fa-compress"></i>',
+    // }));
+    L.control.fullscreen({
       content: '<i class="fa fa-expand"></i>',
       title: {
         'false': 'View Fullscreen',
         'true': 'Exit Fullscreen'},
       contentCancel: '<i class="fa fa-compress"></i>',
-    }));
+    }).addTo(this.map);
 
     // Add minimap
     const osmURL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -1804,9 +1811,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private loadEvacuationCenters(): void {
-    this.evacuationCenterService.getEvacuationCenters().subscribe({
-      next: (data) => {
-        this.evacuationCenters = data.map((center: EvacuationCenter) => ({
+    this.evacuationCenterService.getAllEvacuationCenters().subscribe({
+      next: (response) => {
+        this.evacuationCenters = response.map((center: EvacuationCenter) => ({
           name: center.name.toLowerCase(),
           coords: [parseFloat(center.latitude.toString()), parseFloat(center.longitude.toString())],
           venue: center.venue,
@@ -1827,8 +1834,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
-
 
   onBarangayChange() {
     console.log('Selected Barangay:', this.selectedBarangay);
