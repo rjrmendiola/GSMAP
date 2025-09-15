@@ -29,6 +29,10 @@ export class EvacuationCenterService {
     return this.http.get<EvacuationCenter[]>(this.baseUrl);
   }
 
+  getAllEvacuationCenters(): Observable<EvacuationCenter[]> {
+    return this.http.get<EvacuationCenter[]>(this.baseUrl+'?all=true');
+  }
+
   getAll() {
     return this.http.get<EvacuationCenter[]>(this.baseUrl);
   }
