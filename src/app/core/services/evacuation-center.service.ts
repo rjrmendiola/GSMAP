@@ -3,17 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+export interface BarangayOfficial {
+  id: number;
+  name: string;
+  position: string;
+}
+
 export interface EvacuationCenter {
   id: number;
   name: string;
+  barangay_id: number;
   barangay: string;
-  punong_barangay: string;
   latitude: number;
   longitude: number;
   venue: string;
   image: string;
   created_at: string;
   updated_at: string;
+  barangay_official: BarangayOfficial
 }
 
 @Injectable({
