@@ -32,12 +32,12 @@
           <!-- Other Data Toggles -->
           <div class="flex items-center gap-4">
             <label class="inline-flex items-center">
-              <input type="checkbox" [(ngModel)]="filters.evacuationCenters" (change)="onFilterChange()" class="form-checkbox text-blue-600">
+              <input type="checkbox" [(ngModel)]="filters.evacuationCenters" (change)="toggleEvacuationCenters()" class="form-checkbox text-blue-600">
               <span class="ml-2 text-xs">Evacuation Centers</span>
             </label>
 
             <label class="inline-flex items-center">
-              <input type="checkbox" [(ngModel)]="filters.officials" (change)="onFilterChange()" class="form-checkbox text-blue-600">
+              <input type="checkbox" [(ngModel)]="filters.officials" (change)="toggleBarangayOfficials()" class="form-checkbox text-blue-600">
               <span class="ml-2 text-xs">Barangay Officials</span>
             </label>
           </div>

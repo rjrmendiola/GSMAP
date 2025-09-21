@@ -15,7 +15,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 })
 export class SidebarDetailsComponent {
   @Input() disasterType!: { type: string; category?: string };
-  @Output() rowClicked = new EventEmitter<{ barangay: string, coordinates: [number, number] }>();
+  @Output() rowClicked = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
 
   floodLandslideDetailsBarangayList!: string[];
   floodLandslideDetails!: any[];
@@ -200,6 +200,7 @@ export class SidebarDetailsComponent {
 
   // NEW METHOD: Load weather data for all barangays
   public async loadAllWeatherData(): Promise<void> {
+    return;
     try {
       this.isLoadingWeather = true;
       this.weatherData = await this.weatherService.getWeatherDataForAllBarangay();
@@ -277,10 +278,15 @@ export class SidebarDetailsComponent {
   public toggleRemarks(barangayDetails: any): void {
     barangayDetails.showremarks = !barangayDetails.showremarks;
 
-    // Load weather data for the clicked barangay
-    this.loadWeatherDataForBarangay(barangayDetails.barangay);
+    if (barangayDetails.showremarks) {
+      // Load weather data for the clicked barangay
+      this.loadWeatherDataForBarangay(barangayDetails.barangay);
+    }
+
+    console.log(barangayDetails);
 
     this.rowClicked.emit({
+      id: barangayDetails.id,
       barangay: barangayDetails.barangay,
       coordinates: barangayDetails.coordinates
     });
