@@ -179,7 +179,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   barangays: Barangay[] = [];
   barangayOfficials: any[] = [];
 
+  baseLayers: any;
+  baseLayerTypes = [
+    { label: 'OpenStreetMap', value: 'openstreetmap' },
+    { label: 'Google Satellite', value: 'satellite' },
+    { label: 'Topographic', value: 'topographic' }
+  ];
+
   selectedBarangay: number | null = null;
+  selectedMapType: string | null = null;
 
   evacuationCenterLayer: L.LayerGroup | null = null;
   barangayOfficialLayer: L.LayerGroup | null = null;
@@ -279,6 +287,19 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   private initMap(): void {
+    this.baseLayers = {
+      openstreetmap: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }),
+      satellite: L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        subdomains: ['mt0','mt1','mt2','mt3'],
+        attribution: '© Google'
+      }),
+      topographic: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenTopoMap'
+      })
+    };
+
     this.map = L.map('map', {
       center: [11.232084301848886, 124.7057818628441],
       zoom: 12,
@@ -1604,7 +1625,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }));
 
         if (this.map) {
-          this.markerControl();
+          // Hide this for now since contents are already displayed above the map
+          // this.markerControl();
+
           this.addLegend();
           this.addInfoControl();
           this.addDetailsControl();
@@ -1626,11 +1649,21 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // Later: zoom to this barangay using coordinates from API or stored geojson
   }
 
-  onFilterChange() {
-    console.log('Filters updated:', this.filters);
-    // Show/hide evacuation center or officials layers
-    if (this.filters.evacuationCenters) {
-      this.map.addLayer(this.layers['evacuation_centers']);
+  onMapTypeChange(event: any) {
+    const selectedType = event.target.value;
+
+    // Remove existing tile layer
+    this.map.eachLayer((layer: any) => {
+      if (layer instanceof L.TileLayer) {
+        this.map.removeLayer(layer);
+      }
+    });
+
+    // Add the selected tile layer
+    if (selectedType !== 'null') {
+      this.baseLayers[selectedType].addTo(this.map);
     }
+
+    this.selectedMapType = selectedType;
   }
 }

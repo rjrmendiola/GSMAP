@@ -23,9 +23,20 @@
             <select id="barangay"
               [(ngModel)]="selectedBarangay"
               (change)="onBarangayChange()"
-              class="mt-1 block w-48 rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 xs:text-xs">
-              <option [ngValue]="null">-- Select a barangay --</option>
+              class="mt-1 block w-35 rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 xs:text-xs">
+              <option [ngValue]="null">Select a barangay</option>
               <option *ngFor="let brgy of barangays" [ngValue]="brgy.slug">{{ brgy.name }}</option>
+            </select>
+          </div>
+
+          <!-- Map Type Dropdown -->
+          <div>
+            <select id="maptype"
+              [value]="selectedMapType"
+              (change)="onMapTypeChange($event)"
+              class="mt-1 block w-40 rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 xs:text-xs">
+              <option [value]="null">Select a map type</option>
+              <option *ngFor="let type of baseLayerTypes" [value]="type.value">{{ type.label }}</option>
             </select>
           </div>
 
