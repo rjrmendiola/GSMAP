@@ -200,6 +200,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     officials: false,
   };
 
+  showFilterPopup = false;
+
   private hazardAffectedBarangays = {
     'landslide': {
       // 'unlikely': "Areas have minimal susceptibility, characterized by stable terrain, gentle slopes, and solid ground, where landslides are rare under typical conditions",
@@ -1619,8 +1621,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }));
 
         this.barangayOfficials = response.map((center: any) => ({
-          name: center.barangay_official?.name,
-          position: center.barangay_official?.position,
+          name: center.official?.name,
+          position: center.official?.position,
           coords: [parseFloat(center.latitude.toString()), parseFloat(center.longitude.toString())]
         }));
 
@@ -1644,12 +1646,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  onBarangayChange() {
+  onBarangayFilterChange(event: any): void {
+    const selectedId = +event.target.value;
+
+    console.log(this.barangays);
+
     console.log('Selected Barangay:', this.selectedBarangay);
     // Later: zoom to this barangay using coordinates from API or stored geojson
   }
 
-  onMapTypeChange(event: any) {
+  onMapTypeChange(event: any): void {
     const selectedType = event.target.value;
 
     // Remove existing tile layer
@@ -1665,5 +1671,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.selectedMapType = selectedType;
+  }
+
+  toggleFilterPopup() {
+    this.showFilterPopup = !this.showFilterPopup;
   }
 }

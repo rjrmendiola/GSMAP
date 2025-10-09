@@ -1,13 +1,9 @@
 <!-- <div class="flex flex-col h-screen w-full overflow-hidden sm:flex-row"> -->
 <div class="flex flex-col h-screen w-full sm:flex-row">
-  <!-- Sidebar -->
   <app-sidebar></app-sidebar>
-  <!-- <app-sidebar></app-sidebar> -->
 
-  <!-- <div class="flex grow flex-col overflow-hidden bg-card"> -->
   <div class="flex grow flex-col bg-card">
     <!-- Main content -->
-    <!-- <div id="main-content" class="grow overflow-auto scrollbar-none"> -->
       <div id="main-content" class="h-64 sm:h-full scrollbar-none">
       <div class="map-container">
         <!-- Header -->
@@ -16,42 +12,102 @@
         </div>
 
         <!-- Filters -->
-        <div class="bg-white shadow-md p-2 border-b flex flex-wrap gap-6 items-center">
-          <!-- Barangay Dropdown -->
-          <div>
-            <!-- <label for="barangay" class="block text-xs font-medium text-gray-700">Barangay</label> -->
-            <select id="barangay"
-              [(ngModel)]="selectedBarangay"
-              (change)="onBarangayChange()"
-              class="mt-1 block w-35 rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 xs:text-xs">
-              <option [ngValue]="null">Select a barangay</option>
-              <option *ngFor="let brgy of barangays" [ngValue]="brgy.slug">{{ brgy.name }}</option>
-            </select>
+        <div class="bg-white shadow-md p-2 border-b">
+          <div class="flex flex-wrap gap-6 items-center">
+            <!-- Barangay Dropdown -->
+            <div>
+              <select id="barangay"
+                [(ngModel)]="selectedBarangay"
+                (change)="onBarangayFilterChange($event)"
+                class="mt-1 block w-35 rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 xs:text-xs">
+                <option [ngValue]="null">Select a barangay</option>
+                <option *ngFor="let brgy of barangays" [ngValue]="brgy.id">{{ brgy.name }}</option>
+              </select>
+            </div>
+
+            <!-- Map Type Dropdown -->
+            <div>
+              <select id="maptype"
+                [value]="selectedMapType"
+                (change)="onMapTypeChange($event)"
+                class="mt-1 block w-40 rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 xs:text-xs">
+                <option [value]="null">Select a map type</option>
+                <option *ngFor="let type of baseLayerTypes" [value]="type.value">{{ type.label }}</option>
+              </select>
+            </div>
+
+            <!-- Other Data Toggles -->
+            <!-- <div class="flex items-center gap-4">
+              <label class="inline-flex items-center">
+                <input type="checkbox" [(ngModel)]="filters.evacuationCenters" (change)="toggleEvacuationCenters()" class="form-checkbox text-blue-600">
+                <span class="ml-2 text-xs">Evacuation Centers</span>
+              </label>
+
+              <label class="inline-flex items-center">
+                <input type="checkbox" [(ngModel)]="filters.officials" (change)="toggleBarangayOfficials()" class="form-checkbox text-blue-600">
+                <span class="ml-2 text-xs">Barangay Officials</span>
+              </label>
+            </div> -->
           </div>
 
-          <!-- Map Type Dropdown -->
-          <div>
-            <select id="maptype"
-              [value]="selectedMapType"
-              (change)="onMapTypeChange($event)"
-              class="mt-1 block w-40 rounded-md border-gray-300 shadow-xs focus:border-blue-500 focus:ring-blue-500 xs:text-xs">
-              <option [value]="null">Select a map type</option>
-              <option *ngFor="let type of baseLayerTypes" [value]="type.value">{{ type.label }}</option>
-            </select>
+          <div class="flex gap-2 p-2 relative">
+            <button class="bg-red-600 text-white text-xs px-4 py-2 rounded-md">Clear</button>
+            <button class="bg-green-500 text-white text-xs px-4 py-2 rounded-md">Search</button>
+            <button
+              class="bg-green-400 text-white text-xs px-4 py-2 rounded-md flex items-center justify-center"
+              (click)="toggleFilterPopup()"
+            >
+              <!-- <i class="fa fa-filter text-xs"></i> -->
+               Filter
+            </button>
+
+            <!-- Filter Popup -->
+            <div
+              *ngIf="showFilterPopup"
+              class="absolute top-10 left-0 bg-gray-700 text-white w-72 rounded-lg shadow-lg border border-blue-400 z-50"
+              id="filter-popup"
+            >
+              <div class="bg-blue-600 p-2 flex items-center rounded-t-lg">
+                <i class="fa fa-filter text-lg mr-2"></i>
+                <span class="font-semibold text-sm">Filter Area</span>
+              </div>
+
+              <div class="p-3 space-y-3 text-xs">
+                <!-- Danger Zone Area -->
+                <div>
+                  <p class="font-semibold mb-1">Filter Danger Zone Area</p>
+                  <div class="flex h-3 w-full rounded overflow-hidden">
+                    <div class="bg-green-500 w-1/3"></div>
+                    <div class="bg-yellow-400 w-1/3"></div>
+                    <div class="bg-red-500 w-1/3"></div>
+                  </div>
+                </div>
+
+                <!-- Barangay Officials -->
+                <div>
+                  <p class="font-semibold mb-1">Filter Barangay Officials</p>
+                  <div class="grid grid-cols-2 gap-1">
+                    <label *ngFor="let official of barangayOfficials">
+                      <input type="checkbox" [(ngModel)]="official.selected" class="mr-1" />
+                      {{ official.name }}
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Evacuation Centers -->
+                <div>
+                  <p class="font-semibold mb-1">Filter Evacuation Centers</p>
+                  <div class="grid grid-cols-2 gap-1">
+                    <label *ngFor="let center of evacuationCenters">
+                      <input type="checkbox" [(ngModel)]="center.selected" class="mr-1" />
+                      {{ center.venue }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Other Data Toggles -->
-          <div class="flex items-center gap-4">
-            <label class="inline-flex items-center">
-              <input type="checkbox" [(ngModel)]="filters.evacuationCenters" (change)="toggleEvacuationCenters()" class="form-checkbox text-blue-600">
-              <span class="ml-2 text-xs">Evacuation Centers</span>
-            </label>
-
-            <label class="inline-flex items-center">
-              <input type="checkbox" [(ngModel)]="filters.officials" (change)="toggleBarangayOfficials()" class="form-checkbox text-blue-600">
-              <span class="ml-2 text-xs">Barangay Officials</span>
-            </label>
-          </div>
         </div>
 
         <!-- Map Frame -->
