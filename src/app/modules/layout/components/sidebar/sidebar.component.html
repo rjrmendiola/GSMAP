@@ -53,17 +53,17 @@
 
   <div class="mx-4 my-4 space-y-1 hidden sm:block">
     <!-- Version -->
-    <a
-      target="_blank"
-      href="#"
-      class="group flex h-9 cursor-pointer items-center justify-start rounded p-2 hover:bg-card">
+    <div
+      class="group flex h-9 items-center justify-start rounded p-2 hover:bg-card">
       <svg-icon
         src="assets/icons/heroicons/outline/information-circle.svg"
         [svgClass]="'h-5 w-5 text-muted-foreground/50'">
       </svg-icon>
 
       <div class="ml-3 truncate text-[10px] font-semibold tracking-wide focus:outline-none">
-        <span class="rounded-lg bg-primary/10 px-2 font-semibold text-primary">v{{ appJson.version }}</span>
+        <span class="rounded-lg bg-primary/10 px-2 font-semibold text-primary">
+          v{{ appJson.version }}
+        </span>
       </div>
 
       <div class="fixed w-full" *ngIf="!menuService.showSideBar" id="welcome">
@@ -72,6 +72,6 @@
           v{{ appJson.version }}
         </span>
       </div>
-    </a>
+    </div>
   </div>
 </nav>
