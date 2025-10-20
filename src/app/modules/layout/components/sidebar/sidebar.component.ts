@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import packageJson from '../../../../../../package.json';
 import { MenuService } from '../../services/menu.service';
@@ -23,7 +23,9 @@ interface DisasterType {
   imports: [NgClass, NgIf, AngularSvgIconModule, SidebarMenuComponent, RouterLink],
 })
 export class SidebarComponent implements OnInit {
+  @Input() barangays: any[] = [];
   @Output() disasterTypeChange = new EventEmitter<{ type: string, category?: string }>();
+  @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
 
   public appJson: any = packageJson;
   public isLoggedIn = false;
@@ -47,6 +49,10 @@ export class SidebarComponent implements OnInit {
 
   public onSidebarMenuClick(event: { type: string; category?: string }) {
     this.disasterService.setDisasterType(event);
+  }
+
+  public onBarangaySelected(event: { id: number; barangay: string; coordinates: [number, number] }) {
+    this.barangaySelected.emit(event);
   }
 
   public logout() {
