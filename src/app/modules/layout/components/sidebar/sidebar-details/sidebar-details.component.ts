@@ -200,7 +200,6 @@ export class SidebarDetailsComponent {
 
   // NEW METHOD: Load weather data for all barangays
   public async loadAllWeatherData(): Promise<void> {
-    return;
     try {
       this.isLoadingWeather = true;
       this.weatherData = await this.weatherService.getWeatherDataForAllBarangay();
