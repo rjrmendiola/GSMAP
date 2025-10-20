@@ -27,7 +27,12 @@
     </div>
 
     <!-- Menu Items -->
-    <app-sidebar-menu (menuClicked)="onSidebarMenuClick($event)" id="layers-section"></app-sidebar-menu>
+    <app-sidebar-menu
+      [barangays]="barangays"
+      (barangaySelected)="onBarangaySelected($event)"
+      (menuClicked)="onSidebarMenuClick($event)"
+      id="layers-section">
+    </app-sidebar-menu>
   </div>
 
   <div class="p-4 text-white space-y-2">

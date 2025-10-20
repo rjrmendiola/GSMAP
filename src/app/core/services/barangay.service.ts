@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 export interface Barangay {
   id: number;
@@ -21,7 +22,6 @@ export interface BarangayResponse {
   providedIn: 'root'
 })
 export class BarangayService {
-  // private apiUrl = '/api/barangays';
   private apiUrl = `${environment.apiUrl}/barangays`;
 
   constructor(private http: HttpClient) {}
@@ -39,5 +39,20 @@ export class BarangayService {
 
   createBarangay(barangay: Partial<Barangay>): Observable<Barangay> {
     return this.http.post<Barangay>(this.apiUrl, barangay);
+  }
+
+  // Shared state for DSS / map interaction
+  private barangaysSource = new BehaviorSubject<Barangay[]>([]);
+  barangays$ = this.barangaysSource.asObservable();
+
+  private selectedBarangaySource = new BehaviorSubject<Barangay | null>(null);
+  selectedBarangay$ = this.selectedBarangaySource.asObservable();
+
+  setBarangays(barangays: Barangay[]): void {
+    this.barangaysSource.next(barangays);
+  }
+
+  selectBarangay(barangay: Barangay): void {
+    this.selectedBarangaySource.next(barangay);
   }
 }

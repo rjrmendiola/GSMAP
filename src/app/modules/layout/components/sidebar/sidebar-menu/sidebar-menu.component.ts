@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SubMenuItem } from 'src/app/core/models/menu.model';
 import { MenuService } from '../../../services/menu.service';
 import { SidebarSubmenuComponent } from '../sidebar-submenu/sidebar-submenu.component';
@@ -6,6 +6,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgFor, NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { Barangay } from 'src/app/shared/models/barangay.model';
 
 interface DisasterType {
   type: string;
@@ -30,11 +31,21 @@ interface DisasterType {
     ],
 })
 export class SidebarMenuComponent implements OnInit {
+  @Input() barangays: Barangay[] = [];
+  @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
   isLandslideCategoriesVisible: boolean = false;
   user: any;
+
+  selectedMapType: string | null = null;
+
+  baseLayerTypes = [
+    { label: 'OpenStreetMap', value: 'openstreetmap' },
+    { label: 'Google Satellite', value: 'satellite' },
+    { label: 'Topographic', value: 'topographic' }
+  ];
 
   constructor(
     public menuService: MenuService,
@@ -58,6 +69,36 @@ export class SidebarMenuComponent implements OnInit {
     } else if (categoryId === 'landslide-categories') {
       this.isLandslideCategoriesVisible = !this.isLandslideCategoriesVisible;
     }
+  }
+
+  public onBarangayChange(event: any): void {
+    const barangayId = +event.target.value;
+    const barangay = this.barangays.find(b => b.id === barangayId);
+    if (barangay) {
+      this.barangaySelected.emit({
+        id: barangay.id ?? 0,
+        barangay: barangay.name,
+        coordinates: [event.longitude, event.latitude]
+      });
+    }
+  }
+
+  public onMapTypeChange(event: any): void {
+    const selectedType = event.target.value;
+
+    // // Remove existing tile layer
+    // this.map.eachLayer((layer: any) => {
+    //   if (layer instanceof L.TileLayer) {
+    //     this.map.removeLayer(layer);
+    //   }
+    // });
+
+    // // Add the selected tile layer
+    // if (selectedType !== 'null') {
+    //   this.baseLayers[selectedType].addTo(this.map);
+    // }
+
+    // this.selectedMapType = selectedType;
   }
 
   ngOnInit(): void {
