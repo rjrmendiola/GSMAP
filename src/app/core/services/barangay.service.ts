@@ -8,6 +8,8 @@ export interface Barangay {
   id: number;
   name: string;
   slug: string;
+  latitude: number;
+  longitude: number;
   // add other fields if your API returns more (e.g., geojson, population, etc.)
 }
 

@@ -84,7 +84,7 @@ export class SidebarMenuComponent implements OnInit {
       this.barangaySelected.emit({
         id: barangay.id ?? 0,
         barangay: barangay.name,
-        coordinates: [event.longitude, event.latitude]
+        coordinates: [barangay.longitude, barangay.latitude]
       });
     }
   }
@@ -109,6 +109,5 @@ export class SidebarMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
-    console.log('User in SidebarMenuComponent:', this.user);
   }
 }
