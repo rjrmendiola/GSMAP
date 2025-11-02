@@ -669,6 +669,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private addDetailsControl(layerKey?: any, category?: any): void {
+    // Remove hazard details all the time
+    return;
+
     this.details = new L.Control({ position: 'topleft' });
 
     this.details.onAdd = () => {
