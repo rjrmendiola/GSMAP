@@ -37,6 +37,8 @@ export class SidebarMenuComponent implements OnInit {
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
   isLandslideCategoriesVisible: boolean = false;
+  isLayerCategoriesVisible: boolean = false;
+  isFilterCategoriesVisible: boolean = false;
   user: any;
 
   selectedMapType: string | null = null;
@@ -68,6 +70,10 @@ export class SidebarMenuComponent implements OnInit {
       this.isFloodCategoriesVisible = !this.isFloodCategoriesVisible;
     } else if (categoryId === 'landslide-categories') {
       this.isLandslideCategoriesVisible = !this.isLandslideCategoriesVisible;
+    } else if (categoryId === 'layer-categories') {
+      this.isLayerCategoriesVisible = !this.isLayerCategoriesVisible;
+    } else if (categoryId === 'filter-categories') {
+      this.isFilterCategoriesVisible = !this.isFilterCategoriesVisible;
     }
   }
 
