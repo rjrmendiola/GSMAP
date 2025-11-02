@@ -1077,8 +1077,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public zoomToBarangay(event: { id: number, barangay: string, coordinates: [number, number] }): void {
     if (this.map) {
-      console.log("this.selectedBarangay", this.selectedBarangay);
-      console.log("event.id", event.id);
       if (this.selectedBarangay === event.id) {
         this.selectedBarangay = null;
         this.map.setView([11.232084301848886, 124.7057818628441], 12);  // zoom out + clear highlight

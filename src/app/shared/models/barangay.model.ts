@@ -2,6 +2,8 @@ export interface Barangay {
   id?: number;
   name: string;
   slug: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface BarangayResponse {
