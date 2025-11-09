@@ -29,8 +29,9 @@
     <!-- Menu Items -->
     <app-sidebar-menu
       [barangays]="barangays"
-      (barangaySelected)="onBarangaySelected($event)"
       (menuClicked)="onSidebarMenuClick($event)"
+      (barangaySelected)="onBarangaySelected($event)"
+      (mapTypeSelected)="onMapTypeSelected($event)"
       id="layers-section">
     </app-sidebar-menu>
   </div>

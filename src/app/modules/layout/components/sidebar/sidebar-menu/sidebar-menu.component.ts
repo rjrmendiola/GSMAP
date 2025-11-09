@@ -32,8 +32,9 @@ interface DisasterType {
 })
 export class SidebarMenuComponent implements OnInit {
   @Input() barangays: Barangay[] = [];
-  @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
+  @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
+  @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
   isLandslideCategoriesVisible: boolean = false;
@@ -91,6 +92,11 @@ export class SidebarMenuComponent implements OnInit {
 
   public onMapTypeChange(event: any): void {
     const selectedType = event.target.value;
+    if (selectedType) {
+      this.mapTypeSelected.emit({
+        type: selectedType
+      });
+    }
 
     // // Remove existing tile layer
     // this.map.eachLayer((layer: any) => {

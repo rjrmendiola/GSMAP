@@ -28,6 +28,7 @@ import { FormsModule } from '@angular/forms';
 import { BarangayService } from 'src/app/core/services/barangay.service';
 import { Barangay, BarangayResponse } from 'src/app/shared/models/barangay.model';
 import { CommonModule } from '@angular/common';
+import { MapTypeService } from 'src/app/core/services/maptype.service';
 
 @Component({
   selector: 'app-layout',
@@ -40,7 +41,10 @@ import { CommonModule } from '@angular/common';
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // @Input() disasterType!: { type: string; category?: string };
   private disasterTypeSubscription!: Subscription;
+  private mapTypeSubscription!: Subscription;
+
   disasterType!: { type: string; category?: string };
+  mapType!: { type: string; };
 
   isMobile: boolean = false;
   isHazardDetailsMinimized: boolean = false;
@@ -1214,6 +1218,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private barangayService: BarangayService,
     private evacuationCenterService: EvacuationCenterService,
     private barangayOfficialService: BarangayOfficialService,
+    private mapTypeService: MapTypeService,
     private authService: AuthService,
   ) {
     this.router.events.subscribe((event: Event) => {
@@ -1236,6 +1241,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         if (disasterType) {
           this.disasterType = disasterType;
           this.handleDisasterTypeChange();
+        }
+      }
+    );
+
+    this.mapTypeSubscription = this.mapTypeService.mapType$.subscribe(
+      (mapType) => {
+        if (mapType) {
+          this.mapType = mapType;
+          this.handleMapTypeChange();
         }
       }
     );
@@ -1270,6 +1284,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.disasterTypeSubscription) {
       this.disasterTypeSubscription.unsubscribe();
+    }
+
+    if (this.mapTypeSubscription) {
+      this.mapTypeSubscription.unsubscribe();
     }
   }
 
@@ -1472,6 +1490,28 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     }
+  }
+
+  handleMapTypeChange(): void {
+    if (this.mapType) {
+      // Remove existing tile layer
+      this.map.eachLayer((layer: any) => {
+        if (layer instanceof L.TileLayer) {
+          this.map.removeLayer(layer);
+        }
+      });
+
+      var selectedMapType = this.mapType.type;
+
+      // Add the selected tile layer
+      if (selectedMapType !== 'null') {
+        this.baseLayers[selectedMapType].addTo(this.map);
+      }
+
+      // this.selectedMapType = selectedMapType;
+    }
+
+
   }
 
   public startTour() {

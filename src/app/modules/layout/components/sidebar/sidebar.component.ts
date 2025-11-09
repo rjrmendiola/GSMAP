@@ -9,6 +9,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { Theme } from 'src/app/core/models/theme.model';
 import { DisasterService } from 'src/app/core/services/disaster.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { MapTypeService } from 'src/app/core/services/maptype.service';
 
 interface DisasterType {
   type: string;
@@ -26,6 +27,7 @@ export class SidebarComponent implements OnInit {
   @Input() barangays: any[] = [];
   @Output() disasterTypeChange = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
+  @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
 
   public appJson: any = packageJson;
   public isLoggedIn = false;
@@ -33,6 +35,7 @@ export class SidebarComponent implements OnInit {
   constructor(
     public menuService: MenuService,
     public disasterService: DisasterService,
+    public mapTypeService: MapTypeService,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -48,11 +51,17 @@ export class SidebarComponent implements OnInit {
   }
 
   public onSidebarMenuClick(event: { type: string; category?: string }) {
+    console.log("onSidebarMenuClick: ", event.type);
     this.disasterService.setDisasterType(event);
   }
 
   public onBarangaySelected(event: { id: number; barangay: string; coordinates: [number, number] }) {
+    console.log("onBarangaySelected: ", event.id);
     this.barangaySelected.emit(event);
+  }
+
+  public onMapTypeSelected(event: { type: string }) {
+    this.mapTypeService.setMapType(event);
   }
 
   public logout() {
