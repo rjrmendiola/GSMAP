@@ -405,7 +405,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map.addLayer(layer);
         // this.map.removeControl(this.info);
         // this.map.addControl(this.details);
-        this.details.addTo(this.map);
+        // this.details.addTo(this.map);
         this.legend.addTo(this.map);
         // this.affectedBarangays.addTo(this.map);
       }
@@ -413,7 +413,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!this.map.hasLayer(layer)) {
         this.map.addLayer(layer);
         // this.map.removeControl(this.info);
-        this.details.addTo(this.map);
+        // this.details.addTo(this.map);
         this.legend.addTo(this.map);
         // this.affectedBarangays.addTo(this.map);
       }
@@ -1321,15 +1321,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.map.hasLayer(this.layers['landslide_high'])) {
             this.map.removeLayer(this.layers['landslide_high'])
 
-            this.map.removeControl(this.details);
+            // this.map.removeControl(this.details);
             this.map.removeControl(this.affectedBarangays);
             this.map.removeControl(this.legend);
           } else {
             this.toggleLayer('landslide_high');
 
-            this.details.updateDetails({
-              landslide: this.hazardRiskDetails.landslide.high
-            });
+            // this.details.updateDetails({
+            //   landslide: this.hazardRiskDetails.landslide.high
+            // });
 
             this.affectedBarangays.updateDetails({
               barangays: this.hazardAffectedBarangays.landslide.highly_susceptible
@@ -1349,9 +1349,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             this.toggleLayer('landslide_moderate');
 
-            this.details.updateDetails({
-              landslide: this.hazardRiskDetails.landslide.moderate
-            });
+            // this.details.updateDetails({
+            //   landslide: this.hazardRiskDetails.landslide.moderate
+            // });
 
             this.affectedBarangays.updateDetails({
               barangays: this.hazardAffectedBarangays.landslide.moderately_susceptible
@@ -1371,9 +1371,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             this.toggleLayer('landslide_low');
 
-            this.details.updateDetails({
-              landslide: this.hazardRiskDetails.landslide.low
-            });
+            // this.details.updateDetails({
+            //   landslide: this.hazardRiskDetails.landslide.low
+            // });
 
             this.affectedBarangays.updateDetails({
               barangays: this.hazardAffectedBarangays.landslide.less_likely_to_experience
@@ -1409,11 +1409,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             this.toggleLayer('flood_high');
 
-            this.details.updateDetails({
-              flood: this.hazardRiskDetails.flood.high,
-              typhoon: this.hazardCategoryDetails.typhoon.super_typhoon,
-              rainfall: this.typhoonRainfallImpactDetails.super_typhoon
-            });
+            // this.details.updateDetails({
+            //   flood: this.hazardRiskDetails.flood.high,
+            //   typhoon: this.hazardCategoryDetails.typhoon.super_typhoon,
+            //   rainfall: this.typhoonRainfallImpactDetails.super_typhoon
+            // });
 
             this.affectedBarangays.updateDetails({
               barangays: this.hazardAffectedBarangays.typhoon.super_typhoon
@@ -1427,17 +1427,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.map.hasLayer(this.layers['flood_moderate'])) {
             this.map.removeLayer(this.layers['flood_moderate'])
 
-            this.map.removeControl(this.details);
+            // this.map.removeControl(this.details);
             this.map.removeControl(this.affectedBarangays);
             this.map.removeControl(this.legend);
           } else {
             this.toggleLayer('flood_moderate');
 
-            this.details.updateDetails({
-              flood: this.hazardRiskDetails.flood.moderate,
-              typhoon: (this.disasterType.category == 'category4') ? this.hazardCategoryDetails.typhoon.typhoon : this.hazardCategoryDetails.typhoon.severe_tropical_storm,
-              rainfall: (this.disasterType.category == 'category4') ? this.typhoonRainfallImpactDetails.typhoon : this.typhoonRainfallImpactDetails.severe_tropical_storm,
-            });
+            // this.details.updateDetails({
+            //   flood: this.hazardRiskDetails.flood.moderate,
+            //   typhoon: (this.disasterType.category == 'category4') ? this.hazardCategoryDetails.typhoon.typhoon : this.hazardCategoryDetails.typhoon.severe_tropical_storm,
+            //   rainfall: (this.disasterType.category == 'category4') ? this.typhoonRainfallImpactDetails.typhoon : this.typhoonRainfallImpactDetails.severe_tropical_storm,
+            // });
 
             this.affectedBarangays.updateDetails({
               barangays: this.hazardAffectedBarangays.typhoon.typhoon
@@ -1450,17 +1450,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.map.hasLayer(this.layers['flood_low'])) {
             this.map.removeLayer(this.layers['flood_low'])
 
-            this.map.removeControl(this.details);
+            // this.map.removeControl(this.details);
             this.map.removeControl(this.affectedBarangays);
             this.map.removeControl(this.legend);
           } else {
             this.toggleLayer('flood_low');
 
-            this.details.updateDetails({
-              flood: this.hazardRiskDetails.flood.low,
-              typhoon: (this.disasterType.category == 'category2') ? this.hazardCategoryDetails.typhoon.tropical_storm : this.hazardCategoryDetails.typhoon.tropical_depression,
-              rainfall: (this.disasterType.category == 'category2') ? this.typhoonRainfallImpactDetails.tropical_storm : this.typhoonRainfallImpactDetails.tropical_depression,
-            });
+            // this.details.updateDetails({
+            //   flood: this.hazardRiskDetails.flood.low,
+            //   typhoon: (this.disasterType.category == 'category2') ? this.hazardCategoryDetails.typhoon.tropical_storm : this.hazardCategoryDetails.typhoon.tropical_depression,
+            //   rainfall: (this.disasterType.category == 'category2') ? this.typhoonRainfallImpactDetails.tropical_storm : this.typhoonRainfallImpactDetails.tropical_depression,
+            // });
 
             this.affectedBarangays.updateDetails({
               barangays: this.hazardAffectedBarangays.typhoon.tropical_depression
