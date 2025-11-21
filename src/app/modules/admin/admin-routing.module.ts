@@ -12,8 +12,10 @@ const routes: Routes = [
     component: AdminDashboardComponent,
     canActivate: [AdminGuard],
     children: [
-      { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
       { path: 'barangays', loadComponent: () => import('./pages/manage-barangays/manage-barangays.component').then(m => m.ManageBarangaysComponent) },
+      { path: 'officials', loadComponent: () => import('./pages/manage-officials/manage-officials.component').then(m => m.ManageOfficialsComponent) },
+      { path: 'evacuation-centers', loadComponent: () => import('./pages/manage-evacuation-centers/manage-evacuation-centers.component').then(m => m.ManageEvacuationCentersComponent) },
+      { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
     ]
   }
 ];
