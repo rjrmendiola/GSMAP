@@ -934,10 +934,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.barangayPolygons[barangayName] = feature;
       }
 
-      layer.on({
-        mouseover: this.highlightFeature.bind(this),
-        mouseout: this.resetHighlight.bind(this),
-      });
+      // layer.on({
+      //   mouseover: this.highlightFeature.bind(this),
+      //   mouseout: this.resetHighlight.bind(this),
+      // });
     }
 
     layer.on({
