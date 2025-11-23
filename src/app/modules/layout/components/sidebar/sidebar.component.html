@@ -56,6 +56,16 @@
         Logout
       </button>
     </ng-container>
+
+    <ng-container *ngIf="!isLoggedIn">
+      <!-- Login Button -->
+      <button
+        routerLink="/admin/login"
+        class="w-full px-3 py-2 bg-blue-500 hover:bg-blue-600 rounded mb-2 text-xs"
+      >
+        Login
+      </button>
+    </ng-container>
   </div>
 
   <div class="mx-4 my-4 space-y-1 hidden sm:block">
