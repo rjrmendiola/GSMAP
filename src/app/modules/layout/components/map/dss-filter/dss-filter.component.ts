@@ -1,9 +1,10 @@
+import { NgFor } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dss-filter',
   standalone: true,
-  imports: [],
+  imports: [NgFor],
   templateUrl: './dss-filter.component.html',
   styleUrl: './dss-filter.component.scss'
 })
