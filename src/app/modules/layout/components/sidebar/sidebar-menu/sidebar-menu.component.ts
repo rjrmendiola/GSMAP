@@ -32,6 +32,7 @@ interface DisasterType {
 })
 export class SidebarMenuComponent implements OnInit {
   @Input() barangays: Barangay[] = [];
+  @Output() dssFilterClicked = new EventEmitter<void>();
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
@@ -40,6 +41,7 @@ export class SidebarMenuComponent implements OnInit {
   isLandslideCategoriesVisible: boolean = false;
   isLayerCategoriesVisible: boolean = false;
   isFilterCategoriesVisible: boolean = false;
+  isDssFilterVisible: boolean = false;
   user: any;
 
   selectedMapType: string | null = null;
@@ -111,6 +113,10 @@ export class SidebarMenuComponent implements OnInit {
     // }
 
     // this.selectedMapType = selectedType;
+  }
+
+  public onDssFilterClick() {
+    this.dssFilterClicked.emit();
   }
 
   ngOnInit(): void {

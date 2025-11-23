@@ -1,0 +1,75 @@
+<!-- Backdrop -->
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" (click)="close()"></div>
+
+<!-- Modal -->
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            bg-gray-900 text-white p-6 rounded-xl shadow-2xl
+            w-[95%] max-w-[700px] z-[9999]">
+
+  <h2 class="text-center text-xl font-bold mb-6">DSS FILTER</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <!-- LEFT COLUMN -->
+    <div class="space-y-6">
+
+      <!-- Flood Hazard Map -->
+      <div class="p-4 bg-black/30 rounded-lg">
+        <h3 class="font-semibold mb-2">Flood Hazard Map</h3>
+
+        <div class="space-y-2 text-gray-300">
+          <label><input type="checkbox" (change)="onFloodChange('td', $event)"> Tropical Depression (TD)</label><br>
+          <label><input type="checkbox" (change)="onFloodChange('ts', $event)"> Tropical Storm (TS)</label><br>
+          <label><input type="checkbox" (change)="onFloodChange('sts', $event)"> Severe Tropical Storm (STS)</label><br>
+          <label><input type="checkbox" (change)="onFloodChange('ty', $event)"> Typhoon (TY)</label>
+        </div>
+      </div>
+
+      <!-- Landslide Hazard Map -->
+      <div class="p-4 bg-black/30 rounded-lg">
+        <h3 class="font-semibold mb-2">Landslide Hazard Map</h3>
+
+        <div class="space-y-2 text-gray-300">
+          <label><input type="checkbox" (change)="onLandslideChange('low', $event)"> Less Likely to Experience</label><br>
+          <label><input type="checkbox" (change)="onLandslideChange('med', $event)"> Moderately Susceptible</label><br>
+          <label><input type="checkbox" (change)="onLandslideChange('high', $event)"> High Susceptible</label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="space-y-6">
+
+      <!-- Barangays -->
+      <div>
+        <label class="block mb-2 font-semibold">Barangays</label>
+        <select class="w-full p-2 rounded bg-gray-800 text-white"
+                (change)="onSelectBarangay($event)">
+          <option value="all">All Barangays</option>
+          <option *ngFor="let b of barangays" [value]="b">{{ b }}</option>
+        </select>
+      </div>
+
+      <!-- Map Type -->
+      <div>
+        <label class="block mb-2 font-semibold">Map Type</label>
+        <select class="w-full p-2 rounded bg-gray-800 text-white"
+                (change)="onSelectMapType($event)">
+          <option value="">Select a map type</option>
+          <option value="osm">OpenStreetMap</option>
+          <option value="satellite">Satellite View</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="mt-8 flex justify-end gap-4">
+    <button class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600"
+            (click)="close()">Close</button>
+    <button class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-500"
+            (click)="apply()">Apply Filters</button>
+  </div>
+</div>

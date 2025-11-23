@@ -3,6 +3,7 @@
   <app-sidebar
     [barangays]="barangays"
     (barangaySelected)="zoomToBarangay($event)"
+    (dssFilterClicked)="toggleDssFilter()"
     >
   </app-sidebar>
 
@@ -109,6 +110,20 @@
         <!-- Map Frame -->
         <div class="map-frame">
           <div id="map" class="h-64 sm:h-96 md:h-[550px]"></div>
+
+          <!-- Button to open the modal -->
+          <!-- <button
+            class="absolute top-4 right-4 z-[9999] bg-gray-800 text-white px-3 py-2 rounded-lg"
+            (click)="toggleFilter()">
+            DSS Filter
+          </button> -->
+
+          <!-- Popup Modal -->
+          <app-dss-filter
+            *ngIf="showFilterModal"
+            (closeModal)="toggleDssFilter()"
+            (applyFilters)="handleFilters($event)">
+          </app-dss-filter>
         </div>
       </div>
     </div>

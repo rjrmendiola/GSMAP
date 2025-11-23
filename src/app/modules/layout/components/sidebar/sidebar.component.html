@@ -29,6 +29,7 @@
     <!-- Menu Items -->
     <app-sidebar-menu
       [barangays]="barangays"
+      (dssFilterClicked)="onDssFilterClicked()"
       (menuClicked)="onSidebarMenuClick($event)"
       (barangaySelected)="onBarangaySelected($event)"
       (mapTypeSelected)="onMapTypeSelected($event)"
