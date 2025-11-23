@@ -29,13 +29,14 @@ import { BarangayService } from 'src/app/core/services/barangay.service';
 import { Barangay, BarangayResponse } from 'src/app/shared/models/barangay.model';
 import { CommonModule } from '@angular/common';
 import { MapTypeService } from 'src/app/core/services/maptype.service';
+import { DssFilterComponent } from './components/map/dss-filter/dss-filter.component';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   standalone: true,
-  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent, SidebarDetailsComponent, FormsModule, CommonModule],
+  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent, SidebarDetailsComponent, DssFilterComponent, FormsModule, CommonModule],
   encapsulation: ViewEncapsulation.None,
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -205,6 +206,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   showFilterPopup = false;
+
+  showFilterModal = false;
 
   private hazardAffectedBarangays = {
     'landslide': {
@@ -1716,5 +1719,20 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleFilterPopup() {
     this.showFilterPopup = !this.showFilterPopup;
+  }
+
+  toggleDssFilter() {
+    this.showFilterModal = !this.showFilterModal;
+  }
+
+  handleFilters(filters: any) {
+    console.log('APPLIED FILTERS:', filters);
+
+    // Example:
+    // this.mapService.updateFlood(filters.flood);
+    // this.mapService.updateMapType(filters.mapType);
+    // this.mapService.highlightBarangay(filters.barangay);
+
+    this.showFilterModal = false;
   }
 }

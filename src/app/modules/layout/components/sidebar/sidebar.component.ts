@@ -25,12 +25,14 @@ interface DisasterType {
 })
 export class SidebarComponent implements OnInit {
   @Input() barangays: any[] = [];
+  @Output() dssFilterClicked = new EventEmitter<void>();
   @Output() disasterTypeChange = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
 
   public appJson: any = packageJson;
   public isLoggedIn = false;
+  public isDssFilterVisible = false;
 
   constructor(
     public menuService: MenuService,
@@ -62,6 +64,10 @@ export class SidebarComponent implements OnInit {
 
   public onMapTypeSelected(event: { type: string }) {
     this.mapTypeService.setMapType(event);
+  }
+
+  public onDssFilterClicked() {
+    this.dssFilterClicked.emit();
   }
 
   public logout() {
