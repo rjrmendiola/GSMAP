@@ -16,7 +16,7 @@ import 'leaflet-minimap';
 import 'leaflet-fullscreen';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.js';
 // import * as d3 from 'd3';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { DisasterService } from 'src/app/core/services/disaster.service';
 import { SidebarDetailsComponent } from "./components/sidebar/sidebar-details/sidebar-details.component";
 import introJs from 'intro.js';
@@ -205,9 +205,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     officials: false,
   };
 
-  showFilterPopup = false;
+  selectedFloodFilter: string | null = null;
+  selectedLandslideFilter: string | null = null;
+  selectedBarangayFilter: string = 'all';
+  selectedMapTypeFilter: string = '';
 
-  showFilterModal = false;
+  isDssFilterModalOpen = false;
 
   private hazardAffectedBarangays = {
     'landslide': {
@@ -1346,7 +1349,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.map.hasLayer(this.layers['landslide_moderate'])) {
             this.map.removeLayer(this.layers['landslide_moderate'])
 
-            this.map.removeControl(this.details);
+            // this.map.removeControl(this.details);
             this.map.removeControl(this.affectedBarangays);
             this.map.removeControl(this.legend);
           } else {
@@ -1368,7 +1371,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.map.hasLayer(this.layers['landslide_low'])) {
             this.map.removeLayer(this.layers['landslide_low'])
 
-            this.map.removeControl(this.details);
+            // this.map.removeControl(this.details);
             this.map.removeControl(this.affectedBarangays);
             this.map.removeControl(this.legend);
           } else {
@@ -1392,7 +1395,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toggleLayer('flood_high');
 
         // this.details.updateDetails(this.hazardRiskDetails.landslide.low);
-        this.map.removeControl(this.details);
+        // this.map.removeControl(this.details);
 
       } else if (this.disasterType.type == 'typhoon') {
         this.map.removeLayer(this.layers['landslide_low']);
@@ -1406,7 +1409,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           if (this.map.hasLayer(this.layers['flood_high'])) {
             this.map.removeLayer(this.layers['flood_high'])
 
-            this.map.removeControl(this.details);
+            // this.map.removeControl(this.details);
             this.map.removeControl(this.affectedBarangays);
             this.map.removeControl(this.legend);
           } else {
@@ -1675,7 +1678,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           // this.markerControl();
 
           this.addLegend();
-          this.addInfoControl();
+          // this.addInfoControl();
           this.addDetailsControl();
           this.addAffectedBarangaysControl();
 
@@ -1717,22 +1720,36 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedMapType = selectedType;
   }
 
-  toggleFilterPopup() {
-    this.showFilterPopup = !this.showFilterPopup;
-  }
+  // showDssFilterModal() {
+  //   this.isDssFilterModalOpen = true;
+  // }
 
-  toggleDssFilter() {
-    this.showFilterModal = !this.showFilterModal;
-  }
+  onApplyFilters(filters: { flood: string | null; landslide: string | null; barangay: string | null; mapType: string | null; }) {
+    this.isDssFilterModalOpen = false;
 
-  handleFilters(filters: any) {
-    console.log('APPLIED FILTERS:', filters);
+    if (filters.flood) {
+      this.selectedFloodFilter = filters.flood;
+      this.disasterService.setDisasterType({ type: 'flood', category: filters.flood });
+    }
 
-    // Example:
-    // this.mapService.updateFlood(filters.flood);
-    // this.mapService.updateMapType(filters.mapType);
-    // this.mapService.highlightBarangay(filters.barangay);
+    if (filters.landslide) {
+      this.selectedLandslideFilter = filters.landslide;
+      this.disasterService.setDisasterType({ type: 'landslide', category: filters.landslide });
+    }
 
-    this.showFilterModal = false;
+    if (filters.barangay) {
+      this.selectedBarangayFilter = filters.barangay;
+
+      const barangay = this.barangays.find(b => b.id === parseInt(filters.barangay!));
+      if (barangay) {
+        this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+      }
+    }
+
+    if (filters.mapType) {
+      this.selectedMapTypeFilter = filters.mapType;
+
+      this.mapTypeService.setMapType({ type: filters.mapType });
+    }
   }
 }

@@ -1,37 +1,44 @@
 import { NgFor } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
+import { MapTypeService } from 'src/app/core/services/maptype.service';
+import { Barangay } from 'src/app/shared/models/barangay.model';
 
 @Component({
   selector: 'app-dss-filter',
   standalone: true,
-  imports: [NgFor],
+  imports: [FormsModule, NgFor],
   templateUrl: './dss-filter.component.html',
   styleUrl: './dss-filter.component.scss'
 })
 export class DssFilterComponent {
-  @Output() closeModal = new EventEmitter<void>();
+  @Input() barangays: Barangay[] = [];
+  @Input() baseLayerTypes: { label: string, value: string }[] = [];
+  @Input() selectedFlood: string | null = null;
+  @Input() selectedLandslide: string | null = null;
+  @Input() selectedBarangay: string = 'all'
+  @Input() selectedMapType: string = '';
+  @Input() isOpen: boolean = false;
   @Output() applyFilters = new EventEmitter<any>();
+  @Output() closeModal = new EventEmitter<void>();
 
-  floodSelections: any = {};
-  landslideSelections: any = {};
-  selectedBarangay: string = 'all';
-  selectedMapType: string = '';
+  // selectedFlood: string | null = null;
+  // selectedLandslide: string | null = null;
+  // selectedBarangay: string = 'all';
+  // selectedMapType: string = '';
 
-  barangays = [
-    'Bagong Lipunan',
-    'Balilit',
-    'Barangay Central',
-    'Barangay Norte',
-    'Barangay Sur'
-    // Add from your DB later
-  ];
+  constructor(
+    public mapTypeService: MapTypeService
+  ) {}
 
-  onFloodChange(type: string, event: any) {
-    this.floodSelections[type] = event.target.checked;
+  onFloodSelected(value: string) {
+    this.selectedFlood = value;
+    this.selectedLandslide = null; // clear landslide when flood is chosen
   }
 
-  onLandslideChange(type: string, event: any) {
-    this.landslideSelections[type] = event.target.checked;
+  onLandslideSelected(value: string) {
+    this.selectedLandslide = value;
+    this.selectedFlood = null; // clear flood when landslide is chosen
   }
 
   onSelectBarangay(event: any) {
@@ -40,18 +47,21 @@ export class DssFilterComponent {
 
   onSelectMapType(event: any) {
     this.selectedMapType = event.target.value;
+    // this.mapTypeService.setMapType(event);
   }
 
   apply() {
     this.applyFilters.emit({
-      flood: this.floodSelections,
-      landslide: this.landslideSelections,
+      flood: this.selectedFlood,
+      landslide: this.selectedLandslide,
       barangay: this.selectedBarangay,
       mapType: this.selectedMapType,
     });
+
+    this.closeModal.emit();
   }
 
-  close() {
+  onCloseModalClick() {
     this.closeModal.emit();
   }
 }

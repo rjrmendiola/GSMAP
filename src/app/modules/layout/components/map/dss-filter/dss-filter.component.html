@@ -1,12 +1,11 @@
-<!-- Backdrop -->
-<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" (click)="close()"></div>
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" (click)="onCloseModalClick()"></div>
 
 <!-- Modal -->
 <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
             bg-gray-900 text-white p-6 rounded-xl shadow-2xl
             w-[95%] max-w-[700px] z-[9999]">
 
-  <h2 class="text-center text-xl font-bold mb-6">DSS FILTER</h2>
+  <h2 class="text-center text-xl font-bold mb-6">Decision Support System Filters</h2>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -18,10 +17,46 @@
         <h3 class="font-semibold mb-2">Flood Hazard Map</h3>
 
         <div class="space-y-2 text-gray-300">
-          <label><input type="checkbox" (change)="onFloodChange('td', $event)"> Tropical Depression (TD)</label><br>
-          <label><input type="checkbox" (change)="onFloodChange('ts', $event)"> Tropical Storm (TS)</label><br>
-          <label><input type="checkbox" (change)="onFloodChange('sts', $event)"> Severe Tropical Storm (STS)</label><br>
-          <label><input type="checkbox" (change)="onFloodChange('ty', $event)"> Typhoon (TY)</label>
+          <!-- <label><input type="radio" name="floodtype" value="category1" [(ngModel)]="selectedFlood"> Tropical Depression (TD)</label><br>
+          <label><input type="radio" name="floodtype" value="category2" [(ngModel)]="selectedFlood"> Tropical Storm (TS)</label><br>
+          <label><input type="radio" name="floodtype" value="category3" [(ngModel)]="selectedFlood"> Severe Tropical Storm (STS)</label><br>
+          <label><input type="radio" name="floodtype" value="category4" [(ngModel)]="selectedFlood"> Typhoon (TY)</label><br>
+          <label><input type="radio" name="floodtype" value="category5" [(ngModel)]="selectedFlood"> Super Typhoon (ST)</label> -->
+          <label>
+            <input type="radio" name="flood" value="category1"
+                  [checked]="selectedFlood === 'category1'"
+                  (change)="onFloodSelected('category1')">
+            Tropical Depression(TD)
+          </label> <br>
+
+          <label>
+            <input type="radio" name="flood" value="category2"
+                  [checked]="selectedFlood === 'category2'"
+                  (change)="onFloodSelected('category2')">
+            Tropical Storm (TS)
+          </label> <br>
+
+          <label>
+            <input type="radio" name="flood" value="category3"
+                  [checked]="selectedFlood === 'category3'"
+                  (change)="onFloodSelected('category3')">
+            Severe Tropical Storm (STS)
+          </label> <br>
+
+          <label>
+            <input type="radio" name="flood" value="category4"
+                  [checked]="selectedFlood === 'category4'"
+                  (change)="onFloodSelected('category4')">
+            Typhoon (TY)
+          </label> <br>
+
+          <label>
+            <input type="radio" name="flood" value="category5"
+                  [checked]="selectedFlood === 'category5'"
+                  (change)="onFloodSelected('category5')">
+            Super Typhoon (ST)
+          </label> <br>
+
         </div>
       </div>
 
@@ -30,9 +65,30 @@
         <h3 class="font-semibold mb-2">Landslide Hazard Map</h3>
 
         <div class="space-y-2 text-gray-300">
-          <label><input type="checkbox" (change)="onLandslideChange('low', $event)"> Less Likely to Experience</label><br>
-          <label><input type="checkbox" (change)="onLandslideChange('med', $event)"> Moderately Susceptible</label><br>
-          <label><input type="checkbox" (change)="onLandslideChange('high', $event)"> High Susceptible</label>
+          <!-- <label><input type="radio" name="landslide" value="category1" [(ngModel)]="selectedLandslide"> Low Susceptibility</label><br>
+          <label><input type="radio" name="landslide" value="category3" [(ngModel)]="selectedLandslide"> Moderate Susceptibility</label><br>
+          <label><input type="radio" name="landslide" value="category4" [(ngModel)]="selectedLandslide"> High Susceptibility</label> -->
+          <label>
+            <input type="radio" name="landslide" value="category1"
+                  [checked]="selectedLandslide === 'category1'"
+                  (change)="onLandslideSelected('category1')">
+            Low Susceptibility
+          </label> <br>
+
+          <label>
+            <input type="radio" name="landslide" value="category3"
+                  [checked]="selectedLandslide === 'category3'"
+                  (change)="onLandslideSelected('category3')">
+            Moderate Susceptibility
+          </label> <br>
+
+          <label>
+            <input type="radio" name="landslide" value="category4"
+                  [checked]="selectedLandslide === 'category4'"
+                  (change)="onLandslideSelected('category4')">
+            High Susceptibility
+          </label> <br>
+
         </div>
       </div>
 
@@ -45,9 +101,10 @@
       <div>
         <label class="block mb-2 font-semibold">Barangays</label>
         <select class="w-full p-2 rounded bg-gray-800 text-white"
-                (change)="onSelectBarangay($event)">
+                (change)="onSelectBarangay($event)"
+                [(ngModel)]="selectedBarangay">
           <option value="all">All Barangays</option>
-          <option *ngFor="let b of barangays" [value]="b">{{ b }}</option>
+          <option *ngFor="let brgy of barangays" [value]="brgy.id">{{ brgy.name }}</option>
         </select>
       </div>
 
@@ -55,10 +112,10 @@
       <div>
         <label class="block mb-2 font-semibold">Map Type</label>
         <select class="w-full p-2 rounded bg-gray-800 text-white"
-                (change)="onSelectMapType($event)">
+                (change)="onSelectMapType($event)"
+                [(ngModel)]="selectedMapType">
           <option value="">Select a map type</option>
-          <option value="osm">OpenStreetMap</option>
-          <option value="satellite">Satellite View</option>
+          <option *ngFor="let baseLayerType of baseLayerTypes" [value]="baseLayerType.value">{{ baseLayerType.label }}</option>
         </select>
       </div>
 
@@ -68,7 +125,7 @@
   <!-- ACTION BUTTONS -->
   <div class="mt-8 flex justify-end gap-4">
     <button class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600"
-            (click)="close()">Close</button>
+            (click)="onCloseModalClick()">Close</button>
     <button class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-500"
             (click)="apply()">Apply Filters</button>
   </div>

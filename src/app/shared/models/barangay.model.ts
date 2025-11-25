@@ -1,5 +1,5 @@
 export interface Barangay {
-  id?: number;
+  id: number;
   name: string;
   slug: string;
   latitude: number;
