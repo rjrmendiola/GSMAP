@@ -115,7 +115,7 @@ export class SidebarMenuComponent implements OnInit {
     // this.selectedMapType = selectedType;
   }
 
-  public onDssFilterClick() {
+  public onDssFilterClickSidebarMenu() {
     this.dssFilterClicked.emit();
   }
 

@@ -25,14 +25,14 @@ interface DisasterType {
 })
 export class SidebarComponent implements OnInit {
   @Input() barangays: any[] = [];
-  @Output() dssFilterClicked = new EventEmitter<void>();
+  @Output() dssSidebarFilterClicked = new EventEmitter<void>();
   @Output() disasterTypeChange = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
 
   public appJson: any = packageJson;
   public isLoggedIn = false;
-  public isDssFilterVisible = false;
+  // public isDssFilterVisible = false;
 
   constructor(
     public menuService: MenuService,
@@ -52,22 +52,20 @@ export class SidebarComponent implements OnInit {
     this.menuService.toggleSidebar();
   }
 
-  public onSidebarMenuClick(event: { type: string; category?: string }) {
-    console.log("onSidebarMenuClick: ", event.type);
-    this.disasterService.setDisasterType(event);
-  }
+  // public onSidebarMenuClick(event: { type: string; category?: string }) {
+  //   this.disasterService.setDisasterType(event);
+  // }
 
-  public onBarangaySelected(event: { id: number; barangay: string; coordinates: [number, number] }) {
-    console.log("onBarangaySelected: ", event.id);
-    this.barangaySelected.emit(event);
-  }
+  // public onBarangaySelected(event: { id: number; barangay: string; coordinates: [number, number] }) {
+  //   this.barangaySelected.emit(event);
+  // }
 
-  public onMapTypeSelected(event: { type: string }) {
-    this.mapTypeService.setMapType(event);
-  }
+  // public onMapTypeSelected(event: { type: string }) {
+  //   this.mapTypeService.setMapType(event);
+  // }
 
   public onDssFilterClicked() {
-    this.dssFilterClicked.emit();
+    this.dssSidebarFilterClicked.emit();
   }
 
   public logout() {
