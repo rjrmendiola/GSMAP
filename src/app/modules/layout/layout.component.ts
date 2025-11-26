@@ -212,6 +212,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isDssFilterModalOpen = false;
 
+  selectedBarangayName: string | null = null;
+
   private hazardAffectedBarangays = {
     'landslide': {
       // 'unlikely': "Areas have minimal susceptibility, characterized by stable terrain, gentle slopes, and solid ground, where landslides are rare under typical conditions",
@@ -1742,6 +1744,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       const barangay = this.barangays.find(b => b.id === parseInt(filters.barangay!));
       if (barangay) {
+        this.selectedBarangayName = barangay.name;
         this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
       }
     }
