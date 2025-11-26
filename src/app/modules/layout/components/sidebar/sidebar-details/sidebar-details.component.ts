@@ -15,6 +15,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 })
 export class SidebarDetailsComponent {
   @Input() disasterType!: { type: string; category?: string };
+  @Input() selectedBarangayName: string | null = null;
   @Output() rowClicked = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
 
   floodLandslideDetailsBarangayList!: string[];
@@ -282,8 +283,6 @@ export class SidebarDetailsComponent {
       this.loadWeatherDataForBarangay(barangayDetails.barangay);
     }
 
-    console.log(barangayDetails);
-
     this.rowClicked.emit({
       id: barangayDetails.id,
       barangay: barangayDetails.barangay,
@@ -310,5 +309,9 @@ export class SidebarDetailsComponent {
     this.barangayNames = [];
 
     this.loadFloodLandslideDetails();
+
+    if (this.selectedBarangayName) {
+      this.loadWeatherDataForBarangay(this.selectedBarangayName);
+    }
   }
 }
