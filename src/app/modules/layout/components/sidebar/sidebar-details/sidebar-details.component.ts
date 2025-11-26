@@ -225,6 +225,19 @@ export class SidebarDetailsComponent {
       this.isLoadingWeather = false;
     }
   }
+  // public loadWeatherDataForBarangay(barangay: string): void {
+  //   this.selectedBarangay = barangay;
+
+  //   if (this.weatherData) {
+  //     console.log(this.weatherData[barangay]);
+  //   }
+
+  //   if (this.weatherData && this.weatherData[barangay]) {
+  //     this.selectedBarangayWeather = this.weatherData[barangay];
+  //   } else {
+  //     console.warn("Barangay weather not found in preloaded dataset");
+  //   }
+  // }
 
   // NEW METHOD: Get current weather conditions for a barangay
   public getCurrentWeatherConditions(barangay: string): any {
@@ -303,15 +316,22 @@ export class SidebarDetailsComponent {
     }
   }
 
-  ngOnChanges(): void {
-    this.floodLandslideDetailsBarangayList = [];
-    this.floodLandslideDetails = [];
-    this.barangayNames = [];
+  ngOnChanges(changes: any): void {
+    // If disasterType changed → reload hazard lists
+    if (changes['disasterType']) {
+      this.floodLandslideDetailsBarangayList = [];
+      this.floodLandslideDetails = [];
+      this.barangayNames = [];
+      this.loadFloodLandslideDetails();
+    }
 
-    this.loadFloodLandslideDetails();
-
-    if (this.selectedBarangayName) {
-      this.loadWeatherDataForBarangay(this.selectedBarangayName);
+    // If selectedBarangayName changed → load weather for that barangay
+    if (changes['selectedBarangayName']) {
+      if (this.selectedBarangayName) {
+        this.loadWeatherDataForBarangay(this.selectedBarangayName);
+      } else {
+        this.selectedBarangayWeather = undefined;  // Clear previous weather
+      }
     }
   }
 }
