@@ -31,6 +31,7 @@ export class SidebarComponent implements OnInit {
   @Output() disasterTypeChange = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
+  @Output() evacuationCenterSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
 
   public appJson: any = packageJson;
@@ -65,6 +66,10 @@ export class SidebarComponent implements OnInit {
 
   public onBarangayOfficialSelected(event: { id: number }) {
     this.barangayOfficialSelected.emit(event);
+  }
+
+  public onEvacuationCenterSelected(event: { id: number }) {
+    this.evacuationCenterSelected.emit(event);
   }
 
   // public onMapTypeSelected(event: { type: string }) {

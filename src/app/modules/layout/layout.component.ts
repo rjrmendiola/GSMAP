@@ -1663,6 +1663,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.evacuationCenterService.getAllEvacuationCenters().subscribe({
       next: (response) => {
         this.evacuationCenters = response.map((center: any) => ({
+          id: center.id,
+          barangay_id: center.barangay_id,
           name: center.name.toLowerCase(),
           coords: [parseFloat(center.latitude.toString()), parseFloat(center.longitude.toString())],
           venue: center.venue,
@@ -1771,10 +1773,28 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedBarangayName = barangay.name;
 
         this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
-      } else {
-        this.selectedBarangay = null;
-        this.map.setView(official.coords, 15);
       }
+    } else {
+      this.selectedBarangay = null;
+      this.map.setView(official.coords, 15);
     }
+  }
+
+  onEvacuationCenterSelected(event: any): void {
+    const selectedId = +event.id;
+
+    const center = this.evacuationCenters.find(c => c.id === selectedId);
+    if (center) {
+      const barangay = this.barangays.find(b => b.id === parseInt(center.barangay_id!));
+      if (barangay) {
+        // Triggers weather data fetch
+        this.selectedBarangayName = barangay.name;
+
+        this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+      }
+    } else {
+        this.selectedBarangay = null;
+        this.map.setView(center.coords, 15);
+      }
   }
 }
