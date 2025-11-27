@@ -25,9 +25,12 @@ interface DisasterType {
 })
 export class SidebarComponent implements OnInit {
   @Input() barangays: any[] = [];
+  @Input() barangayOfficials: any[] = [];
+  @Input() evacuationCenters: any[] = [];
   @Output() dssSidebarFilterClicked = new EventEmitter<void>();
   @Output() disasterTypeChange = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
+  @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
 
   public appJson: any = packageJson;
@@ -59,6 +62,10 @@ export class SidebarComponent implements OnInit {
   // public onBarangaySelected(event: { id: number; barangay: string; coordinates: [number, number] }) {
   //   this.barangaySelected.emit(event);
   // }
+
+  public onBarangayOfficialSelected(event: { id: number }) {
+    this.barangayOfficialSelected.emit(event);
+  }
 
   // public onMapTypeSelected(event: { type: string }) {
   //   this.mapTypeService.setMapType(event);

@@ -37,7 +37,10 @@
     </app-sidebar-menu> -->
     <app-sidebar-menu
       [barangays]="barangays"
+      [barangayOfficials]="barangayOfficials"
+      [evacuationCenters]="evacuationCenters"
       (dssFilterClicked)="onDssFilterClicked()"
+      (barangayOfficialSelected)="onBarangayOfficialSelected($event)"
       id="layers-section">
     </app-sidebar-menu>
   </div>

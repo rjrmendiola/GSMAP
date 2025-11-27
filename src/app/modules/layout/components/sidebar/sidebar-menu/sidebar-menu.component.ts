@@ -32,9 +32,13 @@ interface DisasterType {
 })
 export class SidebarMenuComponent implements OnInit {
   @Input() barangays: Barangay[] = [];
+  @Input() barangayOfficials: any[] = [];
+  @Input() evacuationCenters: any[] = [];
   @Output() dssFilterClicked = new EventEmitter<void>();
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
+  // @Output() barangayOfficialSelected = new EventEmitter<{ id: number, name: string, position: string }>();
+  @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
@@ -45,6 +49,8 @@ export class SidebarMenuComponent implements OnInit {
   user: any;
 
   selectedMapType: string | null = null;
+  selectedBarangayOfficial: string | null = null;
+  selectedEvacuationCenter: string | null = null;
 
   baseLayerTypes = [
     { label: 'OpenStreetMap', value: 'openstreetmap' },
@@ -115,8 +121,35 @@ export class SidebarMenuComponent implements OnInit {
     // this.selectedMapType = selectedType;
   }
 
+  public onBarangayOfficialChange(event: any): void {
+    const officialId = +event.target.value;
+    // Assuming you have a way to get barangay official details by ID
+    // For example, you might have a list of officials similar to barangays
+    // Here, we'll just emit the ID for simplicity
+    console.log("Sidebar-menu: ", officialId);
+    this.barangayOfficialSelected.emit({
+      id: officialId
+    });
+  }
+
+  public onEvacuationCenterChange(event: any): void {
+    const evacuationCenterId = +event.target.value;
+    // Assuming you have a way to get evacuation center details by ID
+    // For example, you might have a list of evacuation centers similar to barangays
+    // Here, we'll just emit the ID for simplicity
+    // this.barangayOfficialSelected.emit({
+    //   id: evacuationCenterId,
+    //   barangay: '', // You can fill this with the actual name if available
+    //   coordinates: [0, 0] // You can fill this with actual coordinates if available
+    // });
+  }
+
   public onDssFilterClickSidebarMenu() {
     this.dssFilterClicked.emit();
+  }
+
+  public truncate(text: string, max: number = 20): string {
+    return text.length > max ? text.substring(0, max) + '...' : text;
   }
 
   ngOnInit(): void {

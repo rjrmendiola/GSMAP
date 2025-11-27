@@ -168,9 +168,9 @@
   </ul> -->
 
   <!-- Separator -->
-  <div class="pt-3">
+  <!-- <div class="pt-3">
     <hr class="border-dashed border-muted" />
-  </div>
+  </div> -->
 
   <div class="mx-1 mt-2 mb-2 flex items-center justify-between" >
     <small class="text-xs font-semibold text-muted-foreground/50" >
@@ -187,12 +187,12 @@
   <!-- Hide filter options and move to modal -->
   <ul class="flex flex-col space-y-1">
     <li>
-      <!-- <div class="group relative text-muted-foreground" (click)="toggleHazardMenu('filter-categories')"> -->
-      <div class="group relative text-muted-foreground" (click)="onDssFilterClickSidebarMenu()">
-        <div
+      <div class="group relative text-muted-foreground" (click)="toggleHazardMenu('filter-categories')">
+      <!-- <div class="group relative text-muted-foreground" (click)="onDssFilterClickSidebarMenu()"> -->
+        <!-- <div
           class="text-muted-foreground/50 pointer-events-none absolute m-2">
-          <!-- <svg-icon src="assets/icons/heroicons/outline/Layers-Stacked--Streamline-Ultimate.svg" [svgClass]="'h-5 w-5'"> </svg-icon> -->
-        </div>
+          <svg-icon src="assets/icons/heroicons/outline/Layers-Stacked--Streamline-Ultimate.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+        </div> -->
         <div
           class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
           <a
@@ -208,28 +208,46 @@
         </button>
       </div>
       <div class="px-3 space-y-3" [ngClass]="{ hidden: !isFilterCategoriesVisible }" id="filter-categories">
-        <!-- Barangay Dropdown -->
+        <!-- Barangay Official Dropdown -->
         <div>
-          <label class="block text-[10px] text-muted-foreground/70 mb-1">Barangay</label>
+          <label class="block text-[10px] text-muted-foreground/70 mb-1">Barangay Official</label>
           <select
-            (change)="onBarangayChange($event)"
+            id="barangayofficial"
+            [value]="selectedBarangayOfficial"
+            (change)="onBarangayOfficialChange($event)"
             class="block w-full rounded-md border-gray-300 text-xs shadow-xs focus:border-primary focus:ring-primary"
           >
-            <option value="">All Barangays</option>
-            <option *ngFor="let brgy of barangays" [value]="brgy.id">{{ brgy.name }}</option>
+            <option value="">Select a barangay official</option>
+            <option *ngFor="let official of barangayOfficials" [value]="official.id">{{ official.name }}</option>
           </select>
         </div>
 
-        <!-- Map Type Dropdown -->
+        <!-- Evacuation Center Dropdown -->
         <div>
-          <label class="block text-[10px] text-muted-foreground/70 mb-1">Map Type</label>
-          <select id="maptype"
-            [value]="selectedMapType"
-            (change)="onMapTypeChange($event)"
+          <label class="block text-[10px] text-muted-foreground/70 mb-1">Evacuation Center</label>
+          <select id="evacuationcenter"
+            [value]="selectedEvacuationCenter"
+            (change)="onEvacuationCenterChange($event)"
             class="block w-full rounded-md border-gray-300 text-xs shadow-xs focus:border-primary focus:ring-primary">
-            <option [value]="null">Select a map type</option>
-            <option *ngFor="let type of baseLayerTypes" [value]="type.value">{{ type.label }}</option>
+            <option value="">Select an evacuation center</option>
+            <option *ngFor="let center of evacuationCenters" [value]="center.id">{{ truncate(center.venue, 30) }}</option>
           </select>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="group relative text-muted-foreground" (click)="onDssFilterClickSidebarMenu()">
+        <div
+          class="text-muted-foreground/50 pointer-events-none absolute m-2">
+          <!-- <svg-icon src="assets/icons/heroicons/outline/Layers-Stacked--Streamline-Ultimate.svg" [svgClass]="'h-5 w-5'"> </svg-icon> -->
+        </div>
+        <div
+          class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+          <a
+            routerLinkActive="text-primary"
+            class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none">
+            More Filters
+          </a>
         </div>
       </div>
     </li>
