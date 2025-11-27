@@ -1670,6 +1670,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         }));
 
         this.barangayOfficials = response.map((center: any) => ({
+          id: center.official?.id,
+          barangay_id: center.barangay_id,
           name: center.official?.name,
           position: center.official?.position,
           coords: [parseFloat(center.latitude.toString()), parseFloat(center.longitude.toString())]
@@ -1697,11 +1699,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onBarangayFilterChange(event: any): void {
     const selectedId = +event.target.value;
-
-    console.log(this.barangays);
-
-    console.log('Selected Barangay:', this.selectedBarangay);
-    // Later: zoom to this barangay using coordinates from API or stored geojson
+    const barangay = this.barangays.find(b => b.id === selectedId);
+    if (barangay) {
+      this.selectedBarangayName = barangay.name;
+      this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+    } else {
+      this.selectedBarangay = null;
+      this.map.setView([11.232084301848886, 124.7057818628441], 12);
+    }
   }
 
   onMapTypeChange(event: any): void {
@@ -1721,10 +1726,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.selectedMapType = selectedType;
   }
-
-  // showDssFilterModal() {
-  //   this.isDssFilterModalOpen = true;
-  // }
 
   onApplyFilters(filters: { flood: string | null; landslide: string | null; barangay: string | null; mapType: string | null; }) {
     this.isDssFilterModalOpen = false;
@@ -1756,6 +1757,24 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedMapTypeFilter = filters.mapType;
 
       this.mapTypeService.setMapType({ type: filters.mapType });
+    }
+  }
+
+  onBarangayOfficialSelected(event: any): void {
+    const selectedId = +event.id;
+
+    const official = this.barangayOfficials.find(o => o.id === selectedId);
+    if (official) {
+      const barangay = this.barangays.find(b => b.id === parseInt(official.barangay_id!));
+      if (barangay) {
+        // Triggers weather data fetch
+        this.selectedBarangayName = barangay.name;
+
+        this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+      } else {
+        this.selectedBarangay = null;
+        this.map.setView(official.coords, 15);
+      }
     }
   }
 }

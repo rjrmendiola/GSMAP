@@ -2,7 +2,10 @@
 <div class="flex flex-col h-screen w-full sm:flex-row">
   <app-sidebar
     [barangays]="barangays"
+    [barangayOfficials]="barangayOfficials"
+    [evacuationCenters]="evacuationCenters"
     (barangaySelected)="zoomToBarangay($event)"
+    (barangayOfficialSelected)="onBarangayOfficialSelected($event)"
     (dssSidebarFilterClicked)="isDssFilterModalOpen = true"
     >
   </app-sidebar>
@@ -133,10 +136,15 @@
   </div>
 
   <!-- Sidebar Details -->
-  <app-sidebar-details
+  <!-- <app-sidebar-details
     class="sm:w-full md:w-1/4"
     [disasterType]="disasterType"
     (rowClicked)="zoomToBarangay($event)"
+    [selectedBarangayName]="selectedBarangayName"
+  ></app-sidebar-details> -->
+  <app-sidebar-details
+    class="sm:w-full md:w-1/4"
+    [disasterType]="disasterType"
     [selectedBarangayName]="selectedBarangayName"
   ></app-sidebar-details>
 </div>
