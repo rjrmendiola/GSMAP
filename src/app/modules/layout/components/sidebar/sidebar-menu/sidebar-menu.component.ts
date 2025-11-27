@@ -37,8 +37,8 @@ export class SidebarMenuComponent implements OnInit {
   @Output() dssFilterClicked = new EventEmitter<void>();
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
-  // @Output() barangayOfficialSelected = new EventEmitter<{ id: number, name: string, position: string }>();
   @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
+  @Output() evacuationCenterSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
@@ -123,10 +123,6 @@ export class SidebarMenuComponent implements OnInit {
 
   public onBarangayOfficialChange(event: any): void {
     const officialId = +event.target.value;
-    // Assuming you have a way to get barangay official details by ID
-    // For example, you might have a list of officials similar to barangays
-    // Here, we'll just emit the ID for simplicity
-    console.log("Sidebar-menu: ", officialId);
     this.barangayOfficialSelected.emit({
       id: officialId
     });
@@ -134,14 +130,9 @@ export class SidebarMenuComponent implements OnInit {
 
   public onEvacuationCenterChange(event: any): void {
     const evacuationCenterId = +event.target.value;
-    // Assuming you have a way to get evacuation center details by ID
-    // For example, you might have a list of evacuation centers similar to barangays
-    // Here, we'll just emit the ID for simplicity
-    // this.barangayOfficialSelected.emit({
-    //   id: evacuationCenterId,
-    //   barangay: '', // You can fill this with the actual name if available
-    //   coordinates: [0, 0] // You can fill this with actual coordinates if available
-    // });
+    this.evacuationCenterSelected.emit({
+      id: evacuationCenterId
+    });
   }
 
   public onDssFilterClickSidebarMenu() {
