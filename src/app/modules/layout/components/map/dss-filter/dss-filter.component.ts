@@ -64,4 +64,12 @@ export class DssFilterComponent {
   onCloseModalClick() {
     this.closeModal.emit();
   }
+
+  clearSelection(category: string, type: string) {
+    if (category === 'flood' && this.selectedFlood === type) {
+      this.selectedFlood = null;
+    } else if (category === 'landslide' && this.selectedLandslide === type) {
+      this.selectedLandslide = null;
+    }
+  }
 }

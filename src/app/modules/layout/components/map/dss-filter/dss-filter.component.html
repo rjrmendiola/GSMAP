@@ -25,38 +25,44 @@
           <label>
             <input type="radio" name="flood" value="category1"
                   [checked]="selectedFlood === 'category1'"
-                  (change)="onFloodSelected('category1')">
+                  (change)="onFloodSelected('category1')"
+                  (click)="clearSelection('flood', 'category1')">
             Tropical Depression(TD)
           </label> <br>
 
           <label>
             <input type="radio" name="flood" value="category2"
                   [checked]="selectedFlood === 'category2'"
-                  (change)="onFloodSelected('category2')">
+                  (change)="onFloodSelected('category2')"
+                  (click)="clearSelection('flood', 'category2')">
             Tropical Storm (TS)
           </label> <br>
 
           <label>
             <input type="radio" name="flood" value="category3"
                   [checked]="selectedFlood === 'category3'"
-                  (change)="onFloodSelected('category3')">
+                  (change)="onFloodSelected('category3')"
+                  (click)="clearSelection('flood', 'category3')">
             Severe Tropical Storm (STS)
           </label> <br>
 
           <label>
             <input type="radio" name="flood" value="category4"
                   [checked]="selectedFlood === 'category4'"
-                  (change)="onFloodSelected('category4')">
+                  (change)="onFloodSelected('category4')"
+                  (click)="clearSelection('flood', 'category4')">
             Typhoon (TY)
           </label> <br>
 
           <label>
             <input type="radio" name="flood" value="category5"
                   [checked]="selectedFlood === 'category5'"
-                  (change)="onFloodSelected('category5')">
+                  (change)="onFloodSelected('category5')"
+                  (click)="clearSelection('flood', 'category5')">
             Super Typhoon (ST)
           </label> <br>
 
+          <!-- <button (click)="clearSelection('flood')">Clear</button> -->
         </div>
       </div>
 
@@ -71,24 +77,28 @@
           <label>
             <input type="radio" name="landslide" value="category1"
                   [checked]="selectedLandslide === 'category1'"
-                  (change)="onLandslideSelected('category1')">
+                  (change)="onLandslideSelected('category1')"
+                  (click)="clearSelection('landslide', 'category1')">
             Low Susceptibility
           </label> <br>
 
           <label>
             <input type="radio" name="landslide" value="category3"
                   [checked]="selectedLandslide === 'category3'"
-                  (change)="onLandslideSelected('category3')">
+                  (change)="onLandslideSelected('category3')"
+                  (click)="clearSelection('landslide', 'category3')">
             Moderate Susceptibility
           </label> <br>
 
           <label>
             <input type="radio" name="landslide" value="category4"
                   [checked]="selectedLandslide === 'category4'"
-                  (change)="onLandslideSelected('category4')">
+                  (change)="onLandslideSelected('category4')"
+                  (click)="clearSelection('landslide', 'category4')">
             High Susceptibility
           </label> <br>
 
+          <!-- <button (click)="clearSelection('landslide')">Clear</button> -->
         </div>
       </div>
 
