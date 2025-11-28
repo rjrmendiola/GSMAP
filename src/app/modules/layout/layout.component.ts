@@ -1751,6 +1751,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
       } else {
         this.selectedBarangay = null;
+        this.selectedBarangayName = null;
         this.map.setView([11.232084301848886, 124.7057818628441], 12);
       }
     }
@@ -1776,7 +1777,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } else {
       this.selectedBarangay = null;
-      this.map.setView(official.coords, 15);
+      this.selectedBarangayName = null;
+      this.map.setView([11.232084301848886, 124.7057818628441], 12);
     }
   }
 
@@ -1794,7 +1796,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } else {
         this.selectedBarangay = null;
-        this.map.setView(center.coords, 15);
+        this.selectedBarangayName = null;
+        this.map.setView([11.232084301848886, 124.7057818628441], 12);
       }
   }
 }

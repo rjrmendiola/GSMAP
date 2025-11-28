@@ -28,7 +28,7 @@
           </div>
 
           <!-- Weather Overview for All Barangays -->
-          <div class="pt-4" *ngIf="weatherData && !isLoadingWeather">
+          <div class="pt-4" *ngIf="!selectedBarangayWeather && weatherData && !isLoadingWeather">
             <h3 class="text-blue-400 font-semibold mb-4">Current Weather Overview</h3>
             <div class="grid grid-cols-1 gap-4 mb-6">
               <div *ngFor="let barangay of barangayNames" class="bg-gray-800 p-3 rounded-lg">
