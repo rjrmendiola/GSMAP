@@ -39,6 +39,7 @@
       [barangays]="barangays"
       [barangayOfficials]="barangayOfficials"
       [evacuationCenters]="evacuationCenters"
+      (menuClicked)="onSidebarMenuClick($event)"
       (dssFilterClicked)="onDssFilterClicked()"
       (barangayOfficialSelected)="onBarangayOfficialSelected($event)"
       (evacuationCenterSelected)="onEvacuationCenterSelected($event)"

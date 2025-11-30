@@ -56,9 +56,9 @@ export class SidebarComponent implements OnInit {
     this.menuService.toggleSidebar();
   }
 
-  // public onSidebarMenuClick(event: { type: string; category?: string }) {
-  //   this.disasterService.setDisasterType(event);
-  // }
+  public onSidebarMenuClick(event: { type: string; category?: string }) {
+    this.disasterService.setDisasterType(event);
+  }
 
   // public onBarangaySelected(event: { id: number; barangay: string; coordinates: [number, number] }) {
   //   this.barangaySelected.emit(event);
