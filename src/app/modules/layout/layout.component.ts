@@ -31,6 +31,7 @@ import { CommonModule } from '@angular/common';
 import { MapTypeService } from 'src/app/core/services/maptype.service';
 import { DssFilterComponent } from './components/map/dss-filter/dss-filter.component';
 import { SlopeService } from 'src/app/core/services/slope.service';
+import { SoilMoistureService } from 'src/app/core/services/soil-moisture.service';
 
 @Component({
   selector: 'app-layout',
@@ -366,6 +367,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('flood_landslide', './assets/data/hazard_flood_landslide.geojson');
 
     this.loadAPIGeoJsonLayer('slope', '/api/slopes/geojson');
+    this.loadAPIGeoJsonLayer('soil_moisture', '/api/soilmoistures/geojson');
 
     L.control.scale({imperial: true,}).addTo(this.map);
 
@@ -407,22 +409,84 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private loadAPIGeoJsonLayer(layerKey: string, url: string) {
-    this.slopeService.getSlopeGeoJson().subscribe({
-      next: (data) => {
-        if (data && data.type === 'FeatureCollection') {
-          // const layer = L.geoJSON(data).addTo(this.map);
-          const layer = L.geoJSON(data);
-          this.layers[layerKey] = layer;
+    if (layerKey === 'slope') {
+      this.slopeService.getSlopeGeoJson().subscribe({
+        next: (data) => {
+          if (data && data.type === 'FeatureCollection') {
+            const layer = L.geoJSON(data, {
+              style: (feature) => {
+                const meanSlope = feature?.properties.mean;
 
-          if (this.layerVisibility[layerKey]) {
-            layer.addTo(this.map);
+                return {
+                  color: "#333",
+                  weight: 1,
+                  fillColor: this.getSlopeColor(meanSlope),
+                  fillOpacity: 0.7
+                };
+              }
+            });
+            this.layers[layerKey] = layer;
+
+            if (this.layerVisibility[layerKey]) {
+              layer.addTo(this.map);
+            }
+          } else {
+            console.error('Invalid slope GeoJSON', data);
           }
-        } else {
-          console.error('Invalid slope GeoJSON', data);
-        }
-      },
-      error: (err) => console.error('Failed to load slope layer', err)
-    });
+        },
+        error: (err) => console.error('Failed to load slope layer', err)
+      });
+    } else if (layerKey === 'soil_moisture') {
+      this.soilMoistureService.getSoilMoisturesGeoJson().subscribe({
+        next: (data) => {
+          if (data && data.type === 'FeatureCollection') {
+            const layer = L.geoJSON(data, {
+              style: (feature) => {
+                const meanSlope = feature?.properties.mean;
+
+                return {
+                  color: "#333",
+                  weight: 1,
+                  fillColor: this.getSoilMoistureColor(meanSlope),
+                  fillOpacity: 0.7
+                };
+              }
+            });
+            this.layers[layerKey] = layer;
+
+            if (this.layerVisibility[layerKey]) {
+              layer.addTo(this.map);
+            }
+          } else {
+            console.error('Invalid soil moisture GeoJSON', data);
+          }
+        },
+        error: (err) => console.error('Failed to load soil moisture layer', err)
+      });
+    }
+  }
+
+  private getSlopeColor(v: number) {
+    return v < 5 ? '#edf8e9' :
+          v < 15 ? '#bae4b3' :
+          v < 30 ? '#74c476' :
+          v < 45 ? '#31a354' :
+                    '#006d2c';
+  }
+
+  private getSoilMoistureColor(v: number) {
+    if (v === null || isNaN(v)) return '#ccc'; // gray for missing vs
+
+    // Define ranges
+    if (v <= 10) return '#a52a2a'; // very dry, brown
+    if (v <= 20) return '#d2691e'; // dry, chocolate
+    if (v <= 30) return '#f4a460'; // moderate dry, sandy brown
+    if (v <= 40) return '#ffd700'; // low-medium, gold/yellow
+    if (v <= 50) return '#9acd32'; // medium, yellow-green
+    if (v <= 60) return '#32cd32'; // moderately wet, lime green
+    if (v <= 70) return '#228b22'; // wet, forest green
+    if (v <= 80) return '#1e90ff'; // very wet, dodger blue
+    return '#0000ff'; // saturated, deep blue
   }
 
   // Method to toggle layer visibility based on checkbox state
@@ -1251,6 +1315,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapTypeService: MapTypeService,
     private authService: AuthService,
     private slopeService: SlopeService,
+    private soilMoistureService: SoilMoistureService,
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1520,6 +1585,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.toggleLayer('forest');
         } else if (this.disasterType.category == 'slope') {
           this.toggleLayer('slope');
+        } else if (this.disasterType.category == 'soil-moisture') {
+          this.toggleLayer('soil_moisture');
         }
       }
     }
