@@ -30,6 +30,7 @@ import { Barangay, BarangayResponse } from 'src/app/shared/models/barangay.model
 import { CommonModule } from '@angular/common';
 import { MapTypeService } from 'src/app/core/services/maptype.service';
 import { DssFilterComponent } from './components/map/dss-filter/dss-filter.component';
+import { SlopeService } from 'src/app/core/services/slope.service';
 
 @Component({
   selector: 'app-layout',
@@ -364,6 +365,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadGeoJsonLayer('flood_low', './assets/data/flood/hazard_flood_low.geojson');
     this.loadGeoJsonLayer('flood_landslide', './assets/data/hazard_flood_landslide.geojson');
 
+    this.loadAPIGeoJsonLayer('slope', '/api/slopes/geojson');
+
     L.control.scale({imperial: true,}).addTo(this.map);
 
     // Add double-click event listener
@@ -403,6 +406,25 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  private loadAPIGeoJsonLayer(layerKey: string, url: string) {
+    this.slopeService.getSlopeGeoJson().subscribe({
+      next: (data) => {
+        if (data && data.type === 'FeatureCollection') {
+          // const layer = L.geoJSON(data).addTo(this.map);
+          const layer = L.geoJSON(data);
+          this.layers[layerKey] = layer;
+
+          if (this.layerVisibility[layerKey]) {
+            layer.addTo(this.map);
+          }
+        } else {
+          console.error('Invalid slope GeoJSON', data);
+        }
+      },
+      error: (err) => console.error('Failed to load slope layer', err)
+    });
+  }
+
   // Method to toggle layer visibility based on checkbox state
   public toggleLayer(layerKey: string): void {
     const layer = this.layers[layerKey];
@@ -433,7 +455,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         this.map.addLayer(layer);
         // this.legend.addTo(this.map);
-        this.info.addTo(this.map);
+        // this.info.addTo(this.map);
       }
     }
   }
@@ -1228,6 +1250,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private barangayOfficialService: BarangayOfficialService,
     private mapTypeService: MapTypeService,
     private authService: AuthService,
+    private slopeService: SlopeService,
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1495,6 +1518,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.toggleLayer('roads');
         } else if (this.disasterType.category == 'forest') {
           this.toggleLayer('forest');
+        } else if (this.disasterType.category == 'slope') {
+          this.toggleLayer('slope');
         }
       }
     }
