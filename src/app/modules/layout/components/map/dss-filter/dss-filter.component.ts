@@ -21,6 +21,9 @@ export class DssFilterComponent {
   @Input() isOpen: boolean = false;
   @Output() applyFilters = new EventEmitter<any>();
   @Output() closeModal = new EventEmitter<void>();
+  // @Output() barangaysSelected = new EventEmitter<string[]>();
+
+  selectedBarangays: number[] = [];
 
   // selectedFlood: string | null = null;
   // selectedLandslide: string | null = null;
@@ -56,6 +59,7 @@ export class DssFilterComponent {
       landslide: this.selectedLandslide,
       barangay: this.selectedBarangay,
       mapType: this.selectedMapType,
+      barangays: this.selectedBarangays
     });
 
     this.closeModal.emit();
@@ -71,5 +75,20 @@ export class DssFilterComponent {
     } else if (category === 'landslide' && this.selectedLandslide === type) {
       this.selectedLandslide = null;
     }
+  }
+
+  onBarangayToggle(barangay: number, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked; // cast to HTMLInputElement
+
+    if (checked) {
+      if (!this.selectedBarangays.includes(barangay)) {
+        this.selectedBarangays.push(barangay);
+      }
+    } else {
+      this.selectedBarangays = this.selectedBarangays.filter(b => b !== barangay);
+    }
+
+    // Emit to parent
+    // this.barangaysSelected.emit(this.selectedBarangays);
   }
 }

@@ -196,6 +196,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedBarangay: number | null = null;
   selectedMapType: string | null = null;
 
+  highlightedBarangays: string[] = [];
+
   evacuationCenterLayer: L.LayerGroup | null = null;
   barangayOfficialLayer: L.LayerGroup | null = null;
 
@@ -211,6 +213,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedLandslideFilter: string | null = null;
   selectedBarangayFilter: string = 'all';
   selectedMapTypeFilter: string = '';
+  selectedBarangaysFilter: string[] = [];
 
   isDssFilterModalOpen = false;
 
@@ -1821,17 +1824,64 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedMapType = selectedType;
   }
 
-  onApplyFilters(filters: { flood: string | null; landslide: string | null; barangay: string | null; mapType: string | null; }) {
+  onApplyFilters(filters: { flood: string | null; landslide: string | null; barangay: string | null; mapType: string | null; barangays: string[] | null;  }): void {
     this.isDssFilterModalOpen = false;
 
     if (filters.flood) {
       this.selectedFloodFilter = filters.flood;
       this.disasterService.setDisasterType({ type: 'flood', category: filters.flood });
+
+      if (filters.barangays?.length === 0) {
+        var floodCategoryMap: any = {
+          'category5': this.hazardAffectedBarangays.typhoon.super_typhoon,
+          'category4': this.hazardAffectedBarangays.typhoon.typhoon,
+          'category3': this.hazardAffectedBarangays.typhoon.severe_tropical_storm,
+          'category2': this.hazardAffectedBarangays.typhoon.tropical_storm,
+          'category1': this.hazardAffectedBarangays.typhoon.tropical_depression,
+        };
+
+        var floodAffectedBarangays = floodCategoryMap[filters.flood];
+
+        this.selectedBarangaysFilter = [];
+        this.highlightedBarangays = [];
+
+        for (const barangay_slug of floodAffectedBarangays) {
+          const barangay = this.barangays.find(b => b.slug === barangay_slug);
+          if (barangay) {
+            this.highlightedBarangays.push(barangay!.name);
+          }
+        }
+
+        this.refreshBarangayStyles();
+      }
     }
 
     if (filters.landslide) {
       this.selectedLandslideFilter = filters.landslide;
       this.disasterService.setDisasterType({ type: 'landslide', category: filters.landslide });
+
+      if (filters.barangays?.length === 0) {
+        var landslideCategoryMap: any = {
+          'category4': this.hazardAffectedBarangays.landslide.highly_susceptible,
+          'category3': this.hazardAffectedBarangays.landslide.moderately_susceptible,
+          // 'category2': this.hazardAffectedBarangays.landslide.unlikely,
+          'category1': this.hazardAffectedBarangays.landslide.less_likely_to_experience,
+        };
+
+        var landslideAffectedBarangays = landslideCategoryMap[filters.landslide];
+
+        this.selectedBarangaysFilter = [];
+        this.highlightedBarangays = [];
+
+        for (const barangay_slug of landslideAffectedBarangays) {
+          const barangay = this.barangays.find(b => b.slug === barangay_slug);
+          if (barangay) {
+            this.highlightedBarangays.push(barangay!.name);
+          }
+        }
+
+        this.refreshBarangayStyles();
+      }
     }
 
     if (filters.barangay) {
@@ -1852,6 +1902,26 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedMapTypeFilter = filters.mapType;
 
       this.mapTypeService.setMapType({ type: filters.mapType });
+    }
+
+    if (filters.barangays) {
+      this.selectedBarangaysFilter = filters.barangays;
+
+      if (this.selectedBarangaysFilter.length > 0) {
+        for (const barangay_id of this.selectedBarangaysFilter) {
+          const barangay = this.barangays.find(b => b.id === parseInt(barangay_id));
+          this.highlightedBarangays.push(barangay!.name);
+        }
+
+
+        // const barangay = this.barangays.find(b => b.id === parseInt(this.selectedBarangaysFilter[0]));
+        // if (barangay) {
+        //   this.selectedBarangayName = barangay.name;
+        //   this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+        // }
+
+        this.refreshBarangayStyles();
+      }
     }
   }
 
@@ -1891,5 +1961,22 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedBarangayName = null;
         this.map.setView([11.232084301848886, 124.7057818628441], 12);
       }
+  }
+
+  refreshBarangayStyles() {
+    this.layers['barangay'].setStyle((feature: any) =>
+      this.getBarangayStyle(feature)
+    );
+  }
+
+  getBarangayStyle(feature: any): L.PathOptions {
+    const name = feature.properties.name;
+    const isHighlighted = this.highlightedBarangays.includes(name);
+
+    return {
+      color: isHighlighted ? '#ffcc00' : '#3388ff',
+      weight: isHighlighted ? 4 : 1,
+      fillOpacity: isHighlighted ? 0.5 : 0.1
+    };
   }
 }
