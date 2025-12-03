@@ -415,6 +415,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (layerKey === 'slope') {
       this.slopeService.getSlopeGeoJson().subscribe({
         next: (data) => {
+          console.log("Slope GeoJSON returned:", data);
           if (data && data.type === 'FeatureCollection') {
             const layer = L.geoJSON(data, {
               style: (feature) => {
@@ -442,6 +443,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (layerKey === 'soil_moisture') {
       this.soilMoistureService.getSoilMoisturesGeoJson().subscribe({
         next: (data) => {
+          console.log("Soil moisture GeoJSON returned:", data);
           if (data && data.type === 'FeatureCollection') {
             const layer = L.geoJSON(data, {
               style: (feature) => {
