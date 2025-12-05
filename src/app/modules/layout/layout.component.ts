@@ -456,6 +456,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.soilMoistureService.getSoilMoisturesGeoJson().subscribe({
         next: (data) => {
           if (data && data.type === 'FeatureCollection') {
+            console.log("FEATURE SAMPLE:", data.features[0]);
+            console.log("GEOMETRY:", data.features[0]?.geometry);
+            console.log("TYPE:", typeof data.features[0]?.geometry);
+
             // Filter out invalid geometries
             const validFeatures = data.features.filter((f: any) => this.isValidGeometry(f));
 
