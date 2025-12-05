@@ -32,6 +32,7 @@ import { MapTypeService } from 'src/app/core/services/maptype.service';
 import { DssFilterComponent } from './components/map/dss-filter/dss-filter.component';
 import { SlopeService } from 'src/app/core/services/slope.service';
 import { SoilMoistureService } from 'src/app/core/services/soil-moisture.service';
+import { FeatureCollection, GeoJsonObject } from 'geojson';
 
 @Component({
   selector: 'app-layout',
@@ -415,12 +416,22 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (layerKey === 'slope') {
       this.slopeService.getSlopeGeoJson().subscribe({
         next: (data) => {
-          console.log("Slope GeoJSON returned:", data);
           if (data && data.type === 'FeatureCollection') {
-            const layer = L.geoJSON(data, {
+            // Filter out invalid geometries
+            const validFeatures = data.features.filter((f: any) => this.isValidGeometry(f));
+
+            // console.log(
+            //   `Filtered features: kept ${validFeatures.length}, removed ${data.features.length - validFeatures.length}`
+            // );
+
+            const cleanedGeoJson: FeatureCollection = {
+              type: "FeatureCollection",
+              features: validFeatures
+            };
+
+            const layer = L.geoJSON(cleanedGeoJson, {
               style: (feature) => {
                 const meanSlope = feature?.properties.mean;
-
                 return {
                   color: "#333",
                   weight: 1,
@@ -429,6 +440,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
                 };
               }
             });
+
             this.layers[layerKey] = layer;
 
             if (this.layerVisibility[layerKey]) {
@@ -443,12 +455,22 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (layerKey === 'soil_moisture') {
       this.soilMoistureService.getSoilMoisturesGeoJson().subscribe({
         next: (data) => {
-          console.log("Soil moisture GeoJSON returned:", data);
           if (data && data.type === 'FeatureCollection') {
-            const layer = L.geoJSON(data, {
+            // Filter out invalid geometries
+            const validFeatures = data.features.filter((f: any) => this.isValidGeometry(f));
+
+            // console.log(
+            //   `Filtered features: kept ${validFeatures.length}, removed ${data.features.length - validFeatures.length}`
+            // );
+
+            const cleanedGeoJson: FeatureCollection = {
+              type: "FeatureCollection",
+              features: validFeatures
+            };
+
+            const layer = L.geoJSON(cleanedGeoJson, {
               style: (feature) => {
                 const meanSlope = feature?.properties.mean;
-
                 return {
                   color: "#333",
                   weight: 1,
@@ -457,6 +479,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
                 };
               }
             });
+
             this.layers[layerKey] = layer;
 
             if (this.layerVisibility[layerKey]) {
@@ -470,6 +493,24 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
   }
+
+  private isValidGeometry(feature: any): boolean {
+    if (!feature || !feature.geometry) return false;
+
+    const geom = feature.geometry;
+
+    if (!geom.type || !geom.coordinates) return false;
+
+    // Must not be a string
+    if (typeof geom === "string") return false;
+    if (typeof geom.coordinates === "string") return false;
+
+    // Coordinates must be an array
+    if (!Array.isArray(geom.coordinates)) return false;
+
+    return true;
+  }
+
 
   private getSlopeColor(v: number) {
     return v < 5 ? '#edf8e9' :
