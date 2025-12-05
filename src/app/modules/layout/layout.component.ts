@@ -457,7 +457,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         next: (data) => {
           if (data && data.type === 'FeatureCollection') {
             console.log("FEATURE SAMPLE:", data.features[0]);
-            console.log("GEOMETRY:", data.features[0]?.geometry);
+            // console.log("GEOMETRY:", data.features[0]?.geometry);
             console.log("TYPE:", typeof data.features[0]?.geometry);
 
             // Filter out invalid geometries
@@ -501,15 +501,22 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private isValidGeometry(feature: any): boolean {
     if (!feature || !feature.geometry) return false;
 
-    const geom = feature.geometry;
+    let geom = feature.geometry;
 
+    // 🔥 Auto-parse if geometry is JSON string
+    if (typeof geom === "string") {
+      try {
+        geom = JSON.parse(geom);
+        feature.geometry = geom; // update to parsed value
+      } catch {
+        return false;
+      }
+    }
+
+    // Must have type + coordinates
     if (!geom.type || !geom.coordinates) return false;
 
-    // Must not be a string
-    if (typeof geom === "string") return false;
-    if (typeof geom.coordinates === "string") return false;
-
-    // Coordinates must be an array
+    // Coordinates must be array
     if (!Array.isArray(geom.coordinates)) return false;
 
     return true;
