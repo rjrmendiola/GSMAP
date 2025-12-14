@@ -28,7 +28,7 @@ export class WeatherService {
 
     for (const feature of geojson.features) {
       const barangay = feature.properties.barangay;
-      
+
       // Assuming the geometry is always a Point, where coordinates are a simple [lon, lat] array.
       // Be cautious if your GeoJSON contains other geometry types like Polygons.
       const [latitude, longitude] = feature.geometry.coordinates;
@@ -51,7 +51,7 @@ export class WeatherService {
     if (Object.keys(this.barangayCoordinates).length === 0) {
         await this.loadCoordinates();
     }
-      
+
     const url = 'https://api.open-meteo.com/v1/forecast';
 
     const hourlyVars = [
@@ -100,10 +100,10 @@ export class WeatherService {
       const timeArray = range(start, end, interval).map(
         (t) => new Date((t + utcOffsetSeconds) * 1000)
       );
-      
+
       const data: any = { time: timeArray };
       const variableCount = hourly.variablesLength();
-      
+
       for (let i = 0; i < variableCount; i++) {
         const variable = hourly.variables(i);
 
@@ -115,7 +115,7 @@ export class WeatherService {
           }
         }
       }
-      
+
       barangayData[barangay] = data;
     }
 
@@ -132,7 +132,7 @@ export class WeatherService {
     if (Object.keys(this.barangayCoordinates).length === 0) {
         await this.loadCoordinates();
     }
-      
+
     const url = 'https://api.open-meteo.com/v1/forecast';
     const coords = this.barangayCoordinates[barangay];
     if (!coords) throw new Error(`Coordinates not found for barangay: ${barangay}`);
@@ -174,7 +174,7 @@ export class WeatherService {
     const timeArray = range(start, end, interval).map(
       (t) => new Date((t + utcOffsetSeconds) * 1000)
     );
-      
+
     const data: any = { time: timeArray };
     const variableCount = hourly.variablesLength();
 

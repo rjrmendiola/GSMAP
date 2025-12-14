@@ -16,6 +16,7 @@ const routes: Routes = [
       { path: 'officials', loadComponent: () => import('./pages/manage-officials/manage-officials.component').then(m => m.ManageOfficialsComponent) },
       { path: 'evacuation-centers', loadComponent: () => import('./pages/manage-evacuation-centers/manage-evacuation-centers.component').then(m => m.ManageEvacuationCentersComponent) },
       { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
+      { path: 'weather-settings', loadComponent: () => import('./pages/manage-weather-settings/manage-weather-settings.component').then(m => m.ManageWeatherSettingsComponent) },
     ]
   }
 ];
