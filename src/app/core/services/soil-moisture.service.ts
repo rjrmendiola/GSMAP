@@ -3,9 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface SoilMoistureBaseline {
+  barangay: string;
+  mean: number;
+  mean_norm: number;
+}
+
+@Injectable({ providedIn: 'root' })
 export class SoilMoistureService {
   private apiUrl = `${environment.apiUrl}/soilmoistures`;
 
@@ -13,5 +17,9 @@ export class SoilMoistureService {
 
   getSoilMoisturesGeoJson(): Observable<any> {
     return this.http.get(this.apiUrl+'/geojson'); // returns GeoJSON
+  }
+
+  getBaselines(): Observable<SoilMoistureBaseline[]> {
+    return this.http.get<SoilMoistureBaseline[]>(this.apiUrl+'/baseline'); // returns baseline soil moisture data
   }
 }

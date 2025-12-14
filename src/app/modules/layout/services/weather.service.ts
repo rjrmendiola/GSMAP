@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { fetchWeatherApi } from 'openmeteo';
 import { firstValueFrom } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 // Note: The openmeteo library returns data in a highly optimized format (FlatBuffers).
 // The `VariableWithValues` object you get for each variable does not contain its name.
@@ -15,6 +16,8 @@ export class WeatherService {
   private barangayCoordinates: {
     [barangay: string]: { latitude: number; longitude: number };
   } = {};
+
+  private weatherApiUrl = `${environment.apiUrl}/weather`;
 
   constructor(private http: HttpClient) {}
 
@@ -121,6 +124,13 @@ export class WeatherService {
 
     return barangayData;
   }
+
+  async getWeatherDataForAllBarangay_v2(): Promise<{ [barangay: string]: any }> {
+    return firstValueFrom(
+      this.http.get<{ [barangay: string]: any }>(this.weatherApiUrl)
+    );
+  }
+
 
   /**
    * Fetches weather data for a single, specific barangay.

@@ -33,6 +33,7 @@ import { DssFilterComponent } from './components/map/dss-filter/dss-filter.compo
 import { SlopeService } from 'src/app/core/services/slope.service';
 import { SoilMoistureService } from 'src/app/core/services/soil-moisture.service';
 import { FeatureCollection, GeoJsonObject } from 'geojson';
+import { HazardDetectorService } from 'src/app/core/services/hazard-detector.service';
 
 @Component({
   selector: 'app-layout',
@@ -83,7 +84,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       low: '#FFFF00',
       moderate: '#6B8E23',
       high: '#800000'
-
+    },
+    slope: {
+      low: '#FF5F1F',
+      moderate: '#DFFF00',
+      high: '#0000FF'
+    },
+    soilmoisture: {
+      low: '#FF5F1F',
+      moderate: '#DFFF00',
+      high: '#0000FF'
     }
   };
 
@@ -417,9 +427,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.slopeService.getSlopeGeoJson().subscribe({
         next: (data) => {
           if (data && data.type === 'FeatureCollection') {
-            console.log("Slope Feature Sample:", data.features[0]);
+            // console.log("Slope Feature Sample:", data.features[0]);
             // console.log("GEOMETRY:", data.features[0]?.geometry);
-            console.log("Type:", typeof data.features[0]?.geometry);
+            // console.log("Type:", typeof data.features[0]?.geometry);
 
             // Filter out invalid geometries
             const validFeatures = data.features.filter((f: any) => this.isValidGeometry(f));
@@ -460,9 +470,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.soilMoistureService.getSoilMoisturesGeoJson().subscribe({
         next: (data) => {
           if (data && data.type === 'FeatureCollection') {
-            console.log("Soil Moisture Feature Sample:", data.features[0]);
+            // console.log("Soil Moisture Feature Sample:", data.features[0]);
             // console.log("Geometry:", data.features[0]?.geometry);
-            console.log("Type:", typeof data.features[0]?.geometry);
+            // console.log("Type:", typeof data.features[0]?.geometry);
 
             // Filter out invalid geometries
             const validFeatures = data.features.filter((f: any) => this.isValidGeometry(f));
@@ -528,11 +538,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   private getSlopeColor(v: number) {
-    return v < 5 ? '#edf8e9' :
-          v < 15 ? '#bae4b3' :
-          v < 30 ? '#74c476' :
-          v < 45 ? '#31a354' :
-                    '#006d2c';
+    // return v < 5 ? '#edf8e9' :
+    //       v < 15 ? '#bae4b3' :
+    //       v < 30 ? '#74c476' :
+    //       v < 45 ? '#31a354' :
+    //                 '#006d2c';
+    return v < 5 ? '#a52a2a' :
+          v < 15 ? '#f4a460' :
+          v < 30 ? '#9acd32' :
+          v < 45 ? '#1e90ff' :
+                    '#0000ff';
   }
 
   private getSoilMoistureColor(v: number) {
@@ -728,6 +743,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         var labels: string[] = ['High', 'Moderate', 'Low'];
 
         var legendLabel = 'Landslide Hazard Level';
+
+        console.log(this.disasterType.type);
 
         if (this.disasterType.type == 'flood' || this.disasterType.type == 'typhoon') {
           legendLabel = 'Flood Hazard Level';
@@ -1351,8 +1368,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public toggleBarangayOfficials() {
-    console.log(this.barangayOfficialLayer);
-    console.log(this.showBarangayOfficials);
     if (!this.barangayOfficialLayer) return; // guard
 
     this.showBarangayOfficials = !this.showBarangayOfficials;
@@ -1377,6 +1392,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private authService: AuthService,
     private slopeService: SlopeService,
     private soilMoistureService: SoilMoistureService,
+    private hazardService: HazardDetectorService,
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {

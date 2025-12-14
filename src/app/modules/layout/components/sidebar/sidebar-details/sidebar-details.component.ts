@@ -5,6 +5,8 @@ import * as L from 'leaflet';
 import { Point } from 'geojson';
 import { WeatherService } from '../../../services/weather.service';
 import { CommonModule, DatePipe } from '@angular/common';
+import { HazardDetectorService, HazardResult } from 'src/app/core/services/hazard-detector.service';
+import { WeatherSettingsService } from 'src/app/core/services/weather-settings.service';
 
 @Component({
   selector: 'app-sidebar-details',
@@ -13,6 +15,7 @@ import { CommonModule, DatePipe } from '@angular/common';
   templateUrl: './sidebar-details.component.html',
   styleUrl: './sidebar-details.component.scss'
 })
+
 export class SidebarDetailsComponent {
   @Input() disasterType!: { type: string; category?: string };
   @Input() selectedBarangayName: string | null = null;
@@ -37,7 +40,17 @@ export class SidebarDetailsComponent {
   };
   public isLoadingWeather = false;
 
-  constructor(private weatherService: WeatherService) {}
+  public weatherHazardData: any[] = [];
+  public hazardResults: HazardResult[] = [];
+  public criticalBarangays: string[] = [];
+
+  public isWeatherDataUpToDate: boolean = false;
+
+  constructor(
+    private weatherService: WeatherService,
+    private weatherSettingsService: WeatherSettingsService,
+    private hazardService: HazardDetectorService
+  ) {}
 
   private fetchGeoJson(url: string): Promise<any> {
     return fetch(url)
@@ -203,7 +216,34 @@ export class SidebarDetailsComponent {
   public async loadAllWeatherData(): Promise<void> {
     try {
       this.isLoadingWeather = true;
-      this.weatherData = await this.weatherService.getWeatherDataForAllBarangay();
+
+      // 1. Get weather for all barangays
+      // this.weatherData = await this.weatherService.getWeatherDataForAllBarangay();
+      this.weatherData = await this.weatherService.getWeatherDataForAllBarangay_v2();
+
+      // 2. Convert object → array for hazard detection
+      const weatherArray = Object.entries(this.weatherData).map(([barangay, data]) => ({
+        barangay,
+        ...data
+      }));
+
+      // 3. Run hazard detection
+      this.hazardResults = this.hazardService.detectAll(weatherArray);
+
+      // Highlight critical barangays on map
+      // this.hazardResults.forEach(r => {
+      //   if (r.isFloodRisk || r.isLandslideRisk || r.isWindRisk) {
+      //     this.map.highlightBarangay(r.barangay);
+      //   }
+      // });
+
+      // 4. Get all critical barangays
+      // this.criticalBarangays = this.hazardResults
+      //   .filter(h => h.isCritical)
+      //   .map(h => h.barangay);
+
+      // console.log('Critical barangays:', this.criticalBarangays);
+
       console.log('All weather data loaded:', this.weatherData);
     } catch (error) {
       console.error('Error loading weather data:', error);
@@ -246,7 +286,15 @@ export class SidebarDetailsComponent {
     }
 
     const data = this.weatherData[barangay];
-    const currentIndex = 0; // You might want to find the current time index
+    // const currentIndex = 0; // You might want to find the current time index
+
+    // Find closest current time index
+    const now = new Date();
+    let currentIndex = 0;
+    if (data.time && data.time.length) {
+      const timeDiffs = data.time.map((t: Date) => Math.abs(new Date(t).getTime() - now.getTime()));
+      currentIndex = timeDiffs.indexOf(Math.min(...timeDiffs));
+    }
 
     return {
       temperature: data['temperature_2m']?.[currentIndex] || 0,
