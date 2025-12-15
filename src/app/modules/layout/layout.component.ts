@@ -264,7 +264,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // pop_density: persons per square mile
   // area: square miles
-  private barangayDetails = [
+  public barangayDetails = [
     { name: 'bagong_lipunan', pop_density: 785.20, livelihood: 'Agriculture/Crops mixed with Coconut Plantation', area: 0.7703 },
     { name: 'balilit', pop_density: 1608.54, livelihood: 'Agriculture/Crops mixed with Coconut Plantation', area: 0.6078 },
     { name: 'barayong', pop_density: 382.25, livelihood: 'Agriculture/Crops mainly sugar', area: 0.879 },
