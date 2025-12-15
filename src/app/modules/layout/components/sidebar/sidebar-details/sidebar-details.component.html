@@ -49,6 +49,22 @@
                     </div>
                   </div>
                 </ng-container>
+                <hr class="my-2 text-gray-300">
+                <ng-container *ngIf="getBarangayDetail(barangay) as barangayDetail">
+                  <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div class="text-gray-300">
+                      <span class="font-medium">Area:</span> {{ barangayDetail.area }}
+                    </div>
+                    <div class="text-gray-300">
+                      <span class="font-medium">Pop. Density:</span> {{ barangayDetail.pop_density }}
+                    </div>
+                  </div>
+                  <!-- <div class="grid grid-cols-1 gap-2 text-sm">
+                    <div class="text-gray-300">
+                      <span class="font-medium">Livelihood: </span> {{ barangayDetail.livelihood }}
+                    </div>
+                  </div> -->
+                </ng-container>
               </div>
             </div>
           </div>

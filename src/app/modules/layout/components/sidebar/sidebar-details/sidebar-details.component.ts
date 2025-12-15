@@ -7,6 +7,8 @@ import { WeatherService } from '../../../services/weather.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { HazardDetectorService, HazardResult } from 'src/app/core/services/hazard-detector.service';
 import { WeatherSettingsService } from 'src/app/core/services/weather-settings.service';
+import { BarangayService } from 'src/app/core/services/barangay.service';
+import { Barangay } from 'src/app/shared/models/barangay.model';
 
 @Component({
   selector: 'app-sidebar-details',
@@ -19,6 +21,8 @@ import { WeatherSettingsService } from 'src/app/core/services/weather-settings.s
 export class SidebarDetailsComponent {
   @Input() disasterType!: { type: string; category?: string };
   @Input() selectedBarangayName: string | null = null;
+  @Input() barangays: Barangay[] = [];
+  @Input() barangayDetails: any[] = [];
   @Output() rowClicked = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
 
   floodLandslideDetailsBarangayList!: string[];
@@ -49,7 +53,8 @@ export class SidebarDetailsComponent {
   constructor(
     private weatherService: WeatherService,
     private weatherSettingsService: WeatherSettingsService,
-    private hazardService: HazardDetectorService
+    private hazardService: HazardDetectorService,
+    private barangayService: BarangayService
   ) {}
 
   private fetchGeoJson(url: string): Promise<any> {
@@ -334,6 +339,11 @@ export class SidebarDetailsComponent {
     }
 
     return forecast;
+  }
+
+  public getBarangayDetail(barangay: string): any {
+    var slug = barangay.toLowerCase().replace(/ /g, '_');
+    return this.barangayDetails.find(detail => detail.name === slug);
   }
 
   public toggleRemarks(barangayDetails: any): void {

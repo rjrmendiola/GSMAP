@@ -44,10 +44,10 @@ export class HazardDetectorService {
   /** Load admin-editable thresholds from backend */
   async loadThresholds() {
     try {
-      const t = await this.http.get<HazardThresholds>('/api/hazard-thresholds').toPromise();
-      if (t) this.thresholds = t;
+      // const t = await this.http.get<HazardThresholds>('/api/hazard-thresholds').toPromise();
+      // if (t) this.thresholds = t;
     } catch (err) {
-      console.warn('Failed to load hazard thresholds, using defaults', err);
+      // console.warn('Failed to load hazard thresholds, using defaults', err);
     }
   }
 
