@@ -243,8 +243,10 @@
             [value]="selectedEvacuationCenter"
             (change)="onEvacuationCenterChange($event)"
             class="block w-full rounded-md border-gray-300 text-xs shadow-xs focus:border-primary focus:ring-primary">
-            <option value="">Select an evacuation center</option>
-            <option *ngFor="let center of evacuationCenters" [value]="center.id">{{ truncate(center.venue, 30) }}</option>
+            <!-- <option value="">Select an evacuation center</option>
+            <option *ngFor="let center of evacuationCenters" [value]="center.id">{{ truncate(center.venue, 30) }}</option> -->
+            <option value="">Select a barangay</option>
+            <option *ngFor="let brgy of barangays" [value]="brgy.id">{{ brgy.name }}</option>
           </select>
         </div>
       </div>

@@ -1236,6 +1236,35 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     return distances.slice(0, count);
   }
 
+  private findNearestLocationsWithinBarangay(barangay_id: number, latlng: any, count: number) {
+    const barangayLayer = this.layers['barangay'];
+    const name = this.barangays.find(b => b.id === barangay_id)?.name;
+    if (!name) {
+      return [];
+    }
+
+    const selectedBarangayLayer = L.geoJSON(this.barangayPolygons[name]);
+    const bounds = selectedBarangayLayer.getBounds();
+
+    const insideCenters = this.evacuationCenters.filter(location => {
+      const point = L.latLng(location.coords[0], location.coords[1]);
+      return bounds.contains(point);
+    });
+
+    const distances = insideCenters.map(location => {
+      const distance = this.calculateDistance(
+        latlng.lat,
+        latlng.lng,
+        location.coords[0],
+        location.coords[1]
+      );
+      return { location, distance };
+    });
+
+    distances.sort((a, b) => a.distance - b.distance);
+    return distances.slice(0, count);
+  }
+
   private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // Radius of the Earth in km
 
@@ -2044,22 +2073,74 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onEvacuationCenterSelected(event: any): void {
-    const selectedId = +event.id;
+    // const selectedId = +event.id;
 
-    const center = this.evacuationCenters.find(c => c.id === selectedId);
-    if (center) {
-      const barangay = this.barangays.find(b => b.id === parseInt(center.barangay_id!));
-      if (barangay) {
-        // Triggers weather data fetch
-        this.selectedBarangayName = barangay.name;
+    // const center = this.evacuationCenters.find(c => c.id === selectedId);
+    // if (center) {
+    //   const barangay = this.barangays.find(b => b.id === parseInt(center.barangay_id!));
+    //   if (barangay) {
+    //     // Triggers weather data fetch
+    //     this.selectedBarangayName = barangay.name;
 
-        this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+    //     this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+    //   }
+    // } else {
+    //   this.selectedBarangay = null;
+    //   this.selectedBarangayName = null;
+    //   this.map.setView([11.232084301848886, 124.7057818628441], 12);
+    // }
+    const barangayId = +event.id;
+    const barangay = this.barangays.find(b => b.id === barangayId);
+    if (barangay) {
+      // Clear previous nearest markers from the map
+      this.clearNearestEvacuationMarkers();
+
+      if (this.currentMarker) {
+        // Remove the existing marker if present
+        this.map?.removeLayer(this.currentMarker);
       }
+
+      // Add a new marker at the clicked location
+      this.currentMarker = L.marker([barangay.latitude, barangay.longitude], {
+        icon: this.defaultIcon,
+      })
+        .addTo(this.map)
+
+      // Find the nearest locations
+      // const nearestLocations = this.findNearestLocations({ lat: barangay.latitude, lng: barangay.longitude }, 5);
+      const nearestLocations = this.findNearestLocationsWithinBarangay(barangay.id, { lat: barangay.latitude, lng: barangay.longitude }, 5);
+      nearestLocations.forEach(({ location, distance}) => {
+        const coords: [number, number] = [location.coords[0], location.coords[1]];
+        const pulseIcon = this.makePulseIcon(10, 'green', './assets/images/guard.png');
+        // const nearestMarker = L.marker(coords, { icon: pulseIcon }).addTo(this.map).bindPopup(location.name).openPopup();
+        const nearestMarker = L.marker(coords, { icon: pulseIcon }).addTo(this.map);
+
+        // Create the custom popup HTML content
+        const popupContent = `
+            <div class="customPopup">
+                <figure>
+                    <img src="${location.image}" alt="Car">
+                    <figcaption>Barangay Evacuation Center</figcaption>
+                </figure>
+                <div>${location.venue}</div>
+                <div>Distance: ${distance.toFixed(2)} km</div>
+            </div>
+        `;
+
+        // Bind the custom popup to the marker
+        nearestMarker.bindPopup(popupContent).openPopup();
+        this.nearestEvacuationMarkers.push(nearestMarker); // Store reference to the marker
+      });
+
+      // Triggers weather data fetch
+      this.selectedBarangayName = barangay.name;
+
+      this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
     } else {
-        this.selectedBarangay = null;
-        this.selectedBarangayName = null;
-        this.map.setView([11.232084301848886, 124.7057818628441], 12);
-      }
+      this.selectedBarangay = null;
+      this.selectedBarangayName = null;
+      this.map.setView([11.232084301848886, 124.7057818628441], 12);
+    }
   }
 
   public onBarangaysSelected(event: any): void {
