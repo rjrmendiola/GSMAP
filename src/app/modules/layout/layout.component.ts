@@ -207,7 +207,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedBarangay: number | null = null;
   selectedMapType: string | null = null;
 
-  highlightedBarangays: string[] = [];
+  // highlightedBarangays: string[] = [];
+  highlightedBarangays: number[] = [];
 
   evacuationCenterLayer: L.LayerGroup | null = null;
   barangayOfficialLayer: L.LayerGroup | null = null;
@@ -229,6 +230,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   isDssFilterModalOpen = false;
 
   selectedBarangayName: string | null = null;
+
+  highlightBarangayLayer!: L.LayerGroup | null;
+  barangayFeatureMap = new Map<number, any>();
+  barangayLayerMap = new Map<number, L.Layer>();
+
+  barangayLabelLayer!: L.LayerGroup;
 
   private hazardAffectedBarangays = {
     'landslide': {
@@ -384,6 +391,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadAPIGeoJsonLayer('soil_moisture', '/api/soilmoistures/geojson');
 
     L.control.scale({imperial: true,}).addTo(this.map);
+
+    // Add highlight pane
+    // this.map.createPane('highlightPane');
+    // this.map.getPane('highlightPane')!.style.zIndex = '650';
+
+    // this.highlightBarangayLayer = L.layerGroup().addTo(this.map);
+    this.barangayLabelLayer = L.layerGroup().addTo(this.map);
 
     // Add double-click event listener
     this.map.on('dblclick', (event: L.LeafletMouseEvent) => this.onMapDoubleClick(event));
@@ -1101,6 +1115,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const barangayName = feature.properties.name;
       if (barangayName) {
         this.barangayPolygons[barangayName] = feature;
+
+        layer.feature = feature; // Store feature in layer for later access
+
+        // layer.bindTooltip(feature.properties.name, {
+        //   permanent: false,
+        //   direction: 'center',
+        //   className: 'barangay-label'
+        // })
       }
 
       // layer.on({
@@ -1922,7 +1944,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         for (const barangay_slug of floodAffectedBarangays) {
           const barangay = this.barangays.find(b => b.slug === barangay_slug);
           if (barangay) {
-            this.highlightedBarangays.push(barangay!.name);
+            // this.highlightedBarangays.push(barangay!.name);
+            this.highlightedBarangays.push(barangay!.id);
           }
         }
 
@@ -1950,7 +1973,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         for (const barangay_slug of landslideAffectedBarangays) {
           const barangay = this.barangays.find(b => b.slug === barangay_slug);
           if (barangay) {
-            this.highlightedBarangays.push(barangay!.name);
+            // this.highlightedBarangays.push(barangay!.name);
+            this.highlightedBarangays.push(barangay!.id);
           }
         }
 
@@ -1984,7 +2008,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.selectedBarangaysFilter.length > 0) {
         for (const barangay_id of this.selectedBarangaysFilter) {
           const barangay = this.barangays.find(b => b.id === parseInt(barangay_id));
-          this.highlightedBarangays.push(barangay!.name);
+          // this.highlightedBarangays.push(barangay!.name);
+          this.highlightedBarangays.push(barangay!.id);
         }
 
 
@@ -2037,20 +2062,123 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
   }
 
+  public onBarangaysSelected(event: any): void {
+    console.log("layout.component - onBarangaysSelected", event);
+    this.selectedBarangaysFilter = event;
+
+    // this.highlightedBarangays = [];
+    // for (const barangay_id of this.selectedBarangaysFilter) {
+    //   const barangay = this.barangays.find(b => b.id === parseInt(barangay_id));
+    //   if (barangay) {
+    //     this.highlightedBarangays.push(barangay!.name);
+    //   }
+    // }
+
+    // this.refreshBarangayStyles();
+    this.highlightedBarangays = this.barangays
+      .filter(b => event.includes(b.id))
+      .map(b => b.id);
+
+    console.log(this.highlightedBarangays);
+
+    this.refreshBarangayStyles();
+    this.updateBarangayLabels();
+  }
+
   refreshBarangayStyles() {
-    this.layers['barangay'].setStyle((feature: any) =>
-      this.getBarangayStyle(feature)
-    );
+    // this.layers['barangay'].setStyle((feature: any) =>
+    //   this.getBarangayStyle(feature)
+    // );
+    if (!this.layers['barangay']) return;
+
+    (this.layers['barangay'] as L.GeoJSON).eachLayer((layer: any) => {
+      const feature = layer.feature;
+      // const id = feature.properties.id;
+      const name = feature.properties.name;
+      var id = this.barangays.find(b => b.name === name)?.id;
+      if (!id) return;
+
+      if (this.selectedBarangaysFilter.includes(id.toString()) || this.highlightedBarangays.includes(id)) {
+        layer.setStyle(this.getHighlightedBarangayStyle());
+        // layer.openTooltip();
+      } else {
+        layer.setStyle(this.getBarangayStyle(feature));
+      }
+    });
+  }
+
+  getHighlightedBarangayStyle(): L.PathOptions {
+    return {
+      // color: '#ffcc00',
+      // weight: 4,
+      // fillOpacity: 0.5
+      color: 'yellow',
+      weight: 3,
+      fillOpacity: 0.3,
+    };
   }
 
   getBarangayStyle(feature: any): L.PathOptions {
-    const name = feature.properties.name;
-    const isHighlighted = this.highlightedBarangays.includes(name);
+    // const id = feature.properties.id;
+    // // const name = feature.properties.name;
+    // const isSelected = this.selectedBarangaysFilter.includes(id);
 
+    // return {
+    //   color: isSelected ? '#ffcc00' : '#3388ff',
+    //   weight: isSelected ? 4 : 1,
+    //   fillOpacity: isSelected ? 0.5 : 0.1,
+    //   fillColor: isSelected ? '#ffeb3b' : '#3388ff'
+    // };
     return {
-      color: isHighlighted ? '#ffcc00' : '#3388ff',
-      weight: isHighlighted ? 4 : 1,
-      fillOpacity: isHighlighted ? 0.5 : 0.1
-    };
+      fillColor: this.coloringMap.barangay,
+      weight: 1.5,
+      opacity: 1,
+      color: '#FEFEFE',
+      dashArray: '3',
+      fillOpacity: 1
+    }
   }
+
+  updateBarangayLabels() {
+    this.barangayLabelLayer.clearLayers();
+
+    if (!this.layers['barangay']) return;
+
+    (this.layers['barangay'] as L.GeoJSON).eachLayer((layer: any) => {
+      const feature = layer.feature;
+      // const id = +feature.properties.id;
+      const name = feature.properties.name;
+      const id = this.barangays.find(b => b.name === name)?.id;
+      if (!id) return;
+
+      if (this.selectedBarangaysFilter.includes(id.toString()) || this.highlightedBarangays.includes(id)) {
+        const center = this.calculateCentroid(feature.geometry);
+
+        const label = L.marker(center, {
+          icon: L.divIcon({
+            className: 'barangay-label',
+            html: `<span>${feature.properties.name}</span>`,
+            iconSize: [0, 0]
+          }),
+          interactive: false // IMPORTANT
+        });
+
+        this.barangayLabelLayer.addLayer(label);
+      }
+    });
+  }
+
+  // highlightBarangays(names: string[]) {
+  //   this.highlightBarangayLayer.clearLayers();
+
+  //   names.forEach(name => {
+  //     const feature = this.barangayGeoJson.features.find(
+  //       (f: any) => f.properties.name === name
+  //     );
+
+  //     if (feature) {
+  //       this.highlightBarangayLayer.addData(feature);
+  //     }
+  //   });
+  // }
 }

@@ -33,6 +33,7 @@ export class SidebarComponent implements OnInit {
   @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
   @Output() evacuationCenterSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
+  @Output() barangaysSelected = new EventEmitter<number[]>();
 
   public appJson: any = packageJson;
   public isLoggedIn = false;
@@ -70,6 +71,10 @@ export class SidebarComponent implements OnInit {
 
   public onEvacuationCenterSelected(event: { id: number }) {
     this.evacuationCenterSelected.emit(event);
+  }
+
+  public onBarangaysSelected(event: number[]) {
+    this.barangaysSelected.emit(event);
   }
 
   // public onMapTypeSelected(event: { type: string }) {
