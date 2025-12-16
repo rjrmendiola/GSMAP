@@ -148,9 +148,13 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   public onEvacuationCenterChange(event: any): void {
-    const evacuationCenterId = +event.target.value;
+    // const evacuationCenterId = +event.target.value;
+    // this.evacuationCenterSelected.emit({
+    //   id: evacuationCenterId
+    // });
+    const barangayId = +event.target.value;
     this.evacuationCenterSelected.emit({
-      id: evacuationCenterId
+      id: barangayId
     });
   }
 
