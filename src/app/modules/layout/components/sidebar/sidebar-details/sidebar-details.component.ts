@@ -368,7 +368,7 @@ export class SidebarDetailsComponent {
       console.log('Coordinates loaded successfully');
 
       // Load all weather data after coordinates are loaded
-      await this.loadAllWeatherData();
+      // await this.loadAllWeatherData();
     } catch (error) {
       console.error('Error during initialization:', error);
     }

@@ -40,6 +40,8 @@ export class SidebarMenuComponent implements OnInit {
   @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
   @Output() evacuationCenterSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
+  @Output() barangaysSelected = new EventEmitter<number[]>();
+
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
   isLandslideCategoriesVisible: boolean = false;
@@ -51,6 +53,8 @@ export class SidebarMenuComponent implements OnInit {
   selectedMapType: string | null = null;
   selectedBarangayOfficial: string | null = null;
   selectedEvacuationCenter: string | null = null;
+
+  selectedBarangays: number[] = [];
 
   baseLayerTypes = [
     { label: 'OpenStreetMap', value: 'openstreetmap' },
@@ -126,6 +130,21 @@ export class SidebarMenuComponent implements OnInit {
     this.barangayOfficialSelected.emit({
       id: officialId
     });
+  }
+
+  onBarangayToggle(barangay: number, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked; // cast to HTMLInputElement
+
+    if (checked) {
+      if (!this.selectedBarangays.includes(barangay)) {
+        this.selectedBarangays.push(barangay);
+      }
+    } else {
+      this.selectedBarangays = this.selectedBarangays.filter(b => b !== barangay);
+    }
+
+    // Emit to parent
+    this.barangaysSelected.emit(this.selectedBarangays);
   }
 
   public onEvacuationCenterChange(event: any): void {
