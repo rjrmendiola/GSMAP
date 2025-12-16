@@ -2101,10 +2101,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       // Add a new marker at the clicked location
-      this.currentMarker = L.marker([barangay.latitude, barangay.longitude], {
-        icon: this.defaultIcon,
-      })
-        .addTo(this.map)
+      // this.currentMarker = L.marker([barangay.latitude, barangay.longitude], {
+      //   icon: this.defaultIcon,
+      // })
+      //   .addTo(this.map)
 
       // Find the nearest locations
       // const nearestLocations = this.findNearestLocations({ lat: barangay.latitude, lng: barangay.longitude }, 5);
