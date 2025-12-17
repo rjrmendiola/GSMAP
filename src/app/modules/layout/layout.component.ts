@@ -632,7 +632,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         <figure>
           <figcaption>Punong Barangay</figcaption>
         </figure>
-        <div>${center.punongBarangay}</div>
+        <div>${center.name}</div>
       </div>
     `;
   }
@@ -757,8 +757,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         var labels: string[] = ['High', 'Moderate', 'Low'];
 
         var legendLabel = 'Landslide Hazard Level';
-
-        console.log(this.disasterType.type);
 
         if (this.disasterType.type == 'flood' || this.disasterType.type == 'typhoon') {
           legendLabel = 'Flood Hazard Level';
@@ -2056,6 +2054,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   onBarangayOfficialSelected(event: any): void {
     const selectedId = +event.id;
 
+    this.map.removeLayer(this.barangayOfficialLayer);
+
     const official = this.barangayOfficials.find(o => o.id === selectedId);
     if (official) {
       const barangay = this.barangays.find(b => b.id === parseInt(official.barangay_id!));
@@ -2063,7 +2063,33 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // Triggers weather data fetch
         this.selectedBarangayName = barangay.name;
 
-        this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+        // this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
+
+        // this.toggleBarangayOfficials();
+        const personIcon = L.icon({
+          iconUrl: './assets/images/official.png',
+          iconSize: [28, 35],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -41],
+          shadowUrl: '',
+        });
+
+        // const officialMarkers = this.barangayOfficials.map((person) => {
+        //   return L.marker(person.coords, { icon: personIcon })
+        //     .bindPopup(this.generateOfficial(person))
+        //     .on("click", this.clickZoom.bind(this));
+        // });
+
+        const officialMarkers = this.barangayOfficials
+          .filter(person => person.barangay_id === barangay.id)
+          .map(person =>
+            L.marker(person.coords, { icon: personIcon })
+              .bindPopup(this.generateOfficial(person))
+              .on('click', this.clickZoom.bind(this))
+          );
+
+        this.barangayOfficialLayer = L.layerGroup(officialMarkers);
+        this.barangayOfficialLayer.addTo(this.map);
       }
     } else {
       this.selectedBarangay = null;
