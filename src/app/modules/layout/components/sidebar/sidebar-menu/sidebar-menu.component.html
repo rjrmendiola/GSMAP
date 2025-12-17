@@ -210,30 +210,26 @@
       <div class="px-3 space-y-3" [ngClass]="{ hidden: !isFilterCategoriesVisible }" id="filter-categories">
         <!-- Barangay Checkbox -->
         <div>
-          <label class="block text-[10px] text-muted-foreground/70 mb-1">Barangay</label>
-          <!-- <select
+          <label class="block text-[10px] text-muted-foreground/70 mb-1">Barangay Official</label>
+          <select
             id="barangayofficial"
             [value]="selectedBarangayOfficial"
             (change)="onBarangayOfficialChange($event)"
             class="block w-full rounded-md border-gray-300 text-xs shadow-xs focus:border-primary focus:ring-primary"
           >
-            <option value="">Select a barangay official</option>
-            <option *ngFor="let official of barangayOfficials" [value]="official.id">{{ official.name }}</option>
-          </select> -->
-          <div class="barangay-section max-h-64 overflow-y-auto border p-2 rounded bg-black/30 text-[14px] text-muted-foreground">
+            <option value="">Select a barangay</option>
+            <!-- <option *ngFor="let official of barangayOfficials" [value]="official.id">{{ official.name }}</option> -->
+             <option *ngFor="let brgy of barangays" [value]="brgy.id">{{ brgy.name }}</option>
+          </select>
+          <!-- <div class="barangay-section max-h-64 overflow-y-auto border p-2 rounded bg-black/30 text-[14px] text-muted-foreground">
             <label *ngFor="let brgy of barangays" class="flex items-center gap-2 py-1">
-              <!-- <input
-                type="checkbox"
-                [checked]="selectedBarangays.includes(brgy.id)"
-                (change)="onBarangayToggle(brgy.id, $event)"
-              /> -->
               <input
                 type="checkbox"
                 (change)="onBarangayToggle(brgy.id, $event)"
               />
               {{ brgy.name }}
             </label>
-          </div>
+          </div> -->
         </div>
 
         <!-- Evacuation Center Dropdown -->
