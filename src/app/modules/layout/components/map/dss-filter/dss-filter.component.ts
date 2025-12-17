@@ -17,13 +17,14 @@ export class DssFilterComponent {
   @Input() selectedFlood: string | null = null;
   @Input() selectedLandslide: string | null = null;
   @Input() selectedBarangay: string = 'all'
+  @Input() selectedBarangays: number[] = [];
   @Input() selectedMapType: string = '';
   @Input() isOpen: boolean = false;
   @Output() applyFilters = new EventEmitter<any>();
   @Output() closeModal = new EventEmitter<void>();
   // @Output() barangaysSelected = new EventEmitter<string[]>();
 
-  selectedBarangays: number[] = [];
+  // selectedBarangays: number[] = [];
 
   // selectedFlood: string | null = null;
   // selectedLandslide: string | null = null;
