@@ -208,7 +208,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedMapType: string | null = null;
 
   // highlightedBarangays: string[] = [];
-  highlightedBarangays: number[] = [];
+  // highlightedBarangays: number[] = [];
 
   evacuationCenterLayer: L.LayerGroup | null = null;
   barangayOfficialLayer: L.LayerGroup | null = null;
@@ -225,7 +225,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedLandslideFilter: string | null = null;
   selectedBarangayFilter: string = 'all';
   selectedMapTypeFilter: string = '';
-  selectedBarangaysFilter: string[] = [];
+  selectedBarangaysFilter: number[] = [];
 
   isDssFilterModalOpen = false;
 
@@ -1947,7 +1947,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedMapType = selectedType;
   }
 
-  onApplyFilters(filters: { flood: string | null; landslide: string | null; barangay: string | null; mapType: string | null; barangays: string[] | null;  }): void {
+  onApplyFilters(filters: { flood: string | null; landslide: string | null; barangay: string | null; mapType: string | null; barangays: number[] | null;  }): void {
     this.isDssFilterModalOpen = false;
 
     if (filters.flood) {
@@ -1966,13 +1966,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         var floodAffectedBarangays = floodCategoryMap[filters.flood];
 
         this.selectedBarangaysFilter = [];
-        this.highlightedBarangays = [];
+        // this.highlightedBarangays = [];
 
         for (const barangay_slug of floodAffectedBarangays) {
           const barangay = this.barangays.find(b => b.slug === barangay_slug);
           if (barangay) {
             // this.highlightedBarangays.push(barangay!.name);
-            this.highlightedBarangays.push(barangay!.id);
+            // this.highlightedBarangays.push(barangay!.id);
+            this.selectedBarangaysFilter.push(barangay!.id);
           }
         }
 
@@ -1995,15 +1996,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         var landslideAffectedBarangays = landslideCategoryMap[filters.landslide];
 
         this.selectedBarangaysFilter = [];
-        this.highlightedBarangays = [];
+        // this.highlightedBarangays = [];
 
-        for (const barangay_slug of landslideAffectedBarangays) {
-          const barangay = this.barangays.find(b => b.slug === barangay_slug);
-          if (barangay) {
-            // this.highlightedBarangays.push(barangay!.name);
-            this.highlightedBarangays.push(barangay!.id);
-          }
-        }
+        // for (const barangay_slug of landslideAffectedBarangays) {
+        //   const barangay = this.barangays.find(b => b.slug === barangay_slug);
+        //   if (barangay) {
+        //     this.highlightedBarangays.push(barangay!.id);
+        //   }
+        // }
 
         this.refreshBarangayStyles();
       }
@@ -2033,11 +2033,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedBarangaysFilter = filters.barangays;
 
       if (this.selectedBarangaysFilter.length > 0) {
-        for (const barangay_id of this.selectedBarangaysFilter) {
-          const barangay = this.barangays.find(b => b.id === parseInt(barangay_id));
-          // this.highlightedBarangays.push(barangay!.name);
-          this.highlightedBarangays.push(barangay!.id);
-        }
+        // for (const barangay_id of this.selectedBarangaysFilter) {
+        //   const barangay = this.barangays.find(b => b.id === parseInt(barangay_id));
+        //   this.highlightedBarangays.push(barangay!.id);
+        // }
 
 
         // const barangay = this.barangays.find(b => b.id === parseInt(this.selectedBarangaysFilter[0]));
@@ -2047,6 +2046,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // }
 
         this.refreshBarangayStyles();
+        this.updateBarangayLabels();
       }
     }
   }
@@ -2195,7 +2195,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
 
     // this.refreshBarangayStyles();
-    this.highlightedBarangays = this.barangays
+    this.selectedBarangaysFilter = this.barangays
       .filter(b => event.includes(b.id))
       .map(b => b.id);
 
@@ -2217,7 +2217,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       // if (this.selectedBarangaysFilter.includes(id.toString()) || this.highlightedBarangays.includes(id)) {
-      if (this.selectedBarangaysFilter.includes(id.toString())) {
+      if (this.selectedBarangaysFilter.includes(id)) {
         layer.setStyle(this.getHighlightedBarangayStyle());
         // layer.openTooltip();
       } else {
@@ -2233,6 +2233,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       // fillOpacity: 0.5
       color: 'yellow',
       weight: 3,
+      fillColor: 'yellow',
       fillOpacity: 0.3,
     };
   }
@@ -2270,7 +2271,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const id = this.barangays.find(b => b.name === name)?.id;
       if (!id) return;
 
-      if (this.selectedBarangaysFilter.includes(id.toString()) || this.highlightedBarangays.includes(id)) {
+      if (this.selectedBarangaysFilter.includes(id)) {
         const center = this.calculateCentroid(feature.geometry);
 
         const label = L.marker(center, {
@@ -2279,7 +2280,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             html: `<span>${feature.properties.name}</span>`,
             iconSize: [0, 0]
           }),
-          interactive: false // IMPORTANT
+          // interactive: false // IMPORTANT
+          interactive: true // IMPORTANT
+        });
+
+        label.on('click', () => {
+          this.removeBarangayFromSelection(id);
         });
 
         this.barangayLabelLayer.addLayer(label);
@@ -2287,17 +2293,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // highlightBarangays(names: string[]) {
-  //   this.highlightBarangayLayer.clearLayers();
+  removeBarangayFromSelection(barangayId: number) {
+    this.selectedBarangaysFilter =
+      this.selectedBarangaysFilter.filter(id => id !== barangayId);
 
-  //   names.forEach(name => {
-  //     const feature = this.barangayGeoJson.features.find(
-  //       (f: any) => f.properties.name === name
-  //     );
-
-  //     if (feature) {
-  //       this.highlightBarangayLayer.addData(feature);
-  //     }
-  //   });
-  // }
+    // Sync everything
+    this.onBarangaysSelected(this.selectedBarangaysFilter);
+  }
 }
