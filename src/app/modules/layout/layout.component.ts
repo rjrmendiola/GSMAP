@@ -1530,7 +1530,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.map.removeLayer(this.toggleControl);
       }
 
-      // console.log('Updating map with type:', this.disasterType.type);
       if (this.disasterType.type == 'landslide') {
         this.map.removeLayer(this.layers['flood_low']);
         this.map.removeLayer(this.layers['flood_moderate']);
@@ -1952,7 +1951,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (filters.flood) {
       this.selectedFloodFilter = filters.flood;
-      this.disasterService.setDisasterType({ type: 'flood', category: filters.flood });
+      this.disasterService.setDisasterType({ type: 'typhoon', category: filters.flood });
 
       if (filters.barangays?.length === 0) {
         var floodCategoryMap: any = {
@@ -1965,7 +1964,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         var floodAffectedBarangays = floodCategoryMap[filters.flood];
 
-        this.selectedBarangaysFilter = [];
+        // this.selectedBarangaysFilter = [];
         // this.highlightedBarangays = [];
 
         for (const barangay_slug of floodAffectedBarangays) {
@@ -2006,6 +2005,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // }
 
         this.refreshBarangayStyles();
+        this.updateBarangayLabels();
       }
     }
 
