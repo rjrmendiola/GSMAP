@@ -2218,7 +2218,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // if (this.selectedBarangaysFilter.includes(id.toString()) || this.highlightedBarangays.includes(id)) {
       if (this.selectedBarangaysFilter.includes(id)) {
-        layer.setStyle(this.getHighlightedBarangayStyle());
+        layer.setStyle(this.getSelectedBarangayStyle());
         // layer.openTooltip();
       } else {
         layer.setStyle(this.getBarangayStyle(feature));
@@ -2226,7 +2226,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  getHighlightedBarangayStyle(): L.PathOptions {
+  getSelectedBarangayStyle(): L.PathOptions {
     return {
       // color: '#ffcc00',
       // weight: 4,
