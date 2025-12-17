@@ -2090,11 +2090,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.map.setView([11.232084301848886, 124.7057818628441], 12);
     // }
     const barangayId = +event.id;
+
+    // Clear previous nearest markers from the map
+    this.clearNearestEvacuationMarkers();
+
     const barangay = this.barangays.find(b => b.id === barangayId);
     if (barangay) {
-      // Clear previous nearest markers from the map
-      this.clearNearestEvacuationMarkers();
-
       if (this.currentMarker) {
         // Remove the existing marker if present
         this.map?.removeLayer(this.currentMarker);
@@ -2137,14 +2138,26 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
     } else {
+      if (this.highlightLayer) {
+        this.map.removeLayer(this.highlightLayer);
+      }
+
+      if (this.labelMarker) {
+        this.map.removeLayer(this.labelMarker);
+        this.labelMarker = null;
+      }
+
+      this.refreshBarangayStyles();
+      this.updateBarangayLabels();
+
       this.selectedBarangay = null;
       this.selectedBarangayName = null;
+
       this.map.setView([11.232084301848886, 124.7057818628441], 12);
     }
   }
 
   public onBarangaysSelected(event: any): void {
-    console.log("layout.component - onBarangaysSelected", event);
     this.selectedBarangaysFilter = event;
 
     // this.highlightedBarangays = [];
@@ -2160,16 +2173,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(b => event.includes(b.id))
       .map(b => b.id);
 
-    console.log(this.highlightedBarangays);
-
     this.refreshBarangayStyles();
     this.updateBarangayLabels();
   }
 
   refreshBarangayStyles() {
-    // this.layers['barangay'].setStyle((feature: any) =>
-    //   this.getBarangayStyle(feature)
-    // );
     if (!this.layers['barangay']) return;
 
     (this.layers['barangay'] as L.GeoJSON).eachLayer((layer: any) => {
@@ -2177,9 +2185,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       // const id = feature.properties.id;
       const name = feature.properties.name;
       var id = this.barangays.find(b => b.name === name)?.id;
-      if (!id) return;
+      if (!id) {
+        layer.setStyle(this.getBarangayStyle(feature));
+        return;
+      }
 
-      if (this.selectedBarangaysFilter.includes(id.toString()) || this.highlightedBarangays.includes(id)) {
+      // if (this.selectedBarangaysFilter.includes(id.toString()) || this.highlightedBarangays.includes(id)) {
+      if (this.selectedBarangaysFilter.includes(id.toString())) {
         layer.setStyle(this.getHighlightedBarangayStyle());
         // layer.openTooltip();
       } else {
