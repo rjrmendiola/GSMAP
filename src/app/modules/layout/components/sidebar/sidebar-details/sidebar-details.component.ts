@@ -436,6 +436,7 @@ export class SidebarDetailsComponent {
     }
 
     if (changes['selectedBarangays'] && this.selectedBarangays.length) {
+      console.log("selectedBarangays: ", this.selectedBarangays);
       this.loadWeatherDataForBarangays(this.selectedBarangays);
     }
 
