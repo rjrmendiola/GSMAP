@@ -400,6 +400,10 @@ export class SidebarDetailsComponent {
     return this.disasterType?.type === 'landslide';
   }
 
+  get hasSelectedBarangaysWeather(): boolean {
+    return Object.keys(this.selectedBarangaysWeather).length > 0;
+  }
+
   async ngOnInit() {
     try {
       // Load coordinates first
