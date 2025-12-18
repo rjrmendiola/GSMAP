@@ -126,9 +126,10 @@ export class SidebarMenuComponent implements OnInit {
   }
 
   public onBarangayOfficialChange(event: any): void {
-    const officialId = +event.target.value;
+    // const officialId = +event.target.value;
+    const barangayId = +event.target.value;
     this.barangayOfficialSelected.emit({
-      id: officialId
+      id: barangayId
     });
   }
 
