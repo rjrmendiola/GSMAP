@@ -28,7 +28,7 @@
           </div>
 
           <!-- Weather Overview for All Barangays -->
-          <div class="pt-4" *ngIf="!selectedBarangayWeather && weatherData && !isLoadingWeather">
+          <div class="pt-4" *ngIf="!selectedBarangayWeather && weatherData && !isLoadingWeather && !hasSelectedBarangaysWeather">
             <h3 class="text-blue-400 font-semibold mb-4">Current Weather Overview</h3>
             <div class="grid grid-cols-1 gap-4 mb-6">
               <div *ngFor="let barangay of barangayNames" class="bg-gray-800 p-3 rounded-lg">
@@ -59,11 +59,11 @@
                       <span class="font-medium">Pop. Density:</span> {{ barangayDetail.pop_density }}
                     </div>
                   </div>
-                  <!-- <div class="grid grid-cols-1 gap-2 text-sm">
+                  <div class="grid grid-cols-1 gap-2 text-sm">
                     <div class="text-gray-300">
                       <span class="font-medium">Livelihood: </span> {{ barangayDetail.livelihood }}
                     </div>
-                  </div> -->
+                  </div>
                 </ng-container>
               </div>
             </div>
@@ -154,7 +154,7 @@
           </div>
 
           <!-- Detailed Weather for Selected Barangays (DSS) -->
-          <div *ngIf="isTyphoon">
+          <div *ngIf="isTyphoon || (!disasterType && hasSelectedBarangaysWeather)">
             <div class="pt-4"
               *ngIf="!selectedBarangay && getSelectedBarangaysList().length && !isLoadingWeather">
 
@@ -193,6 +193,24 @@
                       {{ selectedBarangaysWeather[barangayId]['wind_speed_10m']?.[0] | number:'1.1-1' }} km/h
                     </div>
                   </div>
+
+                  <hr class="my-2 text-gray-300">
+
+                  <ng-container *ngIf="getBarangayDetail(getBarangayName(barangayId)) as barangayDetail">
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                      <div class="text-gray-300">
+                        <span class="font-medium">Area:</span> {{ barangayDetail.area }}
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Pop. Density:</span> {{ barangayDetail.pop_density }}
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-2 text-sm">
+                      <div class="text-gray-300">
+                        <span class="font-medium">Livelihood: </span> {{ barangayDetail.livelihood }}
+                      </div>
+                    </div>
+                  </ng-container>
 
                 </div>
 
