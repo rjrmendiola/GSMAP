@@ -60,7 +60,7 @@ export class DssFilterComponent {
       landslide: this.selectedLandslide,
       barangay: this.selectedBarangay,
       mapType: this.selectedMapType,
-      barangays: this.selectedBarangays
+      barangays: [...this.selectedBarangays]
     });
 
     this.closeModal.emit();
