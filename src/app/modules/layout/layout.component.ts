@@ -1962,21 +1962,20 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           'category1': this.hazardAffectedBarangays.typhoon.tropical_depression,
         };
 
-        var floodAffectedBarangays = floodCategoryMap[filters.flood];
+        var floodAffectedBarangaySlugs = floodCategoryMap[filters.flood];
+        var floodAffectedBarangays = [];
 
-        // this.selectedBarangaysFilter = [];
-        // this.highlightedBarangays = [];
-
-        for (const barangay_slug of floodAffectedBarangays) {
+        for (const barangay_slug of floodAffectedBarangaySlugs) {
           const barangay = this.barangays.find(b => b.slug === barangay_slug);
           if (barangay) {
-            // this.highlightedBarangays.push(barangay!.name);
-            // this.highlightedBarangays.push(barangay!.id);
-            this.selectedBarangaysFilter.push(barangay!.id);
+            floodAffectedBarangays.push(barangay!.id);
           }
         }
 
+        this.selectedBarangaysFilter = [...floodAffectedBarangays];
+
         this.refreshBarangayStyles();
+        this.updateBarangayLabels()
       }
     }
 
@@ -1992,17 +1991,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           'category1': this.hazardAffectedBarangays.landslide.less_likely_to_experience,
         };
 
-        var landslideAffectedBarangays = landslideCategoryMap[filters.landslide];
+        var landslideAffectedBarangaySlugs = landslideCategoryMap[filters.landslide];
+        var landslideAffectedBarangays = [];
 
-        this.selectedBarangaysFilter = [];
-        // this.highlightedBarangays = [];
+        for (const barangay_slug of landslideAffectedBarangaySlugs) {
+          const barangay = this.barangays.find(b => b.slug === barangay_slug);
+          if (barangay) {
+            landslideAffectedBarangays.push(barangay!.id);
+          }
+        }
 
-        // for (const barangay_slug of landslideAffectedBarangays) {
-        //   const barangay = this.barangays.find(b => b.slug === barangay_slug);
-        //   if (barangay) {
-        //     this.highlightedBarangays.push(barangay!.id);
-        //   }
-        // }
+        this.selectedBarangaysFilter = [...landslideAffectedBarangays];
 
         this.refreshBarangayStyles();
         this.updateBarangayLabels();
@@ -2025,25 +2024,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (filters.mapType) {
       this.selectedMapTypeFilter = filters.mapType;
-
       this.mapTypeService.setMapType({ type: filters.mapType });
     }
 
     if (filters.barangays) {
-      this.selectedBarangaysFilter = filters.barangays;
-
-      if (this.selectedBarangaysFilter.length > 0) {
-        // for (const barangay_id of this.selectedBarangaysFilter) {
-        //   const barangay = this.barangays.find(b => b.id === parseInt(barangay_id));
-        //   this.highlightedBarangays.push(barangay!.id);
-        // }
-
-
-        // const barangay = this.barangays.find(b => b.id === parseInt(this.selectedBarangaysFilter[0]));
-        // if (barangay) {
-        //   this.selectedBarangayName = barangay.name;
-        //   this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
-        // }
+      if (filters.barangays?.length > 0) {
+        this.selectedBarangaysFilter = filters.barangays;
 
         this.refreshBarangayStyles();
         this.updateBarangayLabels();
