@@ -23,6 +23,7 @@ export class SidebarDetailsComponent {
   @Input() selectedBarangayName: string | null = null;
   @Input() barangays: Barangay[] = [];
   @Input() barangayDetails: any[] = [];
+  @Input() selectedBarangays: number[] = [];
   @Output() rowClicked = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
 
   floodLandslideDetailsBarangayList!: string[];
@@ -49,6 +50,11 @@ export class SidebarDetailsComponent {
   public criticalBarangays: string[] = [];
 
   public isWeatherDataUpToDate: boolean = false;
+
+  public selectedBarangaysWeather: Record<number, {
+    time: Date[];
+    [key: string]: any;
+  }> = {};
 
   constructor(
     private weatherService: WeatherService,
@@ -247,8 +253,6 @@ export class SidebarDetailsComponent {
       //   .filter(h => h.isCritical)
       //   .map(h => h.barangay);
 
-      // console.log('Critical barangays:', this.criticalBarangays);
-
       console.log('All weather data loaded:', this.weatherData);
     } catch (error) {
       console.error('Error loading weather data:', error);
@@ -270,19 +274,37 @@ export class SidebarDetailsComponent {
       this.isLoadingWeather = false;
     }
   }
-  // public loadWeatherDataForBarangay(barangay: string): void {
-  //   this.selectedBarangay = barangay;
 
-  //   if (this.weatherData) {
-  //     console.log(this.weatherData[barangay]);
-  //   }
+  public async loadWeatherDataForBarangays(
+    barangayIds: number[]
+  ): Promise<void> {
 
-  //   if (this.weatherData && this.weatherData[barangay]) {
-  //     this.selectedBarangayWeather = this.weatherData[barangay];
-  //   } else {
-  //     console.warn("Barangay weather not found in preloaded dataset");
-  //   }
-  // }
+    if (!barangayIds?.length) return;
+
+    try {
+      this.isLoadingWeather = true;
+
+      for (const barangayId of barangayIds) {
+        // prevent refetch
+        if (this.selectedBarangaysWeather[barangayId]) continue;
+
+        const barangay = this.barangays.find(b => b.id === barangayId);
+        if (!barangay) continue;
+
+        const weather = await this.weatherService
+          .getWeatherDataForBarangay(barangay.name);
+
+        this.selectedBarangaysWeather[barangayId] = weather;
+
+        console.log(`Weather loaded for ${barangay.name}`, weather);
+      }
+
+    } catch (error) {
+      console.error('Error loading weather data for barangays', error);
+    } finally {
+      this.isLoadingWeather = false;
+    }
+  }
 
   // NEW METHOD: Get current weather conditions for a barangay
   public getCurrentWeatherConditions(barangay: string): any {
@@ -361,6 +383,23 @@ export class SidebarDetailsComponent {
     });
   }
 
+  getSelectedBarangaysList() {
+    return Object.keys(this.selectedBarangaysWeather)
+      .map(id => +id);
+  }
+
+  getBarangayName(id: number): string {
+    return this.barangays.find(b => b.id === id)?.name ?? 'Unknown';
+  }
+
+  get isTyphoon(): boolean {
+    return this.disasterType?.type === 'typhoon';
+  }
+
+  get isLandslide(): boolean {
+    return this.disasterType?.type === 'landslide';
+  }
+
   async ngOnInit() {
     try {
       // Load coordinates first
@@ -391,5 +430,13 @@ export class SidebarDetailsComponent {
         this.selectedBarangayWeather = undefined;  // Clear previous weather
       }
     }
+
+    if (changes['selectedBarangays'] && this.selectedBarangays.length) {
+      this.loadWeatherDataForBarangays(this.selectedBarangays);
+    }
+
+    // if (this.selectedBarangays?.length) {
+    //   console.log("ngOnchanges - this.selectedBarangays?.length", this.selectedBarangays);
+    // }
   }
 }

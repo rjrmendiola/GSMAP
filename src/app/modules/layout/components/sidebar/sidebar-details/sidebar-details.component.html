@@ -153,6 +153,178 @@
             </div>
           </div>
 
+          <!-- Detailed Weather for Selected Barangays (DSS) -->
+          <div *ngIf="isTyphoon">
+            <div class="pt-4"
+              *ngIf="!selectedBarangay && getSelectedBarangaysList().length && !isLoadingWeather">
+
+              <h3 class="text-purple-400 font-semibold mb-4">
+                Detailed Forecast – Selected Barangays
+              </h3>
+
+              <div class="grid grid-cols-1 gap-6">
+
+                <div *ngFor="let barangayId of getSelectedBarangaysList()"
+                    class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+
+                  <h4 class="text-purple-300 font-medium mb-3">
+                    {{ getBarangayName(barangayId) }}
+                  </h4>
+
+                  <!-- Reuse your existing detailed structure -->
+                  <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="text-gray-300">
+                      <span class="font-medium">Temperature:</span>
+                      {{ selectedBarangaysWeather[barangayId]['temperature_2m']?.[0] | number:'1.1-1' }}°C
+                    </div>
+
+                    <div class="text-gray-300">
+                      <span class="font-medium">Humidity:</span>
+                      {{ selectedBarangaysWeather[barangayId]['relative_humidity_2m']?.[0] | number:'1.0-0' }}%
+                    </div>
+
+                    <div class="text-gray-300">
+                      <span class="font-medium">Rain Chance:</span>
+                      {{ selectedBarangaysWeather[barangayId]['precipitation_probability']?.[0] | number:'1.0-0' }}%
+                    </div>
+
+                    <div class="text-gray-300">
+                      <span class="font-medium">Wind:</span>
+                      {{ selectedBarangaysWeather[barangayId]['wind_speed_10m']?.[0] | number:'1.1-1' }} km/h
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isLandslide">
+            <div class="pt-4"
+              *ngIf="!selectedBarangay && getSelectedBarangaysList().length && !isLoadingWeather">
+
+              <h3 class="text-purple-400 font-semibold mb-4">
+                Detailed Forecast – Selected Barangays
+              </h3>
+
+              <div class="grid grid-cols-1 gap-6">
+
+                <div *ngFor="let barangayId of getSelectedBarangaysList()"
+                    class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+
+                  <h4 class="text-purple-300 font-medium mb-3">
+                    {{ getBarangayName(barangayId) }}
+                  </h4>
+
+                  <!-- Reuse your existing detailed structure -->
+                  <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="text-gray-300">
+                      <span class="font-medium">Temperature:</span>
+                      {{ selectedBarangaysWeather[barangayId]['temperature_2m']?.[0] | number:'1.1-1' }}°C
+                    </div>
+
+                    <div class="text-gray-300">
+                      <span class="font-medium">Humidity:</span>
+                      {{ selectedBarangaysWeather[barangayId]['relative_humidity_2m']?.[0] | number:'1.0-0' }}%
+                    </div>
+
+                    <div class="text-gray-300">
+                      <span class="font-medium">Rain Chance:</span>
+                      {{ selectedBarangaysWeather[barangayId]['precipitation_probability']?.[0] | number:'1.0-0' }}%
+                    </div>
+
+                    <div class="text-gray-300">
+                      <span class="font-medium">Wind:</span>
+                      {{ selectedBarangaysWeather[barangayId]['wind_speed_10m']?.[0] | number:'1.1-1' }} km/h
+                    </div>
+                  </div>
+
+                  <hr class="my-2">
+
+                  <!-- Current Conditions -->
+                  <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                    <h4 class="text-green-300 font-medium mb-3">Current Conditions</h4>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                      <div class="text-gray-300">
+                        <span class="font-medium">Temperature:</span> {{ selectedBarangaysWeather[barangayId]['temperature_2m']?.[0] | number:'1.1-1' }}°C
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Feels Like:</span> {{ selectedBarangaysWeather[barangayId]['apparent_temperature']?.[0] | number:'1.1-1' }}°C
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Humidity:</span> {{ selectedBarangaysWeather[barangayId]['relative_humidity_2m']?.[0] | number:'1.0-0' }}%
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Dew Point:</span> {{ selectedBarangaysWeather[barangayId]['dew_point_2m']?.[0] | number:'1.1-1' }}°C
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Precipitation:</span> {{ selectedBarangaysWeather[barangayId]['precipitation_probability']?.[0] | number:'1.0-0' }}%
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Rain:</span> {{ selectedBarangaysWeather[barangayId]['rain']?.[0] | number:'1.1-1' }} mm
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Wind Speed:</span> {{ selectedBarangaysWeather[barangayId]['wind_speed_10m']?.[0] | number:'1.1-1' }} km/h
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Wind Direction:</span> {{ selectedBarangaysWeather[barangayId]['wind_direction_10m']?.[0] | number:'1.0-0' }}°
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Pressure:</span> {{ selectedBarangaysWeather[barangayId]['pressure_msl']?.[0] | number:'1.1-1' }} hPa
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Cloud Cover:</span> {{ selectedBarangaysWeather[barangayId]['cloudcover']?.[0] | number:'1.0-0' }}%
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Visibility:</span> {{ (selectedBarangaysWeather[barangayId]['visibility']?.[0] || 0) / 1000 | number:'1.1-1' }} km
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">UV Index:</span> {{ selectedBarangaysWeather[barangayId]['uv_index']?.[0] || 'N/A' }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 24-Hour Forecast -->
+                  <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                    <h4 class="text-green-300 font-medium mb-3">24-Hour Forecast</h4>
+                    <div class="max-h-64 overflow-y-auto">
+                      <div *ngFor="let forecast of get24HourForecast(getBarangayName(barangayId)); let i = index"
+                          class="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0">
+                        <div class="text-gray-300 text-sm">
+                          {{ forecast.time | date:'MMM d, h:mm a' }}
+                        </div>
+                        <div class="text-right text-sm">
+                          <div class="text-gray-200">{{ forecast.temperature | number:'1.1-1' }}°C</div>
+                          <div class="text-blue-300">{{ forecast.precipitationProbability | number:'1.0-0' }}%</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Soil Conditions (if available) -->
+                  <div class="bg-gray-800 p-4 rounded-lg mb-4" *ngIf="selectedBarangaysWeather[barangayId]?.['soil_temperature_0cm']">
+                    <h4 class="text-orange-300 font-medium mb-3">Soil Conditions</h4>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                      <div class="text-gray-300">
+                        <span class="font-medium">Surface Temp:</span> {{ selectedBarangaysWeather[barangayId]['soil_temperature_0cm']?.[0] | number:'1.1-1' }}°C
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">6cm Temp:</span> {{ selectedBarangaysWeather[barangayId]['soil_temperature_6cm']?.[0] | number:'1.1-1' }}°C
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Surface Moisture:</span> {{ selectedBarangaysWeather[barangayId]['soil_moisture_0_to_1cm']?.[0] | number:'1.2-2' }} m³/m³
+                      </div>
+                      <div class="text-gray-300">
+                        <span class="font-medium">Deep Moisture:</span> {{ selectedBarangaysWeather[barangayId]['soil_moisture_1_to_3cm']?.[0] | number:'1.2-2' }} m³/m³
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Hazard Information Table -->
           <!-- <div class="mt-6">
             <h3 class="text-red-400 font-semibold mb-4">Hazard Risk Assessment</h3>
