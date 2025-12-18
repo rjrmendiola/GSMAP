@@ -2052,19 +2052,18 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onBarangayOfficialSelected(event: any): void {
-    const selectedId = +event.id;
+    const barangayId = +event.id;
 
     this.map.removeLayer(this.barangayOfficialLayer);
 
-    const official = this.barangayOfficials.find(o => o.id === selectedId);
-    if (official) {
-      const barangay = this.barangays.find(b => b.id === parseInt(official.barangay_id!));
-      if (barangay) {
-        // Triggers weather data fetch
-        this.selectedBarangayName = barangay.name;
+    const barangay = this.barangays.find(b => b.id === barangayId);
+    if (barangay) {
+      // Triggers weather data fetch
+      this.selectedBarangayName = barangay.name;
+      // this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
 
-        // this.zoomToBarangay({ id: barangay.id, barangay: barangay.name, coordinates: [barangay.latitude, barangay.longitude] });
-
+      const official = this.barangayOfficials.find(o => o.barangay_id === barangay.id);
+      if (official) {
         // this.toggleBarangayOfficials();
         const personIcon = L.icon({
           iconUrl: './assets/images/official.png',
