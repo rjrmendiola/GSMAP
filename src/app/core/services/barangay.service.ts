@@ -57,4 +57,14 @@ export class BarangayService {
   selectBarangay(barangay: Barangay): void {
     this.selectedBarangaySource.next(barangay);
   }
+
+  importBarangays(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(
+      `${this.apiUrl}/import`,
+      formData
+    );
+  }
 }
