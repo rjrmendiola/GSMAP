@@ -12,7 +12,20 @@ const routes: Routes = [
     component: AdminDashboardComponent,
     canActivate: [AdminGuard],
     children: [
-      { path: 'barangays', loadComponent: () => import('./pages/manage-barangays/manage-barangays.component').then(m => m.ManageBarangaysComponent) },
+      {
+        path: 'barangays',
+        loadComponent: () => import('./pages/manage-barangays/manage-barangays.component').then(m => m.ManageBarangaysComponent),
+        // children: [
+        //   {
+        //     path: 'import',
+        //     loadComponent: () => import('./pages/import-barangays/import-barangays.component').then(m => m.ImportBarangaysComponent)
+        //   }
+        // ],
+      },
+      {
+        path: 'barangays/import',
+        loadComponent: () => import('./pages/import-barangays/import-barangays.component').then(m => m.ImportBarangaysComponent)
+      },
       { path: 'officials', loadComponent: () => import('./pages/manage-officials/manage-officials.component').then(m => m.ManageOfficialsComponent) },
       { path: 'evacuation-centers', loadComponent: () => import('./pages/manage-evacuation-centers/manage-evacuation-centers.component').then(m => m.ManageEvacuationCentersComponent) },
       { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },

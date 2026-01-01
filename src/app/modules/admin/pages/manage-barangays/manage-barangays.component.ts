@@ -5,11 +5,12 @@ import { Barangay } from 'src/app/shared/models/barangay.model';
 import { environment } from 'src/environments/environment';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgClass, NgFor, NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-manage-barangays',
   standalone: true,
-  imports: [AngularSvgIconModule, NgIf, NgFor, NgClass, ReactiveFormsModule, FormsModule],
+  imports: [AngularSvgIconModule, NgIf, NgFor, NgClass, ReactiveFormsModule, FormsModule, RouterModule],
   templateUrl: './manage-barangays.component.html',
   styleUrl: './manage-barangays.component.scss'
 })
