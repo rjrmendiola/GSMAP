@@ -34,7 +34,14 @@ const routes: Routes = [
         path: 'officials/import',
         loadComponent: () => import('./pages/import-barangay-officials/import-barangay-officials.component').then(m => m.ImportBarangayOfficialsComponent)
       },
-      { path: 'evacuation-centers', loadComponent: () => import('./pages/manage-evacuation-centers/manage-evacuation-centers.component').then(m => m.ManageEvacuationCentersComponent) },
+      {
+        path: 'evacuation-centers',
+        loadComponent: () => import('./pages/manage-evacuation-centers/manage-evacuation-centers.component').then(m => m.ManageEvacuationCentersComponent)
+      },
+      {
+        path: 'evacuation-centers/import',
+        loadComponent: () => import('./pages/import-evacuation-centers/import-evacuation-centers.component').then(m => m.ImportEvacuationCentersComponent)
+      },
       { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
       { path: 'weather-settings', loadComponent: () => import('./pages/manage-weather-settings/manage-weather-settings.component').then(m => m.ManageWeatherSettingsComponent) },
     ]

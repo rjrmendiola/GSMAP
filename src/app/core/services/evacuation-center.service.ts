@@ -59,4 +59,14 @@ export class EvacuationCenterService {
   delete(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  importEvacuationCenters(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(
+      `${this.baseUrl}/import`,
+      formData
+    );
+  }
 }
