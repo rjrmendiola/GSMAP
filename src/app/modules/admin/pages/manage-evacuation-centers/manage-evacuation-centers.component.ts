@@ -8,11 +8,12 @@ import { environment } from 'src/environments/environment';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Barangay } from 'src/app/shared/models/barangay.model';
 import { BarangayOfficial } from 'src/app/shared/models/barangay-official.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-manage-evacuation-centers',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSvgIconModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSvgIconModule, RouterModule],
   templateUrl: './manage-evacuation-centers.component.html',
   styleUrl: './manage-evacuation-centers.component.scss'
 })
