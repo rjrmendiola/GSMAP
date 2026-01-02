@@ -47,4 +47,14 @@ export class BarangayOfficialService {
   delete(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  importBarangayOfficials(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(
+      `${this.baseUrl}/import`,
+      formData
+    );
+  }
 }

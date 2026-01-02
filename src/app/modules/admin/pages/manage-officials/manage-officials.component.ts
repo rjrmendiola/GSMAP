@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Barangay } from 'src/app/shared/models/barangay.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-manage-officials',
   standalone: true,
-  imports: [AngularSvgIconModule, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [AngularSvgIconModule, CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
   templateUrl: './manage-officials.component.html',
   styleUrl: './manage-officials.component.scss'
 })
