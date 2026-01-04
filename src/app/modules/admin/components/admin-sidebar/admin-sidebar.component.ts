@@ -39,7 +39,8 @@ export class AdminSidebarComponent implements OnInit {
 
   logout() {
     this.authService.logout();        // clear token/session
-    this.router.navigate(['/admin/login']); // redirect to admin login
+    // this.router.navigate(['/admin/login']); // redirect to admin login
+    this.router.navigate(['/']); // redirect to landing page
   }
 
   ngOnInit(): void {
