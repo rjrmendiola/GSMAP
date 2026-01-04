@@ -8,12 +8,13 @@ import { environment } from 'src/environments/environment';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Barangay } from 'src/app/shared/models/barangay.model';
 import { BarangayOfficial } from 'src/app/shared/models/barangay-official.model';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ManageEvacuationCenterImagesComponent } from '../manage-evacuation-center-images/manage-evacuation-center-images.component';
 
 @Component({
   selector: 'app-manage-evacuation-centers',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSvgIconModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AngularSvgIconModule, RouterModule, ManageEvacuationCenterImagesComponent],
   templateUrl: './manage-evacuation-centers.component.html',
   styleUrl: './manage-evacuation-centers.component.scss'
 })
@@ -21,6 +22,7 @@ export class ManageEvacuationCentersComponent {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private evacuationCenterService =  inject(EvacuationCenterService);
+  private router = inject(Router);
 
   barangays: Barangay[] = [];
   officials: BarangayOfficial[] = [];
@@ -45,6 +47,9 @@ export class ManageEvacuationCentersComponent {
   page = 1;
   limit = 20;
   total = 0;
+
+  selectedCenterId: number | null = null;
+  isImageManagerOpen = false;
 
   ngOnInit() {
     this.fetchBarangays();
@@ -218,6 +223,25 @@ export class ManageEvacuationCentersComponent {
     if (p !== '...') {
       this.onPageChange(p as number);
     }
+  }
+
+  // openImageManager(centerId: number) {
+  //   this.selectedCenterId = centerId;
+  //   this.isImageManagerOpen = true;
+  // }
+
+  // closeImageManager() {
+  //   this.isImageManagerOpen = false;
+  //   this.selectedCenterId = null;
+  // }
+
+  // goToImages(centerId: number) {
+  goToImages(center: EvacuationCenter) {
+    this.router.navigate([
+      '/admin/evacuation-centers',
+      center.id,
+      'images'
+    ]);
   }
 }
 

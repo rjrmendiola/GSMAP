@@ -42,6 +42,10 @@ const routes: Routes = [
         path: 'evacuation-centers/import',
         loadComponent: () => import('./pages/import-evacuation-centers/import-evacuation-centers.component').then(m => m.ImportEvacuationCentersComponent)
       },
+      {
+        path: 'evacuation-centers/:id/images',
+        loadComponent: () => import('./pages/manage-evacuation-center-images/manage-evacuation-center-images.component').then(m => m.ManageEvacuationCenterImagesComponent)
+      },
       { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
       { path: 'weather-settings', loadComponent: () => import('./pages/manage-weather-settings/manage-weather-settings.component').then(m => m.ManageWeatherSettingsComponent) },
     ]

@@ -1,0 +1,183 @@
+<!-- <input
+  type="file"
+  accept="image/*"
+  (change)="onFileSelected($event)"
+/>
+
+<div *ngIf="isUploading" class="mt-2">
+  Uploading... {{ uploadProgress }}%
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+  <div *ngFor="let img of images" class="border rounded p-2">
+    <img
+      [src]="img.image_path"
+      class="w-full h-32 object-cover rounded"
+    />
+    <button
+      class="mt-2 text-red-600 text-sm"
+      (click)="deleteImage(img.id)"
+    >
+      Delete
+    </button>
+  </div>
+</div>
+
+
+<button
+  class="mb-4 text-sm text-blue-600 hover:underline"
+  routerLink="/admin/evacuation-centers">
+  ← Back to Evacuation Centers
+</button> -->
+
+
+<!-- <div class="mb-6">
+  <button
+    class="text-sm text-blue-600 hover:underline mb-2"
+    routerLink="/admin/evacuation-centers">
+    ← Back to Evacuation Centers
+  </button>
+
+  <h1 class="text-xl font-semibold">
+    Manage Evacuation Center Images
+  </h1>
+
+  <p class="text-sm text-muted-foreground mt-1">
+    Upload and manage images for this evacuation center.
+    These images will be used in map popups and details views.
+  </p>
+</div> -->
+
+<!-- images.component.html -->
+<div class="p-4 md:p-6 space-y-6 bg-gray-50">
+
+  <!-- Page Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-semibold">Manage Images</h1>
+      <p class="text-sm text-gray-500">
+        Upload and manage images for this evacuation center
+      </p>
+    </div>
+
+    <!-- Back button -->
+    <button
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm hover:bg-gray-50"
+      routerLink="/evacuationcenters">
+      ← Back to list
+    </button>
+  </div>
+
+  <!-- Info Card -->
+  <div class="rounded-xl border bg-gray-50 p-4">
+    <p class="text-sm">
+      <span class="font-medium">Evacuation Center:</span>
+      {{ evacuationCenterName }}
+    </p>
+  </div>
+
+  <!-- Upload Card -->
+  <div class="rounded-xl border p-6 space-y-4">
+    <h2 class="text-lg font-medium">Upload Images</h2>
+
+    <!-- Drag & Drop Area -->
+    <label
+      class="flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl p-6 cursor-pointer hover:bg-gray-50 transition">
+      <input
+        type="file"
+        class="hidden"
+        accept="image/*"
+        multiple
+        (change)="onFileSelected($event)" />
+
+      <div class="text-4xl">📷</div>
+      <p class="text-sm font-medium">Click to upload or drag images here</p>
+      <p class="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB each</p>
+    </label>
+
+    <!-- Selected files -->
+    <div *ngIf="selectedFiles.length" class="space-y-2">
+      <p class="text-sm font-medium">Selected files</p>
+      <ul class="text-sm text-gray-600 list-disc list-inside">
+        <li *ngFor="let file of selectedFiles">
+          {{ file.name }} ({{ file.size / 1024 | number:'1.0-0' }} KB)
+        </li>
+      </ul>
+
+      <button
+        class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700"
+        (click)="uploadImages()">
+        Upload Images
+      </button>
+    </div>
+  </div>
+
+  <!-- Images Grid -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-medium">Uploaded Images</h2>
+
+    <!-- Empty state -->
+    <div
+      *ngIf="!images.length"
+      class="rounded-xl border p-6 text-center text-sm text-gray-500">
+      No images uploaded yet.
+    </div>
+
+    <!-- Grid -->
+    <div
+      *ngIf="images.length"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+
+      <div
+        *ngFor="let img of images"
+        class="group relative rounded-xl overflow-hidden border">
+
+        <img
+          [src]="'http://localhost:3000/uploads/' + img.image_path"
+          alt="Evacuation center image"
+          class="h-40 w-full object-cover" />
+
+        <!-- Overlay actions -->
+        <div
+          class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+
+          <!-- Hide button if already set as primary -->
+          <button
+            *ngIf="!img.is_primary"
+            class="px-3 py-1.5 text-xs rounded-md bg-white"
+            (click)="setPrimaryImage(img)">
+            Set as Primary
+          </button>
+
+          <button
+            class="px-3 py-1.5 text-xs rounded-md bg-red-600 text-white"
+            (click)="deleteImage(img)">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Image View Modal -->
+<div
+  *ngIf="isViewingImage"
+  class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+>
+  <div class="relative bg-white rounded-lg p-2 max-w-3xl w-full">
+    <button
+      class="absolute top-2 right-2 text-gray-600 text-lg"
+      (click)="closeImageView()"
+    >
+      ✕
+    </button>
+    <img
+      [src]="currentImageUrl"
+      class="w-full h-auto rounded"
+      alt="Evacuation Center Image"
+    />
+  </div>
+</div>
+
+

@@ -68,9 +68,23 @@
           <td>
             {{ center.image }}
           </td>
-          <td class="flex items-center gap-5 text-center">
+          <!-- <td class="flex flex-wrap items-center gap-5 text-center">
             <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground" (click)="openModal(center)">Edit</button>
             <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground text-red-600" (click)="onDelete(center.id!)">Delete</button>
+            <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground text-blue-600" (click)="openImageManager(center.id!)">Manage Images</button>
+          </td> -->
+          <td class="px-2 text-center whitespace-nowrap">
+            <div class="inline-flex items-center gap-3">
+              <button class="text-sm text-muted-foreground hover:text-foreground" (click)="openModal(center)">
+                Edit
+              </button>
+              <button class="text-sm text-red-600 hover:underline" (click)="onDelete(center.id!)">
+                Delete
+              </button>
+              <button class="text-sm text-blue-600 hover:underline" (click)="goToImages(center)">
+                Manage Images
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
