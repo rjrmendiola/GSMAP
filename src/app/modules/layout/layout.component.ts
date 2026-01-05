@@ -1974,15 +1974,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.selectedBarangaysFilter = [...floodAffectedBarangays];
 
-        this.refreshBarangayStyles();
-        this.updateBarangayLabels()
+        // this.refreshBarangayStyles();
+        // this.updateBarangayLabels();
       }
     } else {
-      this.disasterService.setDisasterType({ type: 'typhoon', category: undefined });
+      // this.disasterService.setDisasterType({ type: 'typhoon', category: undefined });
 
+      this.selectedFloodFilter = null;
       this.selectedBarangaysFilter = [];
-      this.refreshBarangayStyles();
-      this.updateBarangayLabels();
+      // this.refreshBarangayStyles();
+      // this.updateBarangayLabels();
     }
 
     if (filters.landslide) {
@@ -2009,15 +2010,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.selectedBarangaysFilter = [...landslideAffectedBarangays];
 
-        this.refreshBarangayStyles();
-        this.updateBarangayLabels();
+        // this.refreshBarangayStyles();
+        // this.updateBarangayLabels();
       }
     } else {
-      this.disasterService.setDisasterType({ type: 'landslide', category: undefined });
+      // this.disasterService.setDisasterType({ type: 'landslide', category: undefined });
 
+      this.selectedLandslideFilter = null;
       this.selectedBarangaysFilter = [];
-      this.refreshBarangayStyles();
-      this.updateBarangayLabels();
+      // this.refreshBarangayStyles();
+      // this.updateBarangayLabels();
     }
 
     if (filters.barangay) {
@@ -2043,14 +2045,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       if (filters.barangays?.length > 0) {
         this.selectedBarangaysFilter = filters.barangays;
 
-        this.refreshBarangayStyles();
-        this.updateBarangayLabels();
+        // this.refreshBarangayStyles();
+        // this.updateBarangayLabels();
       }
     } else {
       this.selectedBarangaysFilter = [];
-      this.refreshBarangayStyles();
-      this.updateBarangayLabels();
+      // this.refreshBarangayStyles();
+      // this.updateBarangayLabels();
     }
+
+    this.refreshBarangayStyles();
+    this.updateBarangayLabels();
   }
 
   onBarangayOfficialSelected(event: any): void {

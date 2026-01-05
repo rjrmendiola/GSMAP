@@ -142,13 +142,21 @@ export class DssFilterComponent {
   }
 
   clearSelection(category: string, type: string) {
-    if (category === 'flood' && this.selectedFlood === type) {
-      this.selectedFlood = null;
-      this.selectedBarangays = [];
-    } else if (category === 'landslide' && this.selectedLandslide === type) {
-      this.selectedLandslide = null;
-      this.selectedBarangays = [];
+    if (category === 'flood') {
+      if (this.selectedFlood === type) {
+        this.selectedFlood = null;
+      } else {
+        this.selectedFlood = type;
+      }
+    } else if (category === 'landslide') {
+      if (this.selectedLandslide === type) {
+        this.selectedLandslide = null;
+      } else {
+        this.selectedLandslide = type;
+      }
     }
+
+    this.selectedBarangays = [];
   }
 
   onBarangayToggle(barangay: number, event: Event) {
@@ -165,4 +173,6 @@ export class DssFilterComponent {
     // Emit to parent
     // this.barangaysSelected.emit(this.selectedBarangays);
   }
+
+  ngOnChanges() {}
 }

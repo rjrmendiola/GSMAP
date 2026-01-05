@@ -296,7 +296,7 @@ export class SidebarDetailsComponent {
 
         this.selectedBarangaysWeather[barangayId] = weather;
 
-        console.log(`Weather loaded for ${barangay.name}`, weather);
+        // console.log(`Weather loaded for ${barangay.name}`, weather);
       }
 
     } catch (error) {
