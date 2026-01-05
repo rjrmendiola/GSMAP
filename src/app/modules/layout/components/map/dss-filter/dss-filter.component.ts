@@ -24,6 +24,38 @@ export class DssFilterComponent {
   @Output() closeModal = new EventEmitter<void>();
   // @Output() barangaysSelected = new EventEmitter<string[]>();
 
+  private hazardAffectedBarangays = {
+    'landslide': {
+      // 'unlikely': "Areas have minimal susceptibility, characterized by stable terrain, gentle slopes, and solid ground, where landslides are rare under typical conditions",
+      'less_likely_to_experience': [
+        'tinaguban', 'hiluctugan', 'canlampay', 'libo', 'upper_hiraan', 'caghalo', 'manloy', 'san_isidro', 'paglaum', 'camansi'
+      ],
+      'moderately_susceptible': [
+        'tinaguban', 'hiluctugan', 'canlampay', 'libo', 'upper_hiraan', 'caghalo', 'manloy', 'san_isidro', 'paglaum', 'camansi'
+      ],
+      'highly_susceptible': [
+        'caghalo', 'paglaum', 'san_isidro', 'tinaguban', 'libo'
+      ]
+    },
+    'typhoon': {
+      'tropical_depression': [
+        'san_mateo', 'guindapunan_west', 'guindapunan_east', 'jugaban', 'balilit', 'barugohay_sur', 'cutay', 'bislig', 'barayong', 'manloy', 'barugohay_central', 'nauguisan', 'canal'
+      ],
+      'tropical_storm': [
+        'san_mateo', 'guindapunan_west', 'guindapunan_east', 'jugaban', 'balilit', 'barugohay_sur', 'cutay', 'bislig', 'barayong', 'manloy', 'barugohay_central', 'nauguisan', 'canal'
+      ],
+      'severe_tropical_storm': [
+        'tangnan', 'nauguisan', 'san_juan', 'west_visoria', 'east_visoria', 'ponong', 'baybay', 'jugaban', 'canal', 'uyawan', 'tagak', 'rizal', 'sagkahan', 'pangna', 'bislig'
+      ],
+      'typhoon': [
+        'tangnan', 'nauguisan', 'san_juan', 'west_visoria', 'east_visoria', 'ponong', 'baybay', 'jugaban', 'canal', 'uyawan', 'tagak', 'rizal', 'sagkahan', 'pangna', 'bislig'
+      ],
+      'super_typhoon': [
+        'bislig', 'canal', 'uyawan', 'lower_hiraan', 'canlampay', 'parena', 'upper_sogod', 'lower_sogod', 'binibihan', 'macalpi'
+      ]
+    }
+  };
+
   // selectedBarangays: number[] = [];
 
   // selectedFlood: string | null = null;
@@ -38,11 +70,50 @@ export class DssFilterComponent {
   onFloodSelected(value: string) {
     this.selectedFlood = value;
     this.selectedLandslide = null; // clear landslide when flood is chosen
+
+    var floodCategoryMap: any = {
+      'category5': this.hazardAffectedBarangays.typhoon.super_typhoon,
+      'category4': this.hazardAffectedBarangays.typhoon.typhoon,
+      'category3': this.hazardAffectedBarangays.typhoon.severe_tropical_storm,
+      'category2': this.hazardAffectedBarangays.typhoon.tropical_storm,
+      'category1': this.hazardAffectedBarangays.typhoon.tropical_depression,
+    };
+
+    var floodAffectedBarangaySlugs = floodCategoryMap[value];
+    var floodAffectedBarangays = [];
+
+    for (const barangay_slug of floodAffectedBarangaySlugs) {
+      const barangay = this.barangays.find(b => b.slug === barangay_slug);
+      if (barangay) {
+        floodAffectedBarangays.push(barangay!.id);
+      }
+    }
+
+    this.selectedBarangays = floodAffectedBarangays;
   }
 
   onLandslideSelected(value: string) {
     this.selectedLandslide = value;
     this.selectedFlood = null; // clear flood when landslide is chosen
+
+    var landslideCategoryMap: any = {
+      'category4': this.hazardAffectedBarangays.landslide.highly_susceptible,
+      'category3': this.hazardAffectedBarangays.landslide.moderately_susceptible,
+      // 'category2': this.hazardAffectedBarangays.landslide.unlikely,
+      'category1': this.hazardAffectedBarangays.landslide.less_likely_to_experience,
+    };
+
+    var landslideAffectedBarangaySlugs = landslideCategoryMap[value];
+    var landslideAffectedBarangays = [];
+
+    for (const barangay_slug of landslideAffectedBarangaySlugs) {
+      const barangay = this.barangays.find(b => b.slug === barangay_slug);
+      if (barangay) {
+        landslideAffectedBarangays.push(barangay!.id);
+      }
+    }
+
+    this.selectedBarangays = landslideAffectedBarangays;
   }
 
   onSelectBarangay(event: any) {
@@ -73,8 +144,10 @@ export class DssFilterComponent {
   clearSelection(category: string, type: string) {
     if (category === 'flood' && this.selectedFlood === type) {
       this.selectedFlood = null;
+      this.selectedBarangays = [];
     } else if (category === 'landslide' && this.selectedLandslide === type) {
       this.selectedLandslide = null;
+      this.selectedBarangays = [];
     }
   }
 

@@ -1977,6 +1977,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.refreshBarangayStyles();
         this.updateBarangayLabels()
       }
+    } else {
+      this.disasterService.setDisasterType({ type: 'typhoon', category: undefined });
+
+      this.selectedBarangaysFilter = [];
+      this.refreshBarangayStyles();
+      this.updateBarangayLabels();
     }
 
     if (filters.landslide) {
@@ -2006,6 +2012,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.refreshBarangayStyles();
         this.updateBarangayLabels();
       }
+    } else {
+      this.disasterService.setDisasterType({ type: 'landslide', category: undefined });
+
+      this.selectedBarangaysFilter = [];
+      this.refreshBarangayStyles();
+      this.updateBarangayLabels();
     }
 
     if (filters.barangay) {
@@ -2034,6 +2046,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         this.refreshBarangayStyles();
         this.updateBarangayLabels();
       }
+    } else {
+      this.selectedBarangaysFilter = [];
+      this.refreshBarangayStyles();
+      this.updateBarangayLabels();
     }
   }
 
