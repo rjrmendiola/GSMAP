@@ -1463,6 +1463,24 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         if (disasterType) {
           this.disasterType = disasterType;
           this.handleDisasterTypeChange();
+        } else {
+          this.map.removeControl(this.legend);
+
+          if (this.highlightLayer) {
+            this.map.removeLayer(this.highlightLayer);
+          }
+
+          if (this.labelMarker) {
+            this.map.removeLayer(this.labelMarker);
+          }
+
+          this.map.removeLayer(this.layers['flood_low']);
+          this.map.removeLayer(this.layers['flood_moderate']);
+          this.map.removeLayer(this.layers['flood_high']);
+
+          this.map.removeLayer(this.layers['landslide_low']);
+          this.map.removeLayer(this.layers['landslide_moderate']);
+          this.map.removeLayer(this.layers['landslide_high']);
         }
       }
     );
@@ -1949,6 +1967,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   onApplyFilters(filters: { flood: string | null; landslide: string | null; barangay: string | null; mapType: string | null; barangays: number[] | null;  }): void {
     this.isDssFilterModalOpen = false;
 
+    console.log('filters.flood: ', filters.flood);
+    console.log('filters.landslide: ', filters.landslide);
+
     if (filters.flood) {
       this.selectedFloodFilter = filters.flood;
       this.disasterService.setDisasterType({ type: 'typhoon', category: filters.flood });
@@ -1979,6 +2000,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } else {
       // this.disasterService.setDisasterType({ type: 'typhoon', category: undefined });
+      this.disasterService.clearDisasterType();
 
       this.selectedFloodFilter = null;
       this.selectedBarangaysFilter = [];

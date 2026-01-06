@@ -435,9 +435,13 @@ export class SidebarDetailsComponent {
       }
     }
 
-    if (changes['selectedBarangays'] && this.selectedBarangays.length) {
-      console.log("selectedBarangays: ", this.selectedBarangays);
-      this.loadWeatherDataForBarangays(this.selectedBarangays);
+    if (changes['selectedBarangays']) {
+      console.log("Selected Barangays: ", this.selectedBarangays);
+      if (this.selectedBarangays.length) {
+        this.loadWeatherDataForBarangays(this.selectedBarangays);
+      } else {
+        this.loadAllWeatherData();
+      }
     }
 
     // if (this.selectedBarangays?.length) {

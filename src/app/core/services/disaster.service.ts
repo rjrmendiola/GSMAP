@@ -11,4 +11,12 @@ export class DisasterService {
   setDisasterType(disasterType: { type: string; category?: string }) {
     this.disasterTypeSource.next(disasterType);
   }
+
+  clearDisasterType() {
+    this.disasterTypeSource.next(null);
+  }
+
+  getDisasterType() {
+    return this.disasterTypeSource.asObservable();
+  }
 }
