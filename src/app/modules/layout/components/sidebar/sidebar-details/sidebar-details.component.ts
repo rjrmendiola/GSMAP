@@ -440,6 +440,7 @@ export class SidebarDetailsComponent {
       if (this.selectedBarangays.length) {
         this.loadWeatherDataForBarangays(this.selectedBarangays);
       } else {
+        this.weatherService.loadCoordinates();
         this.loadAllWeatherData();
       }
     }
