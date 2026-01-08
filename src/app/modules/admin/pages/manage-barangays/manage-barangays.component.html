@@ -3,9 +3,9 @@
     <h3 class="font-semibold text-foreground">Barangay Management</h3>
   </div>
   <div class="inline-block space-x-4">
-    <button class="flex-none rounded-md bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground" routerLink="import">
+    <!-- <button class="flex-none rounded-md bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground" routerLink="import">
       Import
-    </button>
+    </button> -->
     <button class="flex-none rounded-md bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground" (click)="openModal()">
       Add barangay
     </button>
@@ -49,7 +49,7 @@
             {{ barangay.slug }}
           </td>
           <td class="flex items-center gap-5 text-center">
-            <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground" (click)="openModal(barangay)">Edit</button>
+            <!-- <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground" (click)="openModal(barangay)">Edit</button> -->
             <button class="flex h-7 w-7 justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground text-red-600" (click)="onDelete(barangay.id!)">Delete</button>
           </td>
         </tr>

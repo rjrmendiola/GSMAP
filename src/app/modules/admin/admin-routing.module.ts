@@ -22,10 +22,10 @@ const routes: Routes = [
         //   }
         // ],
       },
-      {
-        path: 'barangays/import',
-        loadComponent: () => import('./pages/import-barangays/import-barangays.component').then(m => m.ImportBarangaysComponent)
-      },
+      // {
+      //   path: 'barangays/import',
+      //   loadComponent: () => import('./pages/import-barangays/import-barangays.component').then(m => m.ImportBarangaysComponent)
+      // },
       {
         path: 'officials',
         loadComponent: () => import('./pages/manage-officials/manage-officials.component').then(m => m.ManageOfficialsComponent)
