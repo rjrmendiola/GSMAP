@@ -134,8 +134,12 @@
         *ngFor="let img of images"
         class="group relative rounded-xl overflow-hidden border">
 
-        <img
+        <!-- <img
           [src]="'http://localhost:3000/uploads/' + img.image_path"
+          alt="Evacuation center image"
+          class="h-40 w-full object-cover" /> -->
+        <img
+          [src]="'/uploads/' + img.image_path"
           alt="Evacuation center image"
           class="h-40 w-full object-cover" />
 

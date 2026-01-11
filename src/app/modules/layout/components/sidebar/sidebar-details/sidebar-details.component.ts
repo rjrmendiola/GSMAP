@@ -9,6 +9,7 @@ import { HazardDetectorService, HazardResult } from 'src/app/core/services/hazar
 import { WeatherSettingsService } from 'src/app/core/services/weather-settings.service';
 import { BarangayService } from 'src/app/core/services/barangay.service';
 import { Barangay } from 'src/app/shared/models/barangay.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sidebar-details',
@@ -79,7 +80,8 @@ export class SidebarDetailsComponent {
 
   public loadFloodLandslideDetails(): void {
     // var url = './assets/data/hazard_flood_landslide.geojson';
-    var url = 'http://localhost:3000/api/hazardRiskAssessments/geojson'
+    // var url = 'http://localhost:3000/api/hazardRiskAssessments/geojson'
+    var url = `${environment.apiUrl}/hazardRiskAssessments/geojson`;
     this.fetchGeoJson(url)
       .then((data) => {
         const layer = L.geoJson(data, {

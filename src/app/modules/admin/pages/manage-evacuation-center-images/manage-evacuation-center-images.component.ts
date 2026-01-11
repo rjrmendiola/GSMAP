@@ -4,12 +4,13 @@ import { EvacuationCenterImageService } from '../../../../core/services/evacuati
 import { DecimalPipe, NgFor, NgIf, CommonModule } from '@angular/common'; // Added CommonModule for safety
 import { ActivatedRoute, RouterLink } from '@angular/router'; // <--- ADDED RouterLink HERE
 import { EvacuationCenterService } from 'src/app/core/services/evacuation-center.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-manage-evacuation-center-images',
   standalone: true,
   // Added RouterLink to the imports array below
-  imports: [NgIf, NgFor, DecimalPipe, RouterLink, CommonModule], 
+  imports: [NgIf, NgFor, DecimalPipe, RouterLink, CommonModule],
   templateUrl: './manage-evacuation-center-images.component.html',
   styleUrl: './manage-evacuation-center-images.component.scss'
 })
