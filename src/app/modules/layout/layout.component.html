@@ -8,6 +8,9 @@
     (barangayOfficialSelected)="onBarangayOfficialSelected($event)"
     (evacuationCenterSelected)="onEvacuationCenterSelected($event)"
     (dssSidebarFilterClicked)="isDssFilterModalOpen = true"
+    (dssAlertClicked)="isDssAlertModalOpen = true"
+    (dssDecisionClicked)="isDssDecisionModalOpen = true"
+    (dssEvacuationClicked)="isDssEvacuationModalOpen = true"
     (barangaysSelected)="onBarangaysSelected($event)"
     >
   </app-sidebar>
@@ -130,6 +133,24 @@
             [selectedBarangays]="selectedBarangaysFilter"
           >
           </app-dss-filter>
+
+          <app-dss-alert-modal
+            *ngIf="isDssAlertModalOpen"
+            (closeModal)="isDssAlertModalOpen = false"
+          >
+          </app-dss-alert-modal>
+
+          <app-dss-decision-modal
+            *ngIf="isDssDecisionModalOpen"
+            (closeModal)="isDssDecisionModalOpen = false"
+          >
+          </app-dss-decision-modal>
+
+          <app-dss-evacuation-modal
+            *ngIf="isDssEvacuationModalOpen"
+            (closeModal)="isDssEvacuationModalOpen = false"
+          >
+          </app-dss-evacuation-modal>
         </div>
       </div>
     </div>

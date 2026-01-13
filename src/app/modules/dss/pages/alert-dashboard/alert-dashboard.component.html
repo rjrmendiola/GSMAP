@@ -1,0 +1,745 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Header -->
+  <div class="mb-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Decision Support System - Alert Dashboard</h1>
+        <p class="text-gray-600 mt-1">Real-time hazard monitoring and early warning system</p>
+        <p class="text-sm text-gray-500 mt-1" *ngIf="lastUpdate">Last updated: {{ lastUpdate | date:'medium' }}</p>
+      </div>
+      <div class="flex gap-2">
+        <button (click)="openEvacuationPlanner()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          Evacuation Planner
+        </button>
+        <button (click)="loadAlerts()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          Refresh
+        </button>
+        <button (click)="printReport()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+          Print
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-20">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+      <p class="mt-4 text-gray-600">Loading alerts...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+    <p class="text-red-800">{{ error }}</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div *ngIf="!loading && statistics" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-600">
+      <div class="text-sm font-medium text-gray-600">Critical Alerts</div>
+      <div class="mt-2 text-3xl font-bold text-red-600">{{ statistics.byLevel.RED }}</div>
+      <div class="mt-2 text-xs text-gray-500">Immediate action required</div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-orange-500">
+      <div class="text-sm font-medium text-gray-600">High Priority</div>
+      <div class="mt-2 text-3xl font-bold text-orange-500">{{ statistics.byLevel.ORANGE }}</div>
+      <div class="mt-2 text-xs text-gray-500">Watch and prepare</div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
+      <div class="text-sm font-medium text-gray-600">Advisory</div>
+      <div class="mt-2 text-3xl font-bold text-yellow-500">{{ statistics.byLevel.YELLOW }}</div>
+      <div class="mt-2 text-xs text-gray-500">Monitor conditions</div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-600">
+      <div class="text-sm font-medium text-gray-600">Total Barangays</div>
+      <div class="mt-2 text-3xl font-bold text-gray-900">{{ statistics.total }}</div>
+      <div class="mt-2 text-xs text-gray-500">Under monitoring</div>
+    </div>
+  </div>
+
+  <!-- Risk Type Summary -->
+  <div *ngIf="!loading && statistics" class="bg-white rounded-lg shadow p-6 mb-6">
+    <h2 class="text-lg font-semibold mb-4">Active Risks by Type</h2>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="text-center">
+        <div class="text-2xl font-bold text-blue-600">{{ statistics.byRiskType.flood }}</div>
+        <div class="text-sm text-gray-600">Flood Risk</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-orange-600">{{ statistics.byRiskType.landslide }}</div>
+        <div class="text-sm text-gray-600">Landslide Risk</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold text-purple-600">{{ statistics.byRiskType.wind }}</div>
+        <div class="text-sm text-gray-600">Wind Risk</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div *ngIf="!loading" class="bg-white rounded-lg shadow p-4 mb-6">
+    <div class="flex items-center gap-4">
+      <span class="font-medium text-gray-700">Filter by Alert Level:</span>
+      <div class="flex gap-2">
+        <button (click)="filterLevel = 'ALL'" [class.bg-gray-800]="filterLevel === 'ALL'"
+                class="px-4 py-2 rounded-lg" [class.bg-gray-200]="filterLevel !== 'ALL'"
+                [class.text-white]="filterLevel === 'ALL'">
+          All ({{ alerts.length }})
+        </button>
+        <button (click)="filterLevel = 'RED'" [class.bg-red-600]="filterLevel === 'RED'"
+                class="px-4 py-2 rounded-lg" [class.bg-gray-200]="filterLevel !== 'RED'"
+                [class.text-white]="filterLevel === 'RED'">
+          Critical ({{ (statistics?.byLevel?.RED) || 0 }})
+        </button>
+        <button (click)="filterLevel = 'ORANGE'" [class.bg-orange-500]="filterLevel === 'ORANGE'"
+                class="px-4 py-2 rounded-lg" [class.bg-gray-200]="filterLevel !== 'ORANGE'"
+                [class.text-white]="filterLevel === 'ORANGE'">
+          High ({{ (statistics?.byLevel?.ORANGE) || 0 }})
+        </button>
+        <button (click)="filterLevel = 'YELLOW'" [class.bg-yellow-500]="filterLevel === 'YELLOW'"
+                class="px-4 py-2 rounded-lg" [class.bg-gray-200]="filterLevel !== 'YELLOW'"
+                [class.text-black]="filterLevel === 'YELLOW'">
+          Advisory ({{ (statistics?.byLevel?.YELLOW) || 0 }})
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerts List -->
+  <div *ngIf="!loading" class="space-y-4">
+    <div *ngFor="let alert of filteredAlerts" class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer"
+         (click)="selectAlert(alert)">
+      <div class="p-6">
+        <div class="flex justify-between items-start">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <h3 class="text-xl font-bold text-gray-900">{{ alert.barangayName }}</h3>
+              <span [class]="'px-3 py-1 rounded-full text-sm font-semibold ' + getAlertBadgeClass(alert.alertLevel.level)">
+                {{ alert.alertLevel.label }}
+              </span>
+            </div>
+
+            <!-- Risk Indicators -->
+            <div class="flex gap-4 mb-4">
+              <div class="flex items-center gap-2" *ngIf="alert.risks.flood.alertLevel.priority > 0">
+                <span class="text-blue-600 font-medium">Flood:</span>
+                <span [class]="'px-2 py-1 rounded text-xs font-semibold ' + getAlertBadgeClass(alert.risks.flood.alertLevel.level)">
+                  {{ alert.risks.flood.alertLevel.label }}
+                </span>
+              </div>
+              <div class="flex items-center gap-2" *ngIf="alert.risks.landslide.alertLevel.priority > 0">
+                <span class="text-orange-600 font-medium">Landslide:</span>
+                <span [class]="'px-2 py-1 rounded text-xs font-semibold ' + getAlertBadgeClass(alert.risks.landslide.alertLevel.level)">
+                  {{ alert.risks.landslide.alertLevel.label }}
+                </span>
+              </div>
+              <div class="flex items-center gap-2" *ngIf="alert.risks.wind.alertLevel.priority > 0">
+                <span class="text-purple-600 font-medium">Wind:</span>
+                <span [class]="'px-2 py-1 rounded text-xs font-semibold ' + getAlertBadgeClass(alert.risks.wind.alertLevel.level)">
+                  {{ alert.risks.wind.alertLevel.label }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Weather Summary -->
+            <div class="grid grid-cols-3 gap-4 text-sm mb-4">
+              <div>
+                <span class="text-gray-600">Rainfall:</span>
+                <span class="ml-2 font-semibold">{{ alert.weatherSummary.rainfall.toFixed(1) }} mm</span>
+              </div>
+              <div>
+                <span class="text-gray-600">Wind:</span>
+                <span class="ml-2 font-semibold">{{ alert.weatherSummary.windSpeed.toFixed(1) }} m/s</span>
+              </div>
+              <div>
+                <span class="text-gray-600">Soil Moisture:</span>
+                <span class="ml-2 font-semibold">{{ (alert.weatherSummary.soilMoisture * 100).toFixed(0) }}%</span>
+              </div>
+            </div>
+
+            <!-- Top Recommendations -->
+            <div class="mt-4">
+              <h4 class="font-semibold text-gray-700 mb-2">Immediate Actions:</h4>
+              <ul class="space-y-1">
+                <li *ngFor="let rec of alert.recommendations.slice(0, 2)" class="flex items-start gap-2">
+                  <span [class]="'px-2 py-0.5 rounded text-xs font-semibold ' + getPriorityBadgeClass(rec.priority)">
+                    {{ rec.priority }}
+                  </span>
+                  <span class="text-sm text-gray-700">{{ rec.action }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <div class="text-sm text-gray-500">{{ alert.evacuationCenters.length }} Evacuation Centers</div>
+            <button class="mt-2 text-blue-600 hover:text-blue-800 font-medium text-sm">View Details →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filteredAlerts.length === 0" class="bg-white rounded-lg shadow p-12 text-center">
+      <p class="text-gray-600 text-lg">No alerts found for the selected filter.</p>
+    </div>
+  </div>
+
+  <!-- Alert Detail Modal -->
+  <div *ngIf="selectedAlert" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+       (click)="closeDetail()">
+    <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
+        <h2 class="text-2xl font-bold">{{ selectedAlert.barangayName }} - Detailed Alert</h2>
+        <button (click)="closeDetail()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+      </div>
+
+      <div class="p-6">
+        <!-- Alert Level -->
+        <div class="mb-6">
+          <span [class]="'px-4 py-2 rounded-lg text-lg font-semibold ' + getAlertBadgeClass(selectedAlert.alertLevel.level)">
+            {{ selectedAlert.alertLevel.label }} - Priority {{ selectedAlert.alertLevel.priority }}
+          </span>
+        </div>
+
+        <!-- Risk Details -->
+        <div class="mb-6">
+          <h3 class="text-xl font-semibold mb-4">Risk Assessment</h3>
+          <div class="space-y-4">
+            <!-- Flood Risk -->
+            <div class="border rounded-lg p-4">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-semibold text-blue-600">Flood Risk</h4>
+                <span [class]="'px-3 py-1 rounded text-sm font-semibold ' + getAlertBadgeClass(selectedAlert.risks.flood.alertLevel.level)">
+                  {{ selectedAlert.risks.flood.alertLevel.label }}
+                </span>
+              </div>
+              <ul class="list-disc list-inside text-sm text-gray-700">
+                <li *ngFor="let reason of selectedAlert.risks.flood.reasons">{{ reason }}</li>
+              </ul>
+            </div>
+
+            <!-- Landslide Risk -->
+            <div class="border rounded-lg p-4">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-semibold text-orange-600">Landslide Risk</h4>
+                <span [class]="'px-3 py-1 rounded text-sm font-semibold ' + getAlertBadgeClass(selectedAlert.risks.landslide.alertLevel.level)">
+                  {{ selectedAlert.risks.landslide.alertLevel.label }}
+                </span>
+              </div>
+              <ul class="list-disc list-inside text-sm text-gray-700">
+                <li *ngFor="let reason of selectedAlert.risks.landslide.reasons">{{ reason }}</li>
+              </ul>
+            </div>
+
+            <!-- Wind Risk -->
+            <div class="border rounded-lg p-4">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-semibold text-purple-600">Wind Risk</h4>
+                <span [class]="'px-3 py-1 rounded text-sm font-semibold ' + getAlertBadgeClass(selectedAlert.risks.wind.alertLevel.level)">
+                  {{ selectedAlert.risks.wind.alertLevel.label }}
+                </span>
+              </div>
+              <ul class="list-disc list-inside text-sm text-gray-700">
+                <li *ngFor="let reason of selectedAlert.risks.wind.reasons">{{ reason }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- All Recommendations -->
+        <div class="mb-6">
+          <h3 class="text-xl font-semibold mb-4">Recommended Actions</h3>
+          <div class="space-y-3">
+            <div *ngFor="let rec of selectedAlert.recommendations" class="border-l-4 pl-4 py-2"
+                 [class.border-red-600]="rec.priority === 'IMMEDIATE'"
+                 [class.border-orange-500]="rec.priority === 'HIGH'"
+                 [class.border-yellow-500]="rec.priority === 'ADVISORY'">
+              <div class="flex items-start gap-3">
+                <span [class]="'px-2 py-1 rounded text-xs font-semibold whitespace-nowrap ' + getPriorityBadgeClass(rec.priority)">
+                  {{ rec.priority }}
+                </span>
+                <div>
+                  <p class="font-medium text-gray-900">{{ rec.action }}</p>
+                  <p class="text-sm text-gray-600 mt-1">Target: {{ rec.target }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evacuation Centers -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Available Evacuation Centers ({{ selectedAlert.evacuationCenters.length }})</h3>
+          <div class="space-y-2">
+            <div *ngFor="let center of selectedAlert.evacuationCenters" class="border rounded-lg p-3">
+              <h4 class="font-semibold">{{ center.name }}</h4>
+              <p class="text-sm text-gray-600">{{ center.venue }}</p>
+              <p class="text-xs text-gray-500 mt-1">Coordinates: {{ center.latitude }}, {{ center.longitude }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Evacuation Planner Modal -->
+  <div *ngIf="showEvacuationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+       (click)="closeEvacuationPlanner()">
+    <div class="bg-white rounded-lg max-w-7xl w-full max-h-[95vh] overflow-hidden flex flex-col" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="sticky top-0 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6 flex justify-between items-center border-b shadow-lg">
+        <div>
+          <h2 class="text-2xl font-bold flex items-center gap-2">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            Evacuation Planner
+          </h2>
+          <p class="text-green-100 mt-1">Strategic evacuation planning and resource allocation</p>
+        </div>
+        <button (click)="closeEvacuationPlanner()" class="text-white hover:text-green-200 text-3xl font-light">&times;</button>
+      </div>
+
+      <!-- Modal Content -->
+      <div class="flex-1 overflow-y-auto p-6">
+        <!-- Loading State -->
+        <div *ngIf="evacuationLoading" class="flex justify-center items-center py-20">
+          <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+            <p class="mt-4 text-gray-600">Loading evacuation plan...</p>
+          </div>
+        </div>
+
+        <!-- Evacuation Content -->
+        <div *ngIf="!evacuationLoading && evacuationData">
+          <!-- Summary Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-red-50 border-l-4 border-red-600 rounded-lg shadow p-6">
+              <div class="text-sm font-medium text-red-800">Barangays Requiring Evacuation</div>
+              <div class="mt-2 text-3xl font-bold text-red-600">{{ evacuationData.evacuationRequired }}</div>
+              <div class="mt-2 text-xs text-red-700">Immediate action required</div>
+            </div>
+
+            <div class="bg-orange-50 border-l-4 border-orange-500 rounded-lg shadow p-6">
+              <div class="text-sm font-medium text-orange-800">Estimated Evacuees</div>
+              <div class="mt-2 text-3xl font-bold text-orange-600">{{ evacuationData.totalEstimatedEvacuees | number }}</div>
+              <div class="mt-2 text-xs text-orange-700">People to be evacuated</div>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-600 rounded-lg shadow p-6">
+              <div class="text-sm font-medium text-blue-800">Total Barangays Monitored</div>
+              <div class="mt-2 text-3xl font-bold text-blue-600">{{ evacuationData.totalBarangays }}</div>
+              <div class="mt-2 text-xs text-blue-700">Continuous monitoring</div>
+            </div>
+          </div>
+
+          <!-- Resource Requirements -->
+          <div *ngIf="resourceSummary" class="bg-white rounded-lg shadow p-6 mb-6 border">
+            <h3 class="text-xl font-bold mb-4 text-gray-900 flex items-center gap-2">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+              Required Resources
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <!-- Personnel -->
+              <div class="bg-blue-50 rounded-lg p-4">
+                <h4 class="font-semibold text-blue-900 mb-3 text-center">Personnel</h4>
+                <ul class="space-y-2 text-sm">
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Medical Staff:</span>
+                    <span class="font-bold text-blue-600">{{ resourceSummary.personnel.medicalStaff }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Security:</span>
+                    <span class="font-bold text-blue-600">{{ resourceSummary.personnel.securityPersonnel }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Social Workers:</span>
+                    <span class="font-bold text-blue-600">{{ resourceSummary.personnel.socialWorkers }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Volunteers:</span>
+                    <span class="font-bold text-blue-600">{{ resourceSummary.personnel.volunteers }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Supplies -->
+              <div class="bg-purple-50 rounded-lg p-4">
+                <h4 class="font-semibold text-purple-900 mb-3 text-center">Supplies</h4>
+                <ul class="space-y-2 text-sm">
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Food Packs:</span>
+                    <span class="font-bold text-purple-600">{{ resourceSummary.supplies.foodPacks | number }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Water Bottles:</span>
+                    <span class="font-bold text-purple-600">{{ resourceSummary.supplies.waterBottles | number }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Blankets:</span>
+                    <span class="font-bold text-purple-600">{{ resourceSummary.supplies.blankets | number }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Hygiene Kits:</span>
+                    <span class="font-bold text-purple-600">{{ resourceSummary.supplies.hygieneKits | number }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Equipment -->
+              <div class="bg-orange-50 rounded-lg p-4">
+                <h4 class="font-semibold text-orange-900 mb-3 text-center">Equipment</h4>
+                <ul class="space-y-2 text-sm">
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Generators:</span>
+                    <span class="font-bold text-orange-600">{{ resourceSummary.equipment.generators }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Radios:</span>
+                    <span class="font-bold text-orange-600">{{ resourceSummary.equipment.communicationRadios }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Flashlights:</span>
+                    <span class="font-bold text-orange-600">{{ resourceSummary.equipment.flashlights }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Rescue Boats:</span>
+                    <span class="font-bold text-orange-600">{{ resourceSummary.equipment.rescueBoats }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Vehicles -->
+              <div class="bg-green-50 rounded-lg p-4">
+                <h4 class="font-semibold text-green-900 mb-3 text-center">Vehicles</h4>
+                <ul class="space-y-2 text-sm">
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Evacuation Vehicles:</span>
+                    <span class="font-bold text-green-600">{{ resourceSummary.vehicles.evacuationVehicles }}</span>
+                  </li>
+                  <li class="flex justify-between items-center bg-white rounded px-3 py-2">
+                    <span class="text-gray-700">Ambulances:</span>
+                    <span class="font-bold text-green-600">{{ resourceSummary.vehicles.ambulances }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Evacuation Plans List -->
+          <div *ngIf="evacuationPlans.length > 0">
+            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              Barangay Evacuation Plans
+            </h3>
+
+            <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
+              <div *ngFor="let plan of evacuationPlans"
+                   class="bg-white rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer border border-gray-200"
+                   (click)="selectEvacuationPlan(plan)">
+                <div class="p-4">
+                  <div class="flex justify-between items-start mb-3">
+                    <div class="flex items-center gap-3">
+                      <h4 class="text-lg font-bold text-gray-900">{{ plan.barangayName }}</h4>
+                      <span [class]="'px-3 py-1 rounded-full text-xs font-bold ' + getEvacuationPriorityBadgeClass(plan.priority)">
+                        Priority {{ plan.priority }}
+                      </span>
+                      <span [class]="'px-3 py-1 rounded-full text-xs font-bold ' + getAlertBadgeClass(plan.alertLevel)">
+                        {{ plan.alertLevel }}
+                      </span>
+                    </div>
+                    <span class="text-blue-600 hover:text-blue-800 font-medium text-sm">View Details →</span>
+                  </div>
+
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-3">
+                    <div class="bg-gray-50 rounded px-3 py-2">
+                      <span class="text-gray-600">Population:</span>
+                      <span class="ml-2 font-bold text-gray-900">{{ plan.population | number }}</span>
+                    </div>
+                    <div class="bg-orange-50 rounded px-3 py-2">
+                      <span class="text-gray-600">Evacuees:</span>
+                      <span class="ml-2 font-bold text-orange-600">{{ plan.estimatedEvacuees | number }}</span>
+                    </div>
+                    <div class="bg-blue-50 rounded px-3 py-2">
+                      <span class="text-gray-600">Rate:</span>
+                      <span class="ml-2 font-bold text-blue-600">{{ plan.evacuationRate }}</span>
+                    </div>
+                    <div class="bg-green-50 rounded px-3 py-2">
+                      <span class="text-gray-600">Centers:</span>
+                      <span class="ml-2 font-bold text-green-600">{{ plan.evacuationCenters.length }}</span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 text-sm">
+                    <span class="font-semibold text-gray-700">Capacity:</span>
+                    <span [class]="'font-semibold ' + getCapacityStatusClass(plan.capacityStatus.status)">
+                      {{ plan.capacityStatus.message }} ({{ plan.capacityStatus.utilizationRate }})
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Evacuation Plan Detail Modal (Nested) -->
+  <div *ngIf="selectedEvacuationPlan" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[60] p-4"
+       (click)="closeEvacuationDetail()">
+    <div class="bg-white rounded-lg max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col" (click)="$event.stopPropagation()">
+      <!-- Detail Header -->
+      <div class="sticky top-0 bg-white border-b p-6 flex justify-between items-center shadow">
+        <h3 class="text-2xl font-bold text-gray-900">{{ selectedEvacuationPlan.barangayName }} - Detailed Evacuation Plan</h3>
+        <button (click)="closeEvacuationDetail()" class="text-gray-500 hover:text-gray-700 text-3xl font-light">&times;</button>
+      </div>
+
+      <!-- Detail Content -->
+      <div class="flex-1 overflow-y-auto p-6">
+        <!-- Overview Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border">
+            <div class="text-sm text-gray-600 mb-1">Priority Level</div>
+            <div class="text-3xl font-bold text-gray-900">{{ selectedEvacuationPlan.priority }}</div>
+          </div>
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+            <div class="text-sm text-blue-800 mb-1">Population</div>
+            <div class="text-3xl font-bold text-blue-600">{{ selectedEvacuationPlan.population | number }}</div>
+          </div>
+          <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
+            <div class="text-sm text-orange-800 mb-1">Evacuees</div>
+            <div class="text-3xl font-bold text-orange-600">{{ selectedEvacuationPlan.estimatedEvacuees | number }}</div>
+          </div>
+          <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+            <div class="text-sm text-green-800 mb-1">Capacity</div>
+            <div class="text-3xl font-bold text-green-600">{{ selectedEvacuationPlan.totalCapacity | number }}</div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="mb-6">
+          <h4 class="text-lg font-bold mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Evacuation Timeline
+          </h4>
+          <div class="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex items-center gap-3">
+                <div class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">1</div>
+                <div>
+                  <div class="font-bold text-gray-900">Warning</div>
+                  <div class="text-sm text-gray-700">{{ selectedEvacuationPlan.timeline.warning }}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">2</div>
+                <div>
+                  <div class="font-bold text-gray-900">Vulnerable Groups</div>
+                  <div class="text-sm text-gray-700">{{ selectedEvacuationPlan.timeline.vulnerableGroups }}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">3</div>
+                <div>
+                  <div class="font-bold text-gray-900">General Population</div>
+                  <div class="text-sm text-gray-700">{{ selectedEvacuationPlan.timeline.generalPopulation }}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">!</div>
+                <div>
+                  <div class="font-bold text-red-900">Deadline</div>
+                  <div class="text-sm font-bold text-red-600">{{ selectedEvacuationPlan.timeline.deadline }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evacuation Priority Order -->
+        <div class="mb-6">
+          <h4 class="text-lg font-bold mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Evacuation Priority Order
+          </h4>
+          <div class="space-y-3">
+            <div *ngFor="let order of selectedEvacuationPlan.evacuationOrder"
+                 class="border-l-4 border-red-500 bg-gradient-to-r from-red-50 to-white p-4 rounded-r-lg shadow-sm">
+              <div class="flex items-start gap-3">
+                <span class="bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">
+                  {{ order.priority }}
+                </span>
+                <div class="flex-1">
+                  <h5 class="font-bold text-gray-900 mb-1">{{ order.group }}</h5>
+                  <p class="text-sm text-gray-700 mb-2">{{ order.action }}</p>
+                  <ul *ngIf="order.members" class="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                    <li *ngFor="let member of order.members" class="flex items-center gap-1">
+                      <svg class="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                      </svg>
+                      {{ member }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evacuation Centers -->
+        <div class="mb-6">
+          <h4 class="text-lg font-bold mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+            Evacuation Centers Assignment
+          </h4>
+          <div class="space-y-3">
+            <div *ngFor="let center of selectedEvacuationPlan.evacuationCenters"
+                 class="border rounded-lg p-4 transition-all"
+                 [class.bg-red-50]="center.status === 'FULL'"
+                 [class.border-red-300]="center.status === 'FULL'"
+                 [class.bg-orange-50]="center.status === 'OVERFLOW'"
+                 [class.border-orange-300]="center.status === 'OVERFLOW'"
+                 [class.bg-green-50]="center.status === 'AVAILABLE'"
+                 [class.border-green-300]="center.status === 'AVAILABLE'">
+              <div class="flex justify-between items-start mb-3">
+                <div class="flex-1">
+                  <h5 class="font-bold text-lg text-gray-900">{{ center.name }}</h5>
+                  <p class="text-sm text-gray-600">{{ center.venue }}</p>
+                  <p class="text-xs text-gray-500 mt-1">📞 {{ center.contactPerson }}</p>
+                </div>
+                <div class="text-right">
+                  <div class="text-sm font-bold px-3 py-1 rounded-full"
+                       [class.bg-red-600]="center.status === 'FULL'"
+                       [class.text-white]="center.status === 'FULL'"
+                       [class.bg-orange-500]="center.status === 'OVERFLOW'"
+                       [class.text-white]="center.status === 'OVERFLOW'"
+                       [class.bg-green-600]="center.status === 'AVAILABLE'"
+                       [class.text-white]="center.status === 'AVAILABLE'">
+                    {{ center.status }}
+                  </div>
+                  <div class="text-sm font-bold mt-1"
+                       [class.text-red-600]="center.status === 'FULL'"
+                       [class.text-orange-600]="center.status === 'OVERFLOW'"
+                       [class.text-green-600]="center.status === 'AVAILABLE'">
+                    {{ center.utilizationRate }}
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-white rounded px-3 py-2">
+                  <span class="text-xs text-gray-600">Capacity:</span>
+                  <span class="ml-2 font-bold text-gray-900">{{ center.capacity }}</span>
+                </div>
+                <div class="bg-white rounded px-3 py-2">
+                  <span class="text-xs text-gray-600">Assigned:</span>
+                  <span class="ml-2 font-bold text-gray-900">{{ center.assignedEvacuees }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Routes -->
+        <div class="mb-6">
+          <h4 class="text-lg font-bold mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+            </svg>
+            Evacuation Routes & Safety
+          </h4>
+          <div class="bg-blue-50 border-2 border-blue-300 rounded-lg p-5">
+            <div class="mb-4">
+              <h5 class="font-bold text-blue-900 mb-2 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                Primary Route
+              </h5>
+              <p class="text-sm text-gray-700 bg-white rounded px-4 py-2">{{ selectedEvacuationPlan.routes.primary }}</p>
+            </div>
+            <div *ngIf="selectedEvacuationPlan.routes.avoid.length > 0" class="mb-4">
+              <h5 class="font-bold text-red-900 mb-2 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"></path>
+                </svg>
+                Areas to Avoid
+              </h5>
+              <ul class="space-y-1">
+                <li *ngFor="let avoid of selectedEvacuationPlan.routes.avoid"
+                    class="text-sm text-gray-700 bg-white rounded px-4 py-2 flex items-center gap-2">
+                  <span class="text-red-500">⚠️</span>
+                  {{ avoid }}
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
+                Safety Recommendations
+              </h5>
+              <ul class="space-y-1">
+                <li *ngFor="let rec of selectedEvacuationPlan.routes.recommendations"
+                    class="text-sm text-gray-700 bg-white rounded px-4 py-2 flex items-center gap-2">
+                  <span class="text-green-600">✓</span>
+                  {{ rec }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Needs -->
+        <div>
+          <h4 class="text-lg font-bold mb-3 flex items-center gap-2">
+            <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+            Special Needs Assessment
+          </h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg p-5 text-center border-2 border-pink-200">
+              <div class="text-4xl font-bold text-pink-600 mb-1">{{ selectedEvacuationPlan.specialNeeds.medical }}</div>
+              <div class="text-sm font-medium text-gray-700">Medical Attention</div>
+              <div class="text-xs text-gray-500 mt-1">10% of evacuees</div>
+            </div>
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-5 text-center border-2 border-purple-200">
+              <div class="text-4xl font-bold text-purple-600 mb-1">{{ selectedEvacuationPlan.specialNeeds.mobility }}</div>
+              <div class="text-sm font-medium text-gray-700">Mobility Assistance</div>
+              <div class="text-xs text-gray-500 mt-1">5% of evacuees</div>
+            </div>
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5 text-center border-2 border-blue-200">
+              <div class="text-4xl font-bold text-blue-600 mb-1">{{ selectedEvacuationPlan.specialNeeds.infants }}</div>
+              <div class="text-sm font-medium text-gray-700">Infants</div>
+              <div class="text-xs text-gray-500 mt-1">Formula & diapers needed</div>
+            </div>
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-5 text-center border-2 border-green-200">
+              <div class="text-4xl font-bold text-green-600 mb-1">{{ selectedEvacuationPlan.specialNeeds.dietary }}</div>
+              <div class="text-sm font-medium text-gray-700">Special Dietary</div>
+              <div class="text-xs text-gray-500 mt-1">8% of evacuees</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

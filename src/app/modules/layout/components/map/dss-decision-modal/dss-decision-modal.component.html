@@ -1,0 +1,172 @@
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" (click)="onCloseModalClick()"></div>
+
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            bg-gray-900 text-white p-6 rounded-xl shadow-2xl
+            w-[95%] max-w-[1200px] max-h-[90vh] overflow-y-auto z-[9999]">
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-bold">Decision Matrix</h2>
+    <button class="text-gray-400 hover:text-white text-2xl" (click)="onCloseModalClick()">&times;</button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-10">
+    <p class="text-gray-400">Loading decision rules...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="bg-red-900/30 border border-red-500 rounded p-4 mb-4">
+    <p class="text-red-300">{{ error }}</p>
+  </div>
+
+  <!-- Summary Statistics -->
+  <div *ngIf="!loading && matrix" class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-gray-800 rounded-lg p-4">
+      <div class="text-gray-400 text-sm">Total Rules</div>
+      <div class="text-2xl font-bold">{{ matrix.summary.total }}</div>
+    </div>
+    <div class="bg-red-900/30 rounded-lg p-4">
+      <div class="text-red-400 text-sm">Critical Priority</div>
+      <div class="text-2xl font-bold">{{ matrix.summary.byPriority['CRITICAL'] || 0 }}</div>
+    </div>
+    <div class="bg-orange-900/30 rounded-lg p-4">
+      <div class="text-orange-400 text-sm">High Priority</div>
+      <div class="text-2xl font-bold">{{ matrix.summary.byPriority['HIGH'] || 0 }}</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div *ngIf="!loading" class="mb-4 space-y-2">
+    <div class="flex gap-2 items-center">
+      <span class="text-sm text-gray-400">Category:</span>
+      <button (click)="filterCategory = 'ALL'"
+              [class.bg-gray-700]="filterCategory === 'ALL'"
+              [class.bg-gray-800]="filterCategory !== 'ALL'"
+              class="px-3 py-1 rounded text-xs">
+        All
+      </button>
+      <button *ngFor="let cat of matrix?.categories"
+              (click)="filterCategory = cat"
+              [class.bg-gray-700]="filterCategory === cat"
+              [class.bg-gray-800]="filterCategory !== cat"
+              class="px-3 py-1 rounded text-xs">
+        {{ cat }}
+      </button>
+    </div>
+
+    <div class="flex gap-2 items-center">
+      <span class="text-sm text-gray-400">Priority:</span>
+      <button (click)="filterPriority = 'ALL'"
+              [class.bg-gray-700]="filterPriority === 'ALL'"
+              [class.bg-gray-800]="filterPriority !== 'ALL'"
+              class="px-3 py-1 rounded text-xs">
+        All
+      </button>
+      <button *ngFor="let pri of matrix?.priorities"
+              (click)="filterPriority = pri"
+              [class.bg-gray-700]="filterPriority === pri"
+              [class.bg-gray-800]="filterPriority !== pri"
+              class="px-3 py-1 rounded text-xs">
+        {{ pri }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Rules List -->
+  <div *ngIf="!loading && !selectedRule" class="space-y-3">
+    <div *ngFor="let rule of filteredRules"
+         class="bg-black/30 rounded-lg p-4 cursor-pointer hover:bg-black/50"
+         (click)="selectRule(rule)">
+      <div class="flex justify-between items-start mb-2">
+        <div>
+          <span [class]="'font-semibold ' + getCategoryColor(rule.category)">
+            {{ rule.category }}
+          </span>
+          <span class="text-gray-500 mx-2">•</span>
+          <span class="text-gray-300 text-sm">{{ rule.id }}</span>
+        </div>
+        <span [class]="'px-2 py-1 rounded text-xs ' + getPriorityClass(rule.priority)">
+          {{ rule.priority }}
+        </span>
+      </div>
+
+      <div class="text-sm text-gray-300 mb-2">
+        {{ rule.action }}
+      </div>
+
+      <div class="flex gap-2 flex-wrap text-xs">
+        <span class="bg-gray-800 px-2 py-1 rounded">Timeline: {{ rule.timeline }}</span>
+        <span class="bg-gray-800 px-2 py-1 rounded">Resources: {{ rule.resources.length }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="filteredRules.length === 0" class="text-center py-10 text-gray-400">
+      No rules match the selected filters
+    </div>
+  </div>
+
+  <!-- Rule Detail -->
+  <div *ngIf="selectedRule" class="space-y-4">
+    <button (click)="closeDetail()" class="text-blue-400 hover:text-blue-300 text-sm mb-2">
+      ← Back to list
+    </button>
+
+    <div class="bg-black/30 rounded-lg p-4">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h3 class="text-lg font-bold mb-1">{{ selectedRule.id }}</h3>
+          <span [class]="'font-semibold ' + getCategoryColor(selectedRule.category)">
+            {{ selectedRule.category }}
+          </span>
+        </div>
+        <span [class]="'px-3 py-1 rounded text-sm ' + getPriorityClass(selectedRule.priority)">
+          {{ selectedRule.priority }}
+        </span>
+      </div>
+
+      <!-- Action -->
+      <div class="mb-4">
+        <h4 class="font-semibold text-yellow-400 mb-2">Action Required</h4>
+        <p class="text-gray-300">{{ selectedRule.action }}</p>
+      </div>
+
+      <!-- Timeline -->
+      <div class="mb-4">
+        <h4 class="font-semibold text-blue-400 mb-2">Timeline</h4>
+        <p class="text-gray-300">{{ selectedRule.timeline }}</p>
+      </div>
+
+      <!-- Responsible Parties -->
+      <div class="mb-4">
+        <h4 class="font-semibold text-green-400 mb-2">Responsible Parties</h4>
+        <div class="flex flex-wrap gap-2">
+          <span *ngFor="let resp of selectedRule.responsible"
+                class="bg-green-900/30 px-3 py-1 rounded text-sm">
+            {{ resp }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Resources Required -->
+      <div class="mb-4">
+        <h4 class="font-semibold text-purple-400 mb-2">Resources Required</h4>
+        <ul class="list-disc list-inside text-gray-300 space-y-1">
+          <li *ngFor="let resource of selectedRule.resources">{{ resource }}</li>
+        </ul>
+      </div>
+
+      <!-- Condition -->
+      <div class="bg-gray-800/50 rounded p-3">
+        <h4 class="font-semibold text-gray-400 mb-2 text-xs">Trigger Condition</h4>
+        <pre class="text-xs text-gray-400 overflow-x-auto">{{ selectedRule.condition | json }}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mt-6 flex justify-end gap-4">
+    <button class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600" (click)="onCloseModalClick()">
+      Close
+    </button>
+  </div>
+</div>

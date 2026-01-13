@@ -22,8 +22,124 @@
       <div class="p-4 text-muted-foreground text-xs">
         <div class="h-screen scrollbar-thumb-rounded scrollbar-track-rounded grow overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted">
 
-          <!-- Loading Indicator -->
-          <div *ngIf="isLoadingWeather" class="pt-4 text-center">
+          <!-- NEW: Barangay Details View (when barangay is selected) -->
+          <div *ngIf="isShowingBarangayDetails && selectedBarangayData" class="pt-4">
+            <div class="bg-gray-800 p-4 rounded-lg mb-4">
+              <h3 class="text-blue-400 font-semibold text-lg mb-4">
+                {{ selectedBarangayData.barangay.name }}
+              </h3>
+
+              <!-- Barangay Chairman/Captain -->
+              <div class="mb-3 pb-3 border-b border-gray-700">
+                <div class="text-gray-400 text-md mb-1">Barangay Captain</div>
+                <div class="text-white font-medium">
+                  {{ selectedBarangayData.chairman?.name || 'Not Available' }}
+                </div>
+                <div class="text-gray-400 text-xs" *ngIf="selectedBarangayData.chairman?.position">
+                  {{ selectedBarangayData.chairman?.position }}
+                </div>
+              </div>
+
+              <!-- Area (if available) -->
+              <div *ngIf="selectedBarangayData.barangayProfile?.area" class="mb-3 pb-3 border-b border-gray-700">
+                <div class="text-gray-400 text-md mb-1">Area</div>
+                <div class="text-white font-medium">
+                  {{ selectedBarangayData.barangayProfile?.area | number:'1.2-2' }} km²
+                </div>
+              </div>
+
+              <!-- Population Density (if available) -->
+              <div *ngIf="selectedBarangayData.barangayProfile?.population_density" class="mb-3 pb-3 border-b border-gray-700">
+                <div class="text-gray-400 text-md mb-1">Population Density</div>
+                <div class="text-white font-medium">
+                  {{ selectedBarangayData.barangayProfile?.population_density | number:'1.0-0' }} persons/km²
+                </div>
+              </div>
+
+              <!-- Population (if available) -->
+              <div *ngIf="selectedBarangayData.barangayProfile?.population" class="mb-3 pb-3 border-b border-gray-700">
+                <div class="text-gray-400 text-md mb-1">Population</div>
+                <div class="text-white font-medium">
+                  {{ selectedBarangayData.barangayProfile?.population | number:'1.0-0' }}
+                </div>
+              </div>
+
+              <!-- Livelihood (if available) -->
+              <div *ngIf="selectedBarangayData.barangayProfile?.livelihood" class="mb-3 pb-3 border-b border-gray-700">
+                <div class="text-gray-400 text-md mb-1">Livelihood</div>
+                <div class="text-white font-medium">
+                  {{ selectedBarangayData.barangayProfile?.livelihood }}
+                </div>
+              </div>
+
+              <!-- Nearest Evacuation Centers (Top 5) -->
+              <div *ngIf="selectedBarangayData.nearestEvacuationCenters && selectedBarangayData.nearestEvacuationCenters.length > 0" class="mb-3">
+                <div class="text-gray-400 text-md mb-2">Nearest Evacuation Centers (Top {{ selectedBarangayData.nearestEvacuationCenters.length }})</div>
+
+                <!-- List of evacuation centers -->
+                <div *ngFor="let center of selectedBarangayData.nearestEvacuationCenters; let i = index"
+                     class="bg-gray-700 p-3 rounded mb-2 border-l-4"
+                     [ngClass]="{
+                       'border-green-500': i === 0,
+                       'border-blue-500': i === 1,
+                       'border-yellow-500': i === 2,
+                       'border-orange-500': i === 3,
+                       'border-red-500': i === 4
+                     }">
+                  <!-- Image (if available) -->
+                  <div *ngIf="center?.image" class="mb-2">
+                    <img [src]="getEvacuationCenterImageUrl(center.image)"
+                         [alt]="center?.name"
+                         class="w-full h-12 object-cover rounded shadow-md"
+                         >
+                  </div> 
+
+                  <!-- Placeholder if no image -->
+                  <div *ngIf="!center?.image" class="mb-2 bg-gray-600 rounded flex items-center justify-center h-32">
+                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                  </div>
+
+                  <div class="flex items-start justify-between mb-1">
+                    <div class="text-white font-medium text-sm">
+                      {{ i + 1 }}. {{ center?.venue }}
+                    </div>
+                    <div class="text-green-400 font-semibold text-xs">
+                      {{ center?.distance | number:'1.2-2' }} km
+                    </div>
+                  </div>
+                  <!-- <div class="text-gray-400 text-xs" *ngIf="center?.barangay">
+                    Barangay: {{ center?.barangay }}
+                  </div> -->
+                  <div class="text-gray-400 text-xs" *ngIf="center?.venue">
+                    Barangay: {{ center?.barangay?.name.toUpperCase() }}
+                  </div>
+                  <div class="text-blue-300 text-xs mt-1" *ngIf="center?.barangay_official?.name">
+                    Contact: {{ center?.barangay_official?.name }} ({{ center?.barangay_official?.position }})
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fallback for no evacuation centers -->
+              <div *ngIf="!selectedBarangayData.nearestEvacuationCenters || selectedBarangayData.nearestEvacuationCenters.length === 0" class="mb-3">
+                <div class="text-gray-400 text-xs mb-1">Nearest Evacuation Centers</div>
+                <div class="text-gray-500 italic">No evacuation centers found</div>
+              </div>
+
+              <!-- Back button -->
+              <button
+                (click)="clearBarangaySelection()"
+                class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors">
+                Back to Hazards Overview
+              </button>
+            </div>
+          </div>
+
+          <!-- EXISTING: Default Hazards View (when no barangay selected) -->
+          <div *ngIf="!isShowingBarangayDetails">
+            <!-- Loading Indicator -->
+            <div *ngIf="isLoadingWeather" class="pt-4 text-center">
             <p class="text-blue-400 font-semibold">Loading weather data...</p>
           </div>
 
@@ -408,6 +524,7 @@
               </tbody>
             </table>
           </div> -->
+          </div> <!-- End of !isShowingBarangayDetails wrapper -->
         </div>
       </div>
     </div>

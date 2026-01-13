@@ -35,6 +35,9 @@ export class SidebarMenuComponent implements OnInit {
   @Input() barangayOfficials: any[] = [];
   @Input() evacuationCenters: any[] = [];
   @Output() dssFilterClicked = new EventEmitter<void>();
+  @Output() dssAlertClicked = new EventEmitter<void>();
+  @Output() dssDecisionClicked = new EventEmitter<void>();
+  @Output() dssEvacuationClicked = new EventEmitter<void>();
   @Output() menuClicked = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
@@ -161,6 +164,18 @@ export class SidebarMenuComponent implements OnInit {
 
   public onDssFilterClickSidebarMenu() {
     this.dssFilterClicked.emit();
+  }
+
+  public onDssAlertClick() {
+    this.dssAlertClicked.emit();
+  }
+
+  public onDssDecisionClick() {
+    this.dssDecisionClicked.emit();
+  }
+
+  public onDssEvacuationClick() {
+    this.dssEvacuationClicked.emit();
   }
 
   public truncate(text: string, max: number = 20): string {

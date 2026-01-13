@@ -1,0 +1,188 @@
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" (click)="onCloseModalClick()"></div>
+
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            bg-gray-900 text-white p-6 rounded-xl shadow-2xl
+            w-[95%] max-w-[1200px] max-h-[90vh] overflow-y-auto z-[9999]">
+
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h2 class="text-xl font-bold">Alert Dashboard</h2>
+      <div class="flex items-center gap-2 mt-1">
+        <span *ngIf="isConnected" class="flex items-center text-xs text-green-400">
+          <span class="animate-pulse mr-1">●</span> Live Updates
+        </span>
+        <span *ngIf="!isConnected" class="text-xs text-gray-500">
+          ○ Offline
+        </span>
+        <span *ngIf="lastUpdate" class="text-xs text-gray-400">
+          Updated: {{ lastUpdate | date:'short' }}
+        </span>
+      </div>
+    </div>
+    <button class="text-gray-400 hover:text-white text-2xl" (click)="onCloseModalClick()">&times;</button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-10">
+    <p class="text-gray-400">Loading alerts...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="bg-red-900/30 border border-red-500 rounded p-4 mb-4">
+    <p class="text-red-300">{{ error }}</p>
+  </div>
+
+  <!-- Statistics -->
+  <div *ngIf="!loading && statistics" class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-red-900/30 rounded-lg p-4">
+      <div class="text-red-400 text-sm">VERY HIGH</div>
+      <div class="text-2xl font-bold">{{ statistics.byLevel.RED }}</div>
+    </div>
+    <div class="bg-orange-900/30 rounded-lg p-4">
+      <div class="text-orange-400 text-sm">HIGH</div>
+      <div class="text-2xl font-bold">{{ statistics.byLevel.ORANGE }}</div>
+    </div>
+    <div class="bg-yellow-900/30 rounded-lg p-4">
+      <div class="text-yellow-400 text-sm">MODERATE</div>
+      <div class="text-2xl font-bold">{{ statistics.byLevel.YELLOW }}</div>
+    </div>
+    <div class="bg-gray-800 rounded-lg p-4">
+      <div class="text-gray-400 text-sm">Total</div>
+      <div class="text-2xl font-bold">{{ statistics.total }}</div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div *ngIf="!loading" class="flex justify-between items-center mb-4">
+    <div class="flex gap-2">
+      <button (click)="filterLevel = 'ALL'"
+              [class.bg-gray-700]="filterLevel === 'ALL'"
+              [class.bg-gray-800]="filterLevel !== 'ALL'"
+              class="px-3 py-1 rounded text-sm">
+        All
+      </button>
+      <button (click)="filterLevel = 'RED'"
+              [class.bg-red-600]="filterLevel === 'RED'"
+              [class.bg-gray-800]="filterLevel !== 'RED'"
+              class="px-3 py-1 rounded text-sm">
+        Critical
+      </button>
+      <button (click)="filterLevel = 'ORANGE'"
+              [class.bg-orange-500]="filterLevel === 'ORANGE'"
+              [class.bg-gray-800]="filterLevel !== 'ORANGE'"
+              class="px-3 py-1 rounded text-sm">
+        High
+      </button>
+      <button (click)="filterLevel = 'YELLOW'"
+              [class.bg-yellow-500]="filterLevel === 'YELLOW'"
+              [class.bg-gray-800]="filterLevel !== 'YELLOW'"
+              class="px-3 py-1 rounded text-sm">
+        Advisory
+      </button>
+    </div>
+    <!-- <button (click)="toggleTestMode()"
+            [class.bg-blue-600]="testMode"
+            [class.bg-gray-700]="!testMode"
+            class="px-3 py-1 rounded text-sm hover:opacity-80 flex items-center gap-2">
+      <span *ngIf="!testMode">📊 Test Mode</span>
+      <span *ngIf="testMode">📡 Real Data</span>
+    </button> -->
+  </div>
+
+  <!-- Alerts List -->
+  <div *ngIf="!loading && !selectedAlert" class="space-y-3">
+    <div *ngFor="let alert of filteredAlerts"
+         class="bg-black/30 rounded-lg p-4 cursor-pointer hover:bg-black/50"
+         (click)="selectAlert(alert)">
+      <div class="flex justify-between items-start mb-2">
+        <div class="font-semibold">{{ alert.barangayName }}</div>
+        <span [class]="'px-2 py-1 rounded text-xs ' + getAlertClass(alert.alertLevel.level)">
+          {{ alert.alertLevel.label }}
+        </span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-sm text-gray-400">
+        <div>Rainfall: {{ alert.weatherSummary.rainfall.toFixed(1) }}mm</div>
+        <!-- <div>Wind: {{ alert.weatherSummary.windSpeed.toFixed(1) }}m/s</div> -->
+        <div>Soil Moisture: {{ (alert.weatherSummary.soilMoisture * 100).toFixed(0) }}%</div>
+      </div>
+
+      <div *ngIf="alert.recommendations.length > 0" class="mt-2 text-xs text-gray-300">
+        {{ alert.recommendations[0].action }}
+      </div>
+    </div>
+
+    <div *ngIf="filteredAlerts.length === 0" class="text-center py-10 text-gray-400">
+      No alerts for selected filter
+    </div>
+  </div>
+
+  <!-- Alert Detail -->
+  <div *ngIf="selectedAlert" class="space-y-4">
+    <button (click)="closeDetail()" class="text-blue-400 hover:text-blue-300 text-sm mb-2">
+      ← Back to list
+    </button>
+
+    <div class="bg-black/30 rounded-lg p-4">
+      <h3 class="text-lg font-bold mb-4">{{ selectedAlert.barangayName }}</h3>
+
+      <!-- Risks -->
+      <div class="space-y-3 mb-4">
+        <div class="bg-blue-900/30 rounded p-3">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold">Flood Risk</span>
+            <span [class]="'px-2 py-1 rounded text-xs ' + getAlertClass(selectedAlert.risks.flood.alertLevel.level)">
+              {{ selectedAlert.risks.flood.alertLevel.label }}
+            </span>
+          </div>
+          <ul class="text-sm text-gray-300 list-disc list-inside">
+            <li *ngFor="let reason of selectedAlert.risks.flood.reasons">{{ reason }}</li>
+          </ul>
+        </div>
+
+        <div class="bg-orange-900/30 rounded p-3">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold">Landslide Risk</span>
+            <span [class]="'px-2 py-1 rounded text-xs ' + getAlertClass(selectedAlert.risks.landslide.alertLevel.level)">
+              {{ selectedAlert.risks.landslide.alertLevel.label }}
+            </span>
+          </div>
+          <ul class="text-sm text-gray-300 list-disc list-inside">
+            <li *ngFor="let reason of selectedAlert.risks.landslide.reasons">{{ reason }}</li>
+          </ul>
+        </div>
+
+        <!-- <div class="bg-purple-900/30 rounded p-3">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold">Wind Risk</span>
+            <span [class]="'px-2 py-1 rounded text-xs ' + getAlertClass(selectedAlert.risks.wind.alertLevel.level)">
+              {{ selectedAlert.risks.wind.alertLevel.label }}
+            </span>
+          </div>
+          <ul class="text-sm text-gray-300 list-disc list-inside">
+            <li *ngFor="let reason of selectedAlert.risks.wind.reasons">{{ reason }}</li>
+          </ul>
+        </div> -->
+      </div>
+
+      <!-- Recommendations -->
+      <div>
+        <h4 class="font-semibold mb-2">Recommended Actions</h4>
+        <div class="space-y-2">
+          <div *ngFor="let rec of selectedAlert.recommendations" class="bg-gray-800/50 rounded p-2 text-sm">
+            <div class="font-semibold text-yellow-400">{{ rec.priority }}</div>
+            <div>{{ rec.action }}</div>
+            <div class="text-xs text-gray-400">Target: {{ rec.target }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mt-6 flex justify-end gap-4">
+    <button class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600" (click)="onCloseModalClick()">
+      Close
+    </button>
+  </div>
+</div>

@@ -1,0 +1,417 @@
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]" (click)="onCloseModalClick()"></div>
+
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            bg-gray-900 text-white p-6 rounded-xl shadow-2xl
+            w-[95%] max-w-[1200px] max-h-[90vh] overflow-y-auto z-[9999]">
+
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h2 class="text-xl font-bold">Evacuation Planner</h2>
+      <div *ngIf="lastUpdate" class="flex items-center gap-3 mt-1">
+        <span class="text-xs text-gray-400">
+          Last updated: {{ lastUpdate | date:'short' }}
+        </span>
+        <div class="flex items-center gap-1">
+          <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+          <span class="text-xs text-green-400">Live Updates</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="px-3 py-1 rounded bg-blue-600 hover:bg-blue-500 text-sm"
+              (click)="refreshData()"
+              title="Refresh data">
+        ↻ Refresh
+      </button>
+      <button class="text-gray-400 hover:text-white text-2xl" (click)="onCloseModalClick()">&times;</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-10">
+    <p class="text-gray-400">Loading evacuation plans...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="bg-red-900/30 border border-red-500 rounded p-4 mb-4">
+    <p class="text-red-300">{{ error }}</p>
+  </div>
+
+  <!-- No Evacuation Needed -->
+  <div *ngIf="!loading && evacuationPlans.length === 0" class="bg-green-900/30 border border-green-500 rounded p-6 text-center">
+    <div class="text-4xl mb-3">✅</div>
+    <h3 class="text-xl font-semibold text-green-400 mb-2">No Evacuation Currently Required</h3>
+    <p class="text-gray-300">All barangays are at safe levels. Continue monitoring weather conditions.</p>
+  </div>
+
+  <!-- Summary Statistics -->
+  <div *ngIf="!loading && evacuationPlans.length > 0" class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-red-900/30 rounded-lg p-4">
+      <div class="text-red-400 text-sm">Barangays Requiring Evacuation</div>
+      <div class="text-2xl font-bold">{{ evacuationPlans.length }}</div>
+    </div>
+    <div class="bg-orange-900/30 rounded-lg p-4">
+      <div class="text-orange-400 text-sm">Total Evacuees</div>
+      <div class="text-2xl font-bold">{{ totalEvacuees.toLocaleString() }}</div>
+    </div>
+    <div class="bg-blue-900/30 rounded-lg p-4">
+      <div class="text-blue-400 text-sm">Total Capacity Available</div>
+      <div class="text-2xl font-bold">{{ totalCapacity.toLocaleString() }}</div>
+    </div>
+  </div>
+
+  <!-- Resource Requirements -->
+  <div *ngIf="!loading && evacuationPlans.length > 0 && resourceSummary" class="mb-6">
+    <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+      <span class="text-blue-400">📋</span> Required Resources
+    </h3>
+    <div class="grid grid-cols-4 gap-4">
+      <!-- Personnel -->
+      <div class="bg-gray-800/50 rounded-lg p-4">
+        <div class="text-blue-400 font-semibold mb-3">Personnel</div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Medical Staff</span>
+            <span class="font-semibold">{{ resourceSummary.personnel?.medicalStaff || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Security</span>
+            <span class="font-semibold">{{ resourceSummary.personnel?.security || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Social Workers</span>
+            <span class="font-semibold">{{ resourceSummary.personnel?.socialWorkers || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Volunteers</span>
+            <span class="font-semibold">{{ resourceSummary.personnel?.volunteers || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supplies -->
+      <div class="bg-gray-800/50 rounded-lg p-4">
+        <div class="text-green-400 font-semibold mb-3">Supplies</div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Food Packs</span>
+            <span class="font-semibold">{{ resourceSummary.supplies?.foodPacks?.toLocaleString() || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Water Bottles</span>
+            <span class="font-semibold">{{ resourceSummary.supplies?.waterBottles?.toLocaleString() || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Blankets</span>
+            <span class="font-semibold">{{ resourceSummary.supplies?.blankets?.toLocaleString() || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Hygiene Kits</span>
+            <span class="font-semibold">{{ resourceSummary.supplies?.hygieneKits?.toLocaleString() || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Equipment -->
+      <!-- <div class="bg-gray-800/50 rounded-lg p-4">
+        <div class="text-yellow-400 font-semibold mb-3">Equipment</div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Generators</span>
+            <span class="font-semibold">{{ resourceSummary.equipment?.generators || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Radios</span>
+            <span class="font-semibold">{{ resourceSummary.equipment?.radios || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Flashlights</span>
+            <span class="font-semibold">{{ resourceSummary.equipment?.flashlights || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Rescue Boats</span>
+            <span class="font-semibold">{{ resourceSummary.equipment?.boats || 0 }}</span>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Vehicles -->
+      <!-- <div class="bg-gray-800/50 rounded-lg p-4">
+        <div class="text-orange-400 font-semibold mb-3">Vehicles</div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-400">Evacuation Vehicles</span>
+            <span class="font-semibold">{{ resourceSummary.vehicles?.evacuationVehicles || 0 }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Ambulances</span>
+            <span class="font-semibold">{{ resourceSummary.vehicles?.ambulances || 0 }}</span>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- Barangay Plans Section Title -->
+  <div *ngIf="!loading && evacuationPlans.length > 0" class="mb-4">
+    <h3 class="text-lg font-semibold flex items-center gap-2">
+      <span class="text-yellow-400">📄</span> Barangay Evacuation Plans
+    </h3>
+  </div>
+
+  <!-- Filter -->
+  <div *ngIf="!loading && evacuationPlans.length > 0" class="flex gap-2 mb-4">
+    <button (click)="filterPriority = 'ALL'"
+            [class.bg-gray-700]="filterPriority === 'ALL'"
+            [class.bg-gray-800]="filterPriority !== 'ALL'"
+            class="px-3 py-1 rounded text-sm">
+      All
+    </button>
+    <button (click)="filterPriority = 'RED'"
+            [class.bg-red-600]="filterPriority === 'RED'"
+            [class.bg-gray-800]="filterPriority !== 'RED'"
+            class="px-3 py-1 rounded text-sm">
+      Critical
+    </button>
+    <button (click)="filterPriority = 'ORANGE'"
+            [class.bg-orange-500]="filterPriority === 'ORANGE'"
+            [class.bg-gray-800]="filterPriority !== 'ORANGE'"
+            class="px-3 py-1 rounded text-sm">
+      High
+    </button>
+    <button (click)="filterPriority = 'YELLOW'"
+            [class.bg-yellow-500]="filterPriority === 'YELLOW'"
+            [class.bg-gray-800]="filterPriority !== 'YELLOW'"
+            class="px-3 py-1 rounded text-sm">
+      Advisory
+    </button>
+  </div>
+
+  <!-- Plans List -->
+  <div *ngIf="!loading && !selectedPlan && evacuationPlans.length > 0" class="space-y-3 max-h-[400px] overflow-y-auto">
+    <div *ngFor="let plan of filteredPlans"
+         class="bg-black/30 rounded-lg p-4 cursor-pointer hover:bg-black/50 border border-gray-700"
+         (click)="selectPlan(plan)">
+      <div class="flex justify-between items-start mb-3">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold">{{ plan.barangayName }}</span>
+          <span [class]="'px-2 py-0.5 rounded text-xs ' + getEvacuationPriorityBadgeClass(plan.priority)">
+            Priority {{ plan.priority }}
+          </span>
+        </div>
+        <span [class]="'px-2 py-1 rounded text-xs font-semibold ' + getAlertClass(plan.alertLevel) + ' text-white'">
+          {{ plan.alertLevel }}
+        </span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 text-sm mb-3">
+        <div>
+          <span class="text-gray-400">Population:</span>
+          <span class="text-white ml-2 font-semibold">{{ plan.population }}</span>
+        </div>
+        <div>
+          <span class="text-gray-400">Est. Evacuees:</span>
+          <span class="text-white ml-2 font-semibold">{{ plan.estimatedEvacuees }}</span>
+        </div>
+        <div>
+          <span class="text-gray-400">Evacuation Rate:</span>
+          <span class="text-orange-400 ml-2 font-semibold">{{ plan.evacuationRate }}</span>
+        </div>
+        <div>
+          <span class="text-gray-400">Centers:</span>
+          <span class="text-white ml-2 font-semibold">{{ plan.evacuationCenters.length }}</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-800/50 rounded p-2 mb-2">
+        <div class="text-xs">
+          <span class="text-gray-400">Capacity Status:</span>
+          <span [class]="'ml-2 font-semibold ' + getCapacityClass(plan.capacityStatus.status)">
+            {{ plan.capacityStatus.status }}
+          </span>
+          <span class="text-gray-500 ml-2">({{ plan.capacityStatus.utilizationRate }})</span>
+        </div>
+      </div>
+
+      <div class="flex justify-end">
+        <span class="text-blue-400 text-sm hover:text-blue-300">View Details →</span>
+      </div>
+    </div>
+
+    <div *ngIf="filteredPlans.length === 0" class="text-center py-10 text-gray-400">
+      No evacuation plans for selected filter
+    </div>
+  </div>
+
+  <!-- Plan Detail -->
+  <div *ngIf="selectedPlan" class="space-y-4">
+    <button (click)="closeDetail()" class="text-blue-400 hover:text-blue-300 text-sm mb-2">
+      ← Back to list
+    </button>
+
+    <div class="bg-black/30 rounded-lg p-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">{{ selectedPlan.barangayName }}</h3>
+        <span [class]="'px-3 py-1 rounded text-sm ' + getAlertClass(selectedPlan.alertLevel)">
+          {{ selectedPlan.alertLevel }} Alert
+        </span>
+      </div>
+
+      <!-- Overview Stats -->
+      <div class="grid grid-cols-4 gap-3 mb-4">
+        <div class="bg-gray-800 rounded p-3">
+          <div class="text-gray-400 text-xs mb-1">Priority Level</div>
+          <div class="text-xl font-bold">{{ selectedPlan.priority }}</div>
+        </div>
+        <div class="bg-gray-800 rounded p-3">
+          <div class="text-gray-400 text-xs mb-1">Population</div>
+          <div class="text-xl font-bold">{{ selectedPlan.population }}</div>
+        </div>
+        <div class="bg-orange-900/30 rounded p-3">
+          <div class="text-orange-400 text-xs mb-1">Evacuees</div>
+          <div class="text-xl font-bold">{{ selectedPlan.estimatedEvacuees }}</div>
+        </div>
+        <div class="bg-blue-900/30 rounded p-3">
+          <div class="text-blue-400 text-xs mb-1">Total Capacity</div>
+          <div class="text-xl font-bold">{{ selectedPlan.totalCapacity }}</div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div *ngIf="selectedPlan.timeline" class="mb-4">
+        <h4 class="font-semibold mb-3 flex items-center gap-2">
+          <span>⏱️</span> Evacuation Timeline
+        </h4>
+        <div class="bg-yellow-900/20 border border-yellow-600 rounded p-4 space-y-2 text-sm">
+          <div class="flex items-start gap-2">
+            <span class="text-yellow-400 font-bold">①</span>
+            <div>
+              <span class="text-gray-400">Warning:</span>
+              <span class="text-white ml-2">{{ selectedPlan.timeline.warning }}</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-yellow-400 font-bold">②</span>
+            <div>
+              <span class="text-gray-400">Vulnerable Groups:</span>
+              <span class="text-white ml-2">{{ selectedPlan.timeline.vulnerableGroups }}</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-yellow-400 font-bold">③</span>
+            <div>
+              <span class="text-gray-400">General Population:</span>
+              <span class="text-white ml-2">{{ selectedPlan.timeline.generalPopulation }}</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2 pt-2 border-t border-yellow-600/30">
+            <span class="text-red-400 font-bold">❗</span>
+            <div>
+              <span class="text-red-400 font-semibold">Deadline:</span>
+              <span class="text-white ml-2">{{ selectedPlan.timeline.deadline }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evacuation Priority Order -->
+      <div *ngIf="selectedPlan.evacuationOrder && selectedPlan.evacuationOrder.length > 0" class="mb-4">
+        <h4 class="font-semibold mb-3 flex items-center gap-2">
+          <span>🔢</span> Evacuation Priority Order
+        </h4>
+        <div class="space-y-2">
+          <div *ngFor="let order of selectedPlan.evacuationOrder; let i = index"
+               class="bg-gray-800/50 border-l-4 border-red-500 rounded p-3">
+            <div class="flex items-start gap-3">
+              <div class="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                {{ i + 1 }}
+              </div>
+              <div class="flex-1">
+                <div class="font-semibold text-white mb-1">{{ order.group }}</div>
+                <div *ngIf="order.members && order.members.length > 0" class="text-sm text-gray-300 mb-2">
+                  <ul class="list-disc list-inside space-y-1">
+                    <li *ngFor="let member of order.members">{{ member }}</li>
+                  </ul>
+                </div>
+                <div class="text-xs text-blue-400">Action: {{ order.action }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evacuation Centers Assignment -->
+      <div class="mb-4">
+        <h4 class="font-semibold mb-3 flex items-center gap-2">
+          <span>🏢</span> Evacuation Centers Assignment
+        </h4>
+        <div class="space-y-2">
+          <div *ngFor="let center of selectedPlan.evacuationCenters"
+               [class]="'border-2 rounded-lg p-3 ' + getCenterStatusClass(center.status)">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <div class="font-semibold text-sm">{{ center.venue }}</div>
+                <div class="text-xs text-gray-400">{{ center.name }}</div>
+              </div>
+              <span [class]="'text-xs px-2 py-1 rounded font-semibold ' + getCenterStatusBadgeClass(center.status)">
+                {{ center.status }}
+              </span>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-xs mb-2">
+              <div>
+                <span class="text-gray-400">Capacity:</span>
+                <span class="text-white ml-2 font-semibold">{{ center.capacity }}</span>
+              </div>
+              <div>
+                <span class="text-gray-400">Assigned:</span>
+                <span class="text-white ml-2 font-semibold">{{ center.assignedEvacuees }}</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-gray-400">{{ center.utilizationRate }}</span>
+              <!-- <span class="text-gray-400">📞 {{ center.contactPerson }}</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evacuation Routes -->
+      <div *ngIf="selectedPlan.routes" class="mb-4">
+        <h4 class="font-semibold mb-3 flex items-center gap-2">
+          <span>🗺️</span> Evacuation Routes & Safety
+        </h4>
+        <div class="bg-blue-900/20 border border-blue-600 rounded p-4 space-y-3 text-sm">
+          <div>
+            <div class="text-blue-400 font-semibold mb-1">Primary Route:</div>
+            <div class="text-gray-300">{{ selectedPlan.routes.primary }}</div>
+          </div>
+          <div *ngIf="selectedPlan.routes.avoid && selectedPlan.routes.avoid.length > 0">
+            <div class="text-red-400 font-semibold mb-1">⚠️ Areas to Avoid:</div>
+            <ul class="list-disc list-inside space-y-1 text-gray-300">
+              <li *ngFor="let avoid of selectedPlan.routes.avoid">{{ avoid }}</li>
+            </ul>
+          </div>
+          <div *ngIf="selectedPlan.routes.recommendations && selectedPlan.routes.recommendations.length > 0">
+            <div class="text-green-400 font-semibold mb-1">✓ Safety Recommendations:</div>
+            <ul class="list-disc list-inside space-y-1 text-gray-300">
+              <li *ngFor="let rec of selectedPlan.routes.recommendations">{{ rec }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Person -->
+      <!-- <div class="bg-green-900/30 border border-green-600 rounded p-3">
+        <h4 class="font-semibold text-green-400 mb-1">📞 Primary Contact</h4>
+        <p class="text-gray-300">{{ selectedPlan.contactPerson }}</p>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mt-6 flex justify-end gap-4">
+    <button class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600" (click)="onCloseModalClick()">
+      Close
+    </button>
+  </div>
+</div>

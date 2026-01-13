@@ -1,0 +1,214 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Header -->
+  <div class="mb-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Decision Matrix</h1>
+        <p class="text-gray-600 mt-1">If-Then decision rules for disaster response</p>
+      </div>
+      <button (click)="printMatrix()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Print Matrix
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-20">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+      <p class="mt-4 text-gray-600">Loading decision matrix...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+    <p class="text-red-800">{{ error }}</p>
+  </div>
+
+  <!-- Summary Cards -->
+  <div *ngIf="!loading && matrix" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="text-sm font-medium text-gray-600">Total Rules</div>
+      <div class="mt-2 text-3xl font-bold text-gray-900">{{ matrix.summary.total }}</div>
+      <div class="mt-2 text-xs text-gray-500">Decision rules defined</div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="text-sm font-medium text-gray-600">Active Rules</div>
+      <div class="mt-2 text-3xl font-bold text-green-600">{{ activeTriggeredRules.length }}</div>
+      <div class="mt-2 text-xs text-gray-500">Currently triggered</div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="text-sm font-medium text-gray-600">Categories</div>
+      <div class="mt-2 text-3xl font-bold text-blue-600">{{ matrix.categories.length }}</div>
+      <div class="mt-2 text-xs text-gray-500">Rule categories</div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="text-sm font-medium text-gray-600">Critical Priority</div>
+      <div class="mt-2 text-3xl font-bold text-red-600">{{ matrix.summary.byPriority['CRITICAL'] || 0 }}</div>
+      <div class="mt-2 text-xs text-gray-500">Highest priority rules</div>
+    </div>
+  </div>
+
+  <!-- Currently Triggered Rules Alert -->
+  <div *ngIf="!loading && activeTriggeredRules.length > 0" class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
+    <div class="flex items-center">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-yellow-800 font-semibold">
+          {{ activeTriggeredRules.length }} decision rules are currently triggered. Review recommended actions below.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div *ngIf="!loading && matrix" class="bg-white rounded-lg shadow p-4 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Category Filter -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Category</label>
+        <select [(ngModel)]="selectedCategory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="ALL">All Categories ({{ matrix.rules.length }})</option>
+          <option *ngFor="let cat of matrix.categories" [value]="cat">
+            {{ cat }} ({{ matrix.summary.byCat[cat] || 0 }})
+          </option>
+        </select>
+      </div>
+
+      <!-- Priority Filter -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Priority</label>
+        <select [(ngModel)]="selectedPriority" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="ALL">All Priorities ({{ matrix.rules.length }})</option>
+          <option *ngFor="let pri of matrix.priorities" [value]="pri">
+            {{ pri }} ({{ matrix.summary.byPriority[pri] || 0 }})
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decision Rules List -->
+  <div *ngIf="!loading && matrix" class="space-y-4">
+    <div *ngFor="let rule of filteredRules" class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+         [class.border-l-4]="isRuleTriggered(rule.id)"
+         [class.border-green-500]="isRuleTriggered(rule.id)">
+      <div class="p-6">
+        <!-- Rule Header -->
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="text-xs font-mono text-gray-500">{{ rule.id }}</span>
+            <span [class]="'px-3 py-1 rounded-full text-xs font-semibold ' + getCategoryBadgeClass(rule.category)">
+              {{ rule.category }}
+            </span>
+            <span [class]="'px-3 py-1 rounded-full text-xs font-semibold ' + getPriorityBadgeClass(rule.priority)">
+              {{ rule.priority }}
+            </span>
+            <span *ngIf="isRuleTriggered(rule.id)" class="px-3 py-1 rounded-full text-xs font-semibold bg-green-500 text-white">
+              ACTIVE
+            </span>
+          </div>
+        </div>
+
+        <!-- Rule Content -->
+        <div class="space-y-4">
+          <!-- Conditions -->
+          <div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Conditions (IF):</h4>
+            <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                <div *ngIf="rule.condition.rainfall">
+                  <span class="text-gray-600">Rainfall:</span>
+                  <span class="ml-2 font-mono">
+                    <span *ngIf="rule.condition.rainfall.min">&ge; {{ rule.condition.rainfall.min }}mm</span>
+                    <span *ngIf="rule.condition.rainfall.max"> &amp; &le; {{ rule.condition.rainfall.max }}mm</span>
+                  </span>
+                </div>
+                <div *ngIf="rule.condition.soilMoisture">
+                  <span class="text-gray-600">Soil Moisture:</span>
+                  <span class="ml-2 font-mono">
+                    <span *ngIf="rule.condition.soilMoisture.min">&ge; {{ (rule.condition.soilMoisture.min * 100).toFixed(0) }}%</span>
+                    <span *ngIf="rule.condition.soilMoisture.max"> &amp; &le; {{ (rule.condition.soilMoisture.max * 100).toFixed(0) }}%</span>
+                  </span>
+                </div>
+                <div *ngIf="rule.condition.windSpeed">
+                  <span class="text-gray-600">Wind Speed:</span>
+                  <span class="ml-2 font-mono">
+                    <span *ngIf="rule.condition.windSpeed.min">&ge; {{ rule.condition.windSpeed.min }} m/s</span>
+                    <span *ngIf="rule.condition.windSpeed.max"> &amp; &le; {{ rule.condition.windSpeed.max }} m/s</span>
+                  </span>
+                </div>
+                <div *ngIf="rule.condition.slope">
+                  <span class="text-gray-600">Slope:</span>
+                  <span class="ml-2 font-mono">
+                    <span *ngIf="rule.condition.slope.min">&ge; {{ rule.condition.slope.min }}°</span>
+                    <span *ngIf="rule.condition.slope.max"> &amp; &le; {{ rule.condition.slope.max }}°</span>
+                  </span>
+                </div>
+                <div *ngIf="rule.condition.floodLevel">
+                  <span class="text-gray-600">Flood Level:</span>
+                  <span class="ml-2 font-semibold">{{ rule.condition.floodLevel.join(', ') }}</span>
+                </div>
+                <div *ngIf="rule.condition.landslideLevel">
+                  <span class="text-gray-600">Landslide Level:</span>
+                  <span class="ml-2 font-semibold">{{ rule.condition.landslideLevel.join(', ') }}</span>
+                </div>
+                <div *ngIf="rule.condition.alertLevel">
+                  <span class="text-gray-600">Alert Level:</span>
+                  <span class="ml-2 font-semibold">{{ rule.condition.alertLevel.join(', ') }}</span>
+                </div>
+                <div *ngIf="rule.condition.evacuees">
+                  <span class="text-gray-600">Evacuees:</span>
+                  <span class="ml-2 font-mono">
+                    <span *ngIf="rule.condition.evacuees.min">&ge; {{ rule.condition.evacuees.min }}</span>
+                    <span *ngIf="rule.condition.evacuees.max"> &amp; &le; {{ rule.condition.evacuees.max }}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action -->
+          <div>
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Action (THEN):</h4>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-200">
+              <p class="font-medium text-gray-900">{{ rule.action }}</p>
+            </div>
+          </div>
+
+          <!-- Additional Info -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <h5 class="font-semibold text-gray-700 mb-1">Responsible:</h5>
+              <ul class="list-disc list-inside text-gray-600">
+                <li *ngFor="let resp of rule.responsible">{{ resp }}</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="font-semibold text-gray-700 mb-1">Timeline:</h5>
+              <p class="text-gray-600">{{ rule.timeline }}</p>
+            </div>
+            <div>
+              <h5 class="font-semibold text-gray-700 mb-1">Required Resources:</h5>
+              <ul class="list-disc list-inside text-gray-600">
+                <li *ngFor="let res of rule.resources.slice(0, 3)">{{ res }}</li>
+                <li *ngIf="rule.resources.length > 3" class="text-blue-600">+ {{ rule.resources.length - 3 }} more</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filteredRules.length === 0" class="bg-white rounded-lg shadow p-12 text-center">
+      <p class="text-gray-600 text-lg">No rules found for the selected filters.</p>
+    </div>
+  </div>
+</div>

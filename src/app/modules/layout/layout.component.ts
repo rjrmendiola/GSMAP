@@ -30,17 +30,22 @@ import { Barangay, BarangayResponse } from 'src/app/shared/models/barangay.model
 import { CommonModule } from '@angular/common';
 import { MapTypeService } from 'src/app/core/services/maptype.service';
 import { DssFilterComponent } from './components/map/dss-filter/dss-filter.component';
+import { DssAlertModalComponent } from './components/map/dss-alert-modal/dss-alert-modal.component';
+import { DssDecisionModalComponent } from './components/map/dss-decision-modal/dss-decision-modal.component';
+import { DssEvacuationModalComponent } from './components/map/dss-evacuation-modal/dss-evacuation-modal.component';
 import { SlopeService } from 'src/app/core/services/slope.service';
 import { SoilMoistureService } from 'src/app/core/services/soil-moisture.service';
 import { FeatureCollection, GeoJsonObject } from 'geojson';
 import { HazardDetectorService } from 'src/app/core/services/hazard-detector.service';
+import { BarangaySelectionService } from 'src/app/core/services/barangay-selection.service';
+import { BarangayDetailsService } from 'src/app/core/services/barangay-details.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   standalone: true,
-  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent, SidebarDetailsComponent, DssFilterComponent, FormsModule, CommonModule],
+  imports: [SidebarComponent, NavbarComponent, RouterOutlet, FooterComponent, SidebarDetailsComponent, DssFilterComponent, DssAlertModalComponent, DssDecisionModalComponent, DssEvacuationModalComponent, FormsModule, CommonModule],
   encapsulation: ViewEncapsulation.None,
 })
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -67,6 +72,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private highlightLayer: L.GeoJSON | null = null;
   private labelMarker: L.Marker | null = null;
   private toggleControl: any;
+  private nearestEvacuationCentersLayer: L.LayerGroup | null = null;
 
   private coloringMap = {
     barangay: '#8A9A5B',
@@ -228,6 +234,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedBarangaysFilter: number[] = [];
 
   isDssFilterModalOpen = false;
+  isDssAlertModalOpen = false;
+  isDssDecisionModalOpen = false;
+  isDssEvacuationModalOpen = false;
 
   selectedBarangayName: string | null = null;
 
@@ -401,6 +410,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Add double-click event listener
     this.map.on('dblclick', (event: L.LeafletMouseEvent) => this.onMapDoubleClick(event));
+
+    // Add map background click handler for clearing selection
+    this.map.on('click', (e: L.LeafletMouseEvent) => {
+      const target = (e.originalEvent as any).target as HTMLElement;
+      if (target.classList.contains('leaflet-container') ||
+          target.classList.contains('leaflet-tile') ||
+          target.classList.contains('leaflet-tile-pane')) {
+        this.clearBarangaySelection();
+      }
+    });
   }
 
   private fetchGeoJson(url: string): Promise<any> {
@@ -1114,24 +1133,28 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       if (barangayName) {
         this.barangayPolygons[barangayName] = feature;
 
-        layer.feature = feature; // Store feature in layer for later access
+        layer.feature = feature;
 
-        // layer.bindTooltip(feature.properties.name, {
-        //   permanent: false,
-        //   direction: 'center',
-        //   className: 'barangay-label'
-        // })
+        layer.bindTooltip(barangayName, {
+          permanent: false,
+          direction: 'top',
+          className: 'barangay-tooltip',
+          offset: [0, -10]
+        });
+
+        layer.on({
+          mouseover: (e: L.LeafletMouseEvent) => this.onBarangayMouseOver(e),
+          mouseout: (e: L.LeafletMouseEvent) => this.onBarangayMouseOut(e),
+          click: (e: L.LeafletMouseEvent) => this.onBarangayClick(e)
+        });
       }
-
-      // layer.on({
-      //   mouseover: this.highlightFeature.bind(this),
-      //   mouseout: this.resetHighlight.bind(this),
-      // });
     }
 
-    layer.on({
-      click: this.zoomToFeature.bind(this),
-    });
+    if (!layerExceptions.includes(layerKey) && layerKey !== 'barangay') {
+      layer.on({
+        click: this.zoomToFeature.bind(this),
+      });
+    }
   }
 
   // Highlight feature on mouseover
@@ -1158,6 +1181,185 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Zoom to the feature on click
   private zoomToFeature(e: any) {
     const layer = e.target;
+  }
+
+  private onBarangayMouseOver(e: L.LeafletMouseEvent): void {
+    const layer = e.target as any;
+    const barangayName = layer.feature.properties.name;
+
+    this.barangaySelectionService.setHoveredBarangay(barangayName);
+
+    layer.setStyle({
+      weight: 3,
+      color: '#FFA500',
+      fillOpacity: 0.5
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+      layer.bringToFront();
+    }
+
+    layer.openTooltip();
+  }
+
+  private onBarangayMouseOut(e: L.LeafletMouseEvent): void {
+    const layer = e.target as any;
+
+    this.barangaySelectionService.setHoveredBarangay(null);
+
+    const barangayName = layer.feature.properties.name;
+    const selectedBarangay = this.barangays.find(b =>
+      b.id === this.selectedBarangay
+    );
+
+    if (!selectedBarangay || selectedBarangay.name !== barangayName) {
+      if (this.layers['barangay']) {
+        (this.layers['barangay'] as L.GeoJSON).resetStyle(layer);
+      }
+    }
+
+    layer.closeTooltip();
+  }
+
+  private async onBarangayClick(e: L.LeafletMouseEvent): Promise<void> {
+    try {
+      const layer = e.target as any;
+      const barangayName = layer.feature.properties.name;
+
+      const barangay = this.barangays.find(b => b.name === barangayName);
+      if (!barangay) {
+        console.error('Barangay not found:', barangayName);
+        return;
+      }
+
+      const details = await this.barangayDetailsService.getCompleteBarangayDetails(barangay);
+
+      console.log('Complete barangay details:', details);
+
+      this.barangaySelectionService.setSelectedBarangay({
+        barangay: details.barangay,
+        barangayProfile: details.barangayProfile,
+        chairman: details.chairman,
+        nearestEvacuationCenters: details.nearestEvacuationCenters
+      });
+
+      this.selectedBarangay = barangay.id;
+      this.selectedBarangayName = barangay.name;
+
+      this.highlightSelectedBarangay(layer);
+
+      // Show markers for nearest evacuation centers
+      this.showNearestEvacuationCenterMarkers(details.nearestEvacuationCenters);
+
+      this.map.fitBounds(layer.getBounds(), {
+        padding: [50, 50],
+        maxZoom: 14
+      });
+    } catch (error) {
+      console.error('Error handling barangay click:', error);
+    }
+  }
+
+  private highlightSelectedBarangay(layer: L.Layer): void {
+    if (this.layers['barangay']) {
+      (this.layers['barangay'] as L.GeoJSON).eachLayer((l: any) => {
+        (this.layers['barangay'] as L.GeoJSON).resetStyle(l);
+      });
+    }
+
+    (layer as any).setStyle({
+      weight: 4,
+      color: '#FFD700',
+      fillOpacity: 0.6,
+      fillColor: '#FFD700'
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+      (layer as any).bringToFront();
+    }
+  }
+
+  private clearBarangaySelection(): void {
+    this.barangaySelectionService.clearSelection();
+    this.selectedBarangay = null;
+    this.selectedBarangayName = null;
+
+    if (this.layers['barangay']) {
+      (this.layers['barangay'] as L.GeoJSON).eachLayer((layer: any) => {
+        (this.layers['barangay'] as L.GeoJSON).resetStyle(layer);
+      });
+    }
+
+    // Clear nearest evacuation center markers
+    this.clearNearestEvacuationCenterMarkers();
+  }
+
+  private showNearestEvacuationCenterMarkers(evacuationCenters: any[]): void {
+    // Clear existing markers first
+    this.clearNearestEvacuationCenterMarkers();
+
+    if (!evacuationCenters || evacuationCenters.length === 0) {
+      return;
+    }
+
+    const markers: L.Marker[] = [];
+
+    // Create marker colors for different ranks
+    const markerColors = ['green', 'blue', 'yellow', 'orange', 'red'];
+
+    evacuationCenters.forEach((center, index) => {
+      if (!center.latitude || !center.longitude) {
+        return;
+      }
+
+      // Create custom icon with number and color
+      const markerColor = markerColors[index] || 'gray';
+      const pulseIcon = this.makePulseIcon(10, 'green', './assets/images/guard.png');
+
+      // Create marker
+      const marker = L.marker([center.latitude, center.longitude], {
+        icon: pulseIcon
+      });
+
+      // Create popup with evacuation center details
+      const popupContent = `
+        <div style="min-width: 200px;">
+          <h3 style="margin: 0 0 8px 0; font-weight: bold; color: #2563eb;">
+            #${index + 1}: ${center.name}
+          </h3>
+          <div style="font-size: 12px; color: #666;">
+            <p style="margin: 4px 0;">
+              <strong>Distance:</strong> ${center.distance.toFixed(2)} km
+            </p>
+            ${center.barangay ? `<p style="margin: 4px 0;"><strong>Barangay:</strong> ${center.barangay}</p>` : ''}
+            ${center.venue ? `<p style="margin: 4px 0;"><strong>Venue:</strong> ${center.venue}</p>` : ''}
+            ${center.barangay_official?.name ? `
+              <p style="margin: 4px 0;">
+                <strong>Contact:</strong> ${center.barangay_official.name}<br>
+                <span style="margin-left: 16px;">${center.barangay_official.position}</span>
+              </p>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupContent);
+      markers.push(marker);
+    });
+
+    // Create layer group and add to map
+    this.nearestEvacuationCentersLayer = L.layerGroup(markers);
+    this.nearestEvacuationCentersLayer.addTo(this.map);
+
+    console.log(`✅ Added ${markers.length} evacuation center markers to map`);
+  }
+
+  private clearNearestEvacuationCenterMarkers(): void {
+    if (this.nearestEvacuationCentersLayer) {
+      this.map.removeLayer(this.nearestEvacuationCentersLayer);
+      this.nearestEvacuationCentersLayer = null;
+      console.log('🗑️ Cleared evacuation center markers');
+    }
   }
 
   // Center map when click on marker
@@ -1442,6 +1644,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private slopeService: SlopeService,
     private soilMoistureService: SoilMoistureService,
     private hazardService: HazardDetectorService,
+    private barangaySelectionService: BarangaySelectionService,
+    private barangayDetailsService: BarangayDetailsService,
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1452,11 +1656,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.mainContent = document.querySelector('.main-content');
 
     this.loadBarangays();
     this.loadMarkers();
+
+    await this.barangayDetailsService.loadAllData();
 
     this.disasterTypeSubscription = this.disasterService.disasterType$.subscribe(
       (disasterType) => {

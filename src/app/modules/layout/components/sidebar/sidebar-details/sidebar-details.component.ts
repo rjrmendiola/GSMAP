@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgFor, NgIf } from '@angular/common';
 import * as L from 'leaflet';
@@ -10,6 +10,8 @@ import { WeatherSettingsService } from 'src/app/core/services/weather-settings.s
 import { BarangayService } from 'src/app/core/services/barangay.service';
 import { Barangay } from 'src/app/shared/models/barangay.model';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
+import { BarangaySelectionService, SelectedBarangayData } from 'src/app/core/services/barangay-selection.service';
 
 @Component({
   selector: 'app-sidebar-details',
@@ -19,7 +21,7 @@ import { environment } from 'src/environments/environment';
   styleUrl: './sidebar-details.component.scss'
 })
 
-export class SidebarDetailsComponent {
+export class SidebarDetailsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() disasterType!: { type: string; category?: string };
   @Input() selectedBarangayName: string | null = null;
   @Input() barangays: Barangay[] = [];
@@ -57,11 +59,15 @@ export class SidebarDetailsComponent {
     [key: string]: any;
   }> = {};
 
+  public selectedBarangayData: SelectedBarangayData | null = null;
+  private barangaySelectionSubscription!: Subscription;
+
   constructor(
     private weatherService: WeatherService,
     private weatherSettingsService: WeatherSettingsService,
     private hazardService: HazardDetectorService,
-    private barangayService: BarangayService
+    private barangayService: BarangayService,
+    private barangaySelectionService: BarangaySelectionService
   ) {}
 
   private fetchGeoJson(url: string): Promise<any> {
@@ -414,6 +420,14 @@ export class SidebarDetailsComponent {
 
       // Load all weather data after coordinates are loaded
       await this.loadAllWeatherData();
+
+      // Subscribe to barangay selection
+      this.barangaySelectionSubscription = this.barangaySelectionService
+        .selectedBarangayData$
+        .subscribe(data => {
+          this.selectedBarangayData = data;
+          console.log('Barangay selection updated:', data);
+        });
     } catch (error) {
       console.error('Error during initialization:', error);
     }
@@ -450,5 +464,27 @@ export class SidebarDetailsComponent {
     // if (this.selectedBarangays?.length) {
     //   console.log("ngOnchanges - this.selectedBarangays?.length", this.selectedBarangays);
     // }
+  }
+
+  ngOnDestroy(): void {
+    if (this.barangaySelectionSubscription) {
+      this.barangaySelectionSubscription.unsubscribe();
+    }
+  }
+
+  get isShowingBarangayDetails(): boolean {
+    return this.selectedBarangayData !== null;
+  }
+
+  clearBarangaySelection(): void {
+    this.barangaySelectionService.clearSelection();
+  }
+
+  getEvacuationCenterImageUrl(imagePath: string): string {
+    if (!imagePath) {
+      return 'assets/images/placeholder-evacuation.jpg';
+    }
+    // Load images from Angular assets/images folder
+    return `assets/images/${imagePath}`;
   }
 }

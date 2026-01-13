@@ -14,3 +14,7 @@ export interface EvacuationCenter {
   barangay?: Barangay;
   barangayOfficial?: BarangayOfficial;
 }
+
+export interface EvacuationCenterWithDistance extends EvacuationCenter {
+  distance: number;
+}

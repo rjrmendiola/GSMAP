@@ -28,6 +28,9 @@ export class SidebarComponent implements OnInit {
   @Input() barangayOfficials: any[] = [];
   @Input() evacuationCenters: any[] = [];
   @Output() dssSidebarFilterClicked = new EventEmitter<void>();
+  @Output() dssAlertClicked = new EventEmitter<void>();
+  @Output() dssDecisionClicked = new EventEmitter<void>();
+  @Output() dssEvacuationClicked = new EventEmitter<void>();
   @Output() disasterTypeChange = new EventEmitter<{ type: string, category?: string }>();
   @Output() barangaySelected = new EventEmitter<{ id: number, barangay: string, coordinates: [number, number] }>();
   @Output() barangayOfficialSelected = new EventEmitter<{ id: number }>();
@@ -83,6 +86,18 @@ export class SidebarComponent implements OnInit {
 
   public onDssFilterClicked() {
     this.dssSidebarFilterClicked.emit();
+  }
+
+  public onDssAlertClicked() {
+    this.dssAlertClicked.emit();
+  }
+
+  public onDssDecisionClicked() {
+    this.dssDecisionClicked.emit();
+  }
+
+  public onDssEvacuationClicked() {
+    this.dssEvacuationClicked.emit();
   }
 
   public logout() {

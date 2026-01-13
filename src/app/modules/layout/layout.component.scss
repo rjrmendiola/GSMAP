@@ -240,6 +240,48 @@ span {
   white-space: nowrap;
 }
 
+.barangay-tooltip {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  border: 2px solid #FFA500 !important;
+  border-radius: 4px !important;
+  padding: 6px 10px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  white-space: nowrap !important;
+
+  &::before {
+    border-top-color: #FFA500 !important;
+  }
+}
+
+// Remove focus outline from Leaflet map and layers
+#map {
+  outline: none !important;
+
+  * {
+    outline: none !important;
+  }
+}
+
+.leaflet-container {
+  outline: none !important;
+
+  * {
+    outline: none !important;
+  }
+}
+
+.leaflet-interactive {
+  outline: none !important;
+}
+
+// Remove focus outline from SVG paths
+svg path {
+  outline: none !important;
+}
+
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0;
