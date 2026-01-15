@@ -74,6 +74,20 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private toggleControl: any;
   private nearestEvacuationCentersLayer: L.LayerGroup | null = null;
 
+  // Livelihood color mapping
+  private livelihoodColors: { [key: string]: string } = {
+    'Agriculture/Crops mixed with Coconut Plantation': '#90EE90', // Light green
+    'Agriculture/Crops mainly sugar': '#FFD700', // Gold
+    'Agriculture/Crops mainy cereals and sugar': '#FFA500', // Orange (typo in data)
+    'Agriculture/Crops mainly cereals and sugar': '#FFA500', // Orange
+    'Agriculture/Coconut Plantation': '#32CD32', // Lime green
+    'Fishery': '#4169E1', // Royal blue
+    'Fishery/Trading': '#1E90FF', // Dodger blue
+    'Fishery/Fish Ponds and Mangroves': '#00CED1', // Dark turquoise
+    'Fishery/Fishponds and Mangroves': '#00CED1', // Dark turquoise (alternative spelling)
+    'Trading': '#FF6347', // Tomato red
+  };
+
   private coloringMap = {
     barangay: '#8A9A5B',
     flood: {
@@ -164,11 +178,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Layer visibility dictionary
   layerVisibility: { [key: string]: boolean } = {
     barangay: true,
-    water_river: false,
-    buildings: false,
+    neighboring_municipalities: true,  // Show neighboring municipalities by default
+    water_river: true,  // Show water bodies by default
+    buildings: true,  // Show buildings by default
     landcover: false,
-    roads: false,
-    forest: true,
+    roads: true,  // Show roads by default
+    forest: true,  // Show forests by default
     landslide_low: false,
     landslide_moderate: false,
     landslide_high: false,
@@ -348,9 +363,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.map = L.map('map', {
       center: [11.232084301848886, 124.7057818628441],
-      zoom: 12,
+      zoom: 13,
       zoomControl: false,
       attributionControl: false,
+      maxBounds: [
+        [11.0, 124.5],  // Southwest corner (includes neighboring towns)
+        [11.5, 124.9]   // Northeast corner
+      ],
+      maxBoundsViscosity: 1.0
     });
 
     // Add the fullscreen control
@@ -408,8 +428,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.highlightBarangayLayer = L.layerGroup().addTo(this.map);
     this.barangayLabelLayer = L.layerGroup().addTo(this.map);
 
-    // Add double-click event listener
-    this.map.on('dblclick', (event: L.LeafletMouseEvent) => this.onMapDoubleClick(event));
+    // Double-click event listener removed - no longer needed
 
     // Add map background click handler for clearing selection
     this.map.on('click', (e: L.LeafletMouseEvent) => {
@@ -448,6 +467,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (this.layerVisibility[layerKey]) {
           layer.addTo(this.map);
+          
+          // For barangay layer, refresh styles after loading to ensure livelihood colors are applied
+          if (layerKey === 'barangay') {
+            // Use setTimeout to ensure the layer is fully added to the map
+            setTimeout(() => {
+              this.refreshBarangayStyles();
+            }, 100);
+          }
         }
       })
       .catch((error) => {
@@ -761,10 +788,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.legend) {
       this.map.removeControl(this.legend);
     }
-    this.legend = new L.Control({ position: 'bottomright' });
+    this.legend = new L.Control({ position: 'bottomleft' });
 
     this.legend.onAdd = () => {
       const div = L.DomUtil.create('div', 'info legend');
+      div.style.padding = '10px 12px';
+      div.style.background = 'rgba(255, 255, 255, 0.95)';
+      div.style.borderRadius = '8px';
+      div.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+      div.style.border = '1px solid rgba(0, 0, 0, 0.1)';
+      div.style.maxWidth = '280px';
+      div.style.fontFamily = 'Arial, Helvetica, sans-serif';
 
       if (this.disasterType) {
         // var colors: string[] = ['#800000', '#6B8E23', '#FFFF00'];
@@ -789,37 +823,87 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           var labels: string[] = ['High', 'Moderate', 'Low'];
         }
 
-        div.innerHTML += `<h1 class="text-sm font-bold leading-3 mt-2 mb-2 text-gray-800">${legendLabel}</h1>`;
+        div.innerHTML += `<h1 class="text-sm font-bold leading-3 mt-2 mb-2" style="color: #333;">${legendLabel}</h1>`;
         for (let i = 0; i < colors.length; i++) {
-          div.innerHTML += `<div class="py-1">
-            <i style="background:${colors[i]};"></i>
-            <span>${labels[i]}</span>
+          div.innerHTML += `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
+            <i style="background:${colors[i]}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px;"></i>
+            <span style="color: #333; font-size: 11px;">${labels[i]}</span>
           </div>`;
         }
       } else {
-        // var grades: number[] = [0, 100, 300, 800, 1000, 1300, 2300, 3500];
+        // Show livelihood legend when no disaster type is selected
         var labels: string[] = [];
-
-        // for (let i = 0; i < grades.length; i++) {
-        //   div.innerHTML += `<i style="background:${this.getColor(grades[i] + 1)}"></i> ` +
-        //   grades[i] + (grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : '+');
-        // }
-
-        // Additional Layer Legend
-        labels.push("<strong>Layer Legend</strong>");
-        for (const layerKey in this.layerColors) {
-          const color = this.layerColors[layerKey];
-          const layerName = layerKey.charAt(0).toUpperCase() + layerKey.slice(1);
+        labels.push("<strong class='text-sm font-bold mb-2 block' style='color: #333;'>Barangay Livelihood Types</strong>");
+        
+        // Get unique livelihood types from actual barangay data
+        const uniqueLivelihoods = new Map<string, string>();
+        
+        // Collect all unique livelihoods from barangayDetails
+        this.barangayDetails.forEach(detail => {
+          if (detail.livelihood && !uniqueLivelihoods.has(detail.livelihood)) {
+            const color = this.getLivelihoodColor(detail.livelihood);
+            uniqueLivelihoods.set(detail.livelihood, color);
+          }
+        });
+        
+        // Sort livelihoods alphabetically for better organization
+        const sortedLivelihoods = Array.from(uniqueLivelihoods.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+        
+        // Add livelihood legend items with better formatting
+        for (const [livelihood, color] of sortedLivelihoods) {
+          // Format the livelihood name nicely
+          const displayName = livelihood
+            .replace(/\//g, ' / ')
+            .replace(/\bmainy\b/gi, 'mainly') // Fix typo
+            .split(' ')
+            .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
+          
           labels.push(
-            `<i style="background:${color}; color: ${color};"></i> ${layerName}`
+            `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
+              <i style="background:${color}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px; flex-shrink: 0;"></i>
+              <span class="text-xs" style="color: #333; font-size: 11px; line-height: 1.3; word-wrap: break-word;">${displayName}</span>
+            </div>`
           );
         }
 
-        div.innerHTML = labels.join("<br>");
+        // Map Features Legend (show default visible layers)
+        const defaultVisibleLayers = ['water_river', 'buildings', 'roads', 'forest'];
+        const visibleLayers = defaultVisibleLayers.filter(key => this.layerVisibility[key] && this.layerColors[key]);
+        
+        if (visibleLayers.length > 0) {
+          labels.push("<strong class='text-sm font-bold mt-3 mb-2 block' style='color: #333; border-top: 1px solid #ddd; padding-top: 8px;'>Map Features</strong>");
+          
+          // Map layer keys to display names
+          const layerDisplayNames: { [key: string]: string } = {
+            'water_river': 'Water Bodies / Rivers',
+            'buildings': 'Buildings',
+            'roads': 'Roads',
+            'forest': 'Forests',
+            'landcover': 'Land Cover'
+          };
+          
+          for (const layerKey of visibleLayers) {
+            const color = this.layerColors[layerKey];
+            const layerName = layerDisplayNames[layerKey] || layerKey.charAt(0).toUpperCase() + layerKey.slice(1).replace(/_/g, ' ');
+            labels.push(
+              `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
+                <i style="background:${color}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px; flex-shrink: 0;"></i>
+                <span class="text-xs" style="color: #333; font-size: 11px;">${layerName}</span>
+              </div>`
+            );
+          }
+        }
+
+        div.innerHTML = labels.join("");
       }
 
+      // Always add the legend to the map
       return div;
     };
+    
+    // Add the legend to the map
+    this.legend.addTo(this.map);
   }
 
   // Add information control for feature properties
@@ -1039,17 +1123,63 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
                       '#ffffe5';
   }
 
+  // Get color based on livelihood
+  private getLivelihoodColor(livelihood: string): string {
+    if (!livelihood) {
+      return '#8A9A5B'; // Default color
+    }
+
+    // Try exact match first
+    if (this.livelihoodColors[livelihood]) {
+      return this.livelihoodColors[livelihood];
+    }
+    
+    // Try partial match - check if livelihood contains any key
+    for (const [key, color] of Object.entries(this.livelihoodColors)) {
+      const normalizedKey = key.toLowerCase().replace(/\s+/g, '');
+      const normalizedLivelihood = livelihood.toLowerCase().replace(/\s+/g, '');
+      
+      // Check if key is contained in livelihood or vice versa
+      if (normalizedLivelihood.includes(normalizedKey) || normalizedKey.includes(normalizedLivelihood)) {
+        return color;
+      }
+      
+      // Also check for main category match (e.g., "Agriculture" or "Fishery")
+      const mainCategory = key.split('/')[0];
+      if (livelihood.toLowerCase().startsWith(mainCategory.toLowerCase())) {
+        return color;
+      }
+    }
+
+    // Default color if no match found
+    return '#8A9A5B';
+  }
+
+  // Normalize barangay name for matching (handles spaces, underscores, case differences)
+  private normalizeBarangayName(name: string): string {
+    if (!name) return '';
+    // Convert to lowercase and replace spaces with underscores
+    return name.toLowerCase().replace(/\s+/g, '_').trim();
+  }
+
   // Style features rendered to map
   private style(feature: any, layerKey: string) {
     if (layerKey === 'barangay'){
+      // Get barangay name and normalize it for matching
+      const barangayName = feature.properties.name;
+      const normalizedName = this.normalizeBarangayName(barangayName);
+      const barangayDetail = this.barangayDetails.find(detail => 
+        detail.name === normalizedName || detail.name === barangayName.toLowerCase()
+      );
+      const fillColor = barangayDetail ? this.getLivelihoodColor(barangayDetail.livelihood) : this.coloringMap.barangay;
+      
       return {
-        // fillColor: this.getColor(feature.properties.population),
-        fillColor: this.coloringMap.barangay,
-        weight: 1.5,
+        fillColor: fillColor,
+        weight: 2,
         opacity: 1,
-        color: '#FEFEFE',
-        dashArray: '3',
-        fillOpacity: 1
+        color: '#333333',
+        dashArray: '',
+        fillOpacity: 0.7
       };
     } else if (layerKey === 'landslide_high') {
       return {
@@ -1131,7 +1261,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (layerKey === 'barangay') {
       const barangayName = feature.properties.name;
       if (barangayName) {
+        // Store both original and normalized name for lookup
+        const normalizedName = this.normalizeBarangayName(barangayName);
         this.barangayPolygons[barangayName] = feature;
+        this.barangayPolygons[normalizedName] = feature; // Also store normalized for lookup
 
         layer.feature = feature;
 
@@ -1141,6 +1274,23 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           className: 'barangay-tooltip',
           offset: [0, -10]
         });
+
+        // Add permanent label for each barangay
+        const center = this.calculateCentroid(feature.geometry);
+        const formattedName = barangayName
+          .replace(/_/g, ' ')
+          .split(' ')
+          .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(' ');
+        const label = L.marker(center, {
+          icon: L.divIcon({
+            className: 'barangay-label',
+            html: `<span style="color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.8), 1px -1px 2px rgba(0,0,0,0.8), -1px 1px 2px rgba(0,0,0,0.8);">${formattedName}</span>`,
+            iconSize: [0, 0],
+          }),
+          interactive: false
+        });
+        this.barangayLabelLayer.addLayer(label);
 
         layer.on({
           mouseover: (e: L.LeafletMouseEvent) => this.onBarangayMouseOver(e),
@@ -1173,7 +1323,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Reset highlight when mouseout
   private resetHighlight(e: any) {
     const layer = e.target;
-    this.layers['barangay'].resetStyle(layer);
+    // Instead of resetStyle, use getBarangayStyle to ensure livelihood colors are maintained
+    const feature = layer.feature;
+    if (feature) {
+      layer.setStyle(this.getBarangayStyle(feature));
+    } else {
+      this.layers['barangay'].resetStyle(layer);
+    }
     // this.info.updateInfo(layer.feature.properties);
     this.info.updateInfo();
   }
@@ -1208,13 +1364,27 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.barangaySelectionService.setHoveredBarangay(null);
 
     const barangayName = layer.feature.properties.name;
+    const normalizedName = this.normalizeBarangayName(barangayName);
     const selectedBarangay = this.barangays.find(b =>
       b.id === this.selectedBarangay
     );
 
-    if (!selectedBarangay || selectedBarangay.name !== barangayName) {
+    // Compare using normalized names
+    const isSelected = selectedBarangay && (
+      this.normalizeBarangayName(selectedBarangay.name) === normalizedName ||
+      selectedBarangay.name === barangayName ||
+      selectedBarangay.name === normalizedName
+    );
+
+    if (!isSelected) {
       if (this.layers['barangay']) {
-        (this.layers['barangay'] as L.GeoJSON).resetStyle(layer);
+        // Use getBarangayStyle instead of resetStyle to maintain livelihood colors
+        const feature = layer.feature;
+        if (feature) {
+          layer.setStyle(this.getBarangayStyle(feature));
+        } else {
+          (this.layers['barangay'] as L.GeoJSON).resetStyle(layer);
+        }
       }
     }
 
@@ -1225,10 +1395,16 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const layer = e.target as any;
       const barangayName = layer.feature.properties.name;
+      const normalizedName = this.normalizeBarangayName(barangayName);
 
-      const barangay = this.barangays.find(b => b.name === barangayName);
+      // Try to find barangay by original name, normalized name, or by normalizing both
+      const barangay = this.barangays.find(b => 
+        b.name === barangayName || 
+        b.name === normalizedName || 
+        this.normalizeBarangayName(b.name) === normalizedName
+      );
       if (!barangay) {
-        console.error('Barangay not found:', barangayName);
+        console.error('Barangay not found:', barangayName, '(normalized:', normalizedName + ')');
         return;
       }
 
@@ -1263,7 +1439,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private highlightSelectedBarangay(layer: L.Layer): void {
     if (this.layers['barangay']) {
       (this.layers['barangay'] as L.GeoJSON).eachLayer((l: any) => {
-        (this.layers['barangay'] as L.GeoJSON).resetStyle(l);
+        // Use getBarangayStyle instead of resetStyle to maintain livelihood colors
+        const feature = l.feature;
+        if (feature) {
+          l.setStyle(this.getBarangayStyle(feature));
+        } else {
+          (this.layers['barangay'] as L.GeoJSON).resetStyle(l);
+        }
       });
     }
 
@@ -1286,7 +1468,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.layers['barangay']) {
       (this.layers['barangay'] as L.GeoJSON).eachLayer((layer: any) => {
-        (this.layers['barangay'] as L.GeoJSON).resetStyle(layer);
+        // Use getBarangayStyle instead of resetStyle to maintain livelihood colors
+        const feature = layer.feature;
+        if (feature) {
+          layer.setStyle(this.getBarangayStyle(feature));
+        } else {
+          (this.layers['barangay'] as L.GeoJSON).resetStyle(layer);
+        }
       });
     }
 
@@ -1367,54 +1555,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map.setView(e.target.getLatLng(), 14);
   }
 
-  private onMapDoubleClick(event: L.LeafletMouseEvent): void {
-    // Clear previous nearest markers from the map
-    this.clearNearestEvacuationMarkers();
-
-    if (this.currentMarker) {
-      // Remove the existing marker if present
-      this.map?.removeLayer(this.currentMarker);
-    }
-
-    // Add a new marker at the clicked location
-    this.currentMarker = L.marker([event.latlng.lat, event.latlng.lng], {
-      icon: this.defaultIcon,
-    })
-      .addTo(this.map)
-      // .bindPopup(`Coordinates: ${event.latlng.lat}, ${event.latlng.lng}`)
-      // .openPopup()
-      ;
-
-    // Find the nearest locations
-    const nearestLocations = this.findNearestLocations(event.latlng, 5);
-    nearestLocations.forEach(({ location, distance}) => {
-      const coords: [number, number] = [location.coords[0], location.coords[1]];
-      const pulseIcon = this.makePulseIcon(10, 'green', './assets/images/guard.png');
-      // const nearestMarker = L.marker(coords, { icon: pulseIcon }).addTo(this.map).bindPopup(location.name).openPopup();
-      const nearestMarker = L.marker(coords, { icon: pulseIcon }).addTo(this.map);
-
-      // Create the custom popup HTML content
-      const popupContent = `
-          <div class="customPopup">
-              <figure>
-                  <img src="${location.image}" alt="Car">
-                  <figcaption>Barangay Evacuation Center</figcaption>
-              </figure>
-              <div>${location.venue}</div>
-              <div>Distance: ${distance.toFixed(2)} km</div>
-          </div>
-      `;
-
-      // Bind the custom popup to the marker
-      nearestMarker.bindPopup(popupContent).openPopup();
-      this.nearestEvacuationMarkers.push(nearestMarker); // Store reference to the marker
-    });
-
-    this.currentMarker.on('click', () => {
-      this.map?.removeLayer(this.currentMarker);
-      this.clearNearestEvacuationMarkers();
-    });
-  }
+  // Double-click functionality removed as per requirements
 
   private clearNearestEvacuationMarkers() {
     // Remove all nearest markers from the map
@@ -1545,7 +1686,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.labelMarker = L.marker(center, {
         icon: L.divIcon({
           className: 'barangay-label',
-          html: `<span>${barangayName}</span>`,
+          html: `<span style="color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.8), 1px -1px 2px rgba(0,0,0,0.8), -1px 1px 2px rgba(0,0,0,0.8);">${barangayName}</span>`,
           iconSize: [0, 0], // No default marker size
         }),
       }).addTo(this.map);
@@ -1670,7 +1811,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           this.disasterType = disasterType;
           this.handleDisasterTypeChange();
         } else {
-          this.map.removeControl(this.legend);
+          // When disaster type is cleared, show livelihood legend
+          this.addLegend();
+          if (this.legend) {
+            this.legend.addTo(this.map);
+          }
 
           if (this.highlightLayer) {
             this.map.removeLayer(this.highlightLayer);
@@ -1717,7 +1862,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.initMap();
     // this.markerControl();
-    // this.addLegend();
+    this.addLegend();
     // this.addInfoControl();
     // this.addDetailsControl();
     // this.addAffectedBarangaysControl();
@@ -2124,6 +2269,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           // Hide this for now since contents are already displayed above the map
           // this.markerControl();
 
+          // Always add legend to show livelihood colors
           this.addLegend();
           // this.addInfoControl();
           this.addDetailsControl();
@@ -2444,7 +2590,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const feature = layer.feature;
       // const id = feature.properties.id;
       const name = feature.properties.name;
-      var id = this.barangays.find(b => b.name === name)?.id;
+      // Normalize name for matching with barangays array
+      const normalizedName = this.normalizeBarangayName(name);
+      var id = this.barangays.find(b => 
+        b.name === name || 
+        b.name === normalizedName || 
+        this.normalizeBarangayName(b.name) === normalizedName
+      )?.id;
       if (!id) {
         layer.setStyle(this.getBarangayStyle(feature));
         return;
@@ -2473,58 +2625,28 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getBarangayStyle(feature: any): L.PathOptions {
-    // const id = feature.properties.id;
-    // // const name = feature.properties.name;
-    // const isSelected = this.selectedBarangaysFilter.includes(id);
-
-    // return {
-    //   color: isSelected ? '#ffcc00' : '#3388ff',
-    //   weight: isSelected ? 4 : 1,
-    //   fillOpacity: isSelected ? 0.5 : 0.1,
-    //   fillColor: isSelected ? '#ffeb3b' : '#3388ff'
-    // };
+    // Get barangay name and normalize it for matching
+    const barangayName = feature.properties.name;
+    const normalizedName = this.normalizeBarangayName(barangayName);
+    const barangayDetail = this.barangayDetails.find(detail => 
+      detail.name === normalizedName || detail.name === barangayName.toLowerCase()
+    );
+    const fillColor = barangayDetail ? this.getLivelihoodColor(barangayDetail.livelihood) : this.coloringMap.barangay;
+    
     return {
-      fillColor: this.coloringMap.barangay,
-      weight: 1.5,
+      fillColor: fillColor,
+      weight: 2,
       opacity: 1,
-      color: '#FEFEFE',
-      dashArray: '3',
-      fillOpacity: 1
+      color: '#333333',
+      dashArray: '',
+      fillOpacity: 0.7
     }
   }
 
   updateBarangayLabels() {
-    this.barangayLabelLayer.clearLayers();
-
-    if (!this.layers['barangay']) return;
-
-    (this.layers['barangay'] as L.GeoJSON).eachLayer((layer: any) => {
-      const feature = layer.feature;
-      // const id = +feature.properties.id;
-      const name = feature.properties.name;
-      const id = this.barangays.find(b => b.name === name)?.id;
-      if (!id) return;
-
-      if (this.selectedBarangaysFilter.includes(id)) {
-        const center = this.calculateCentroid(feature.geometry);
-
-        const label = L.marker(center, {
-          icon: L.divIcon({
-            className: 'barangay-label',
-            html: `<span>${feature.properties.name}</span>`,
-            iconSize: [0, 0]
-          }),
-          // interactive: false // IMPORTANT
-          interactive: true // IMPORTANT
-        });
-
-        label.on('click', () => {
-          this.removeBarangayFromSelection(id);
-        });
-
-        this.barangayLabelLayer.addLayer(label);
-      }
-    });
+    // Labels are now always shown for all barangays, so this method
+    // is kept for backward compatibility but doesn't need to do anything
+    // since labels are added when the layer is loaded
   }
 
   removeBarangayFromSelection(barangayId: number) {

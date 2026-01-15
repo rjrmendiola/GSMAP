@@ -15,17 +15,22 @@ html, body {
 /* Main content area for map */
 #main-content {
   flex: 1;
-  overflow: auto;
+  overflow: hidden; /* Changed from auto to hidden to prevent scrolling */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Map container for better positioning */
 .map-container {
   background-color: beige;
   position: relative;
-  margin: 30px;
+  margin: 0; /* Removed margin to allow full height */
   border: 2px solid #ccc;
-  border-radius: 8px;
+  border-radius: 0; /* Removed border radius for full height */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .header {
@@ -109,15 +114,18 @@ span {
 /* Frame surrounding the map */
 .map-frame {
   border: 2px solid #333; /* Darker border for map frame */
-  border-radius: 5px; /* Slightly rounded corners */
+  border-radius: 0; /* Removed rounded corners for full height */
   overflow: hidden; /* Clip any overflowing elements */
-  height: 100%;
+  flex: 1; /* Take remaining space */
+  display: flex;
+  min-height: 0; /* Important for flex children */
 }
 
 /* Map styling */
 #map {
-  min-height: 570px; /* Minimum height for the map */
   height: 100%; /* Full height of its parent */
+  width: 100%; /* Full width */
+  min-height: 0; /* Important for flex children */
 }
 
 /* Info control styling */
@@ -140,26 +148,47 @@ span {
 /* Legend styling */
 .legend {
   line-height: 20px;
-  color: #555;
-  padding: 5px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  color: #333;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  max-width: 250px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Legend icon styling */
 .legend i {
-  border-radius: 0 25px 25px 0;
-  width: 30px;
-  height: 15px;
-  float: left;
-  margin-right: 10px;
-  opacity: 0.7;
+  border-radius: 2px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+  border: 1px solid #333;
+  flex-shrink: 0;
+}
+
+/* Legend text styling */
+.legend span {
+  color: #333;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* Legend heading styling */
+.legend strong {
+  color: #333;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
 }
 
 /* Add hover effects for legend items */
 .legend i:hover {
   opacity: 1; /* Full opacity on hover */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Additional styles for the map controls */
@@ -230,10 +259,10 @@ span {
 }
 
 .barangay-label {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid #333;
+  background-color: transparent;
+  border: none;
   border-radius: 4px;
-  padding: 5px;
+  padding: 2px 4px;
   font-size: 12px;
   font-weight: bold;
   text-align: center;
@@ -382,13 +411,16 @@ svg path {
 }
 
 .barangay-label span {
-  // background: rgba(255, 255, 255, 0.85);
   background: transparent;
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 600;
   font-size: 12px;
-  color: #222;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8), 
+              -1px -1px 2px rgba(0,0,0,0.8), 
+              1px -1px 2px rgba(0,0,0,0.8), 
+              -1px 1px 2px rgba(0,0,0,0.8);
   white-space: nowrap;
   pointer-events: none;
 }
@@ -397,12 +429,16 @@ svg path {
 /* Adjust height for mobile screens (max-width: 640px) */
 @media (max-width: 640px) {
   #map {
-    min-height: 400px; /* Minimum height for the map */
     height: 100%; /* Full height of its parent */
+    min-height: 0; /* Remove min-height for flex layout */
   }
 
   nav {
     overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .map-container {
+    margin: 0; /* No margin on mobile for full height */
   }
 }
 

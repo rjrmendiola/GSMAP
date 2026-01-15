@@ -6,7 +6,7 @@ import { effect } from '@angular/core';
   providedIn: 'root',
 })
 export class ThemeService {
-  public theme = signal<Theme>({ mode: 'dark', color: 'base' });
+  public theme = signal<Theme>({ mode: 'light', color: 'base' });
 
   constructor() {
     this.loadTheme();
@@ -18,7 +18,15 @@ export class ThemeService {
   private loadTheme() {
     const theme = localStorage.getItem('theme');
     if (theme) {
-      this.theme.set(JSON.parse(theme));
+      const parsedTheme = JSON.parse(theme);
+      // Force light mode - override any saved dark theme
+      if (parsedTheme.mode === 'dark') {
+        parsedTheme.mode = 'light';
+      }
+      this.theme.set(parsedTheme);
+    } else {
+      // If no theme saved, default to light
+      this.theme.set({ mode: 'light', color: 'base' });
     }
   }
 
@@ -32,7 +40,14 @@ export class ThemeService {
   }
 
   private setThemeClass() {
-    document.querySelector('html')!.className = this.theme().mode;
-    document.querySelector('html')!.setAttribute('data-theme', this.theme().color);
+    const htmlElement = document.querySelector('html')!;
+    // Remove 'dark' class if present and force light mode
+    if (this.theme().mode === 'light') {
+      htmlElement.classList.remove('dark');
+      htmlElement.className = 'light';
+    } else {
+      htmlElement.className = this.theme().mode;
+    }
+    htmlElement.setAttribute('data-theme', this.theme().color);
   }
 }

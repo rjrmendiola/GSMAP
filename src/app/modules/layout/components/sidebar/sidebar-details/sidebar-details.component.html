@@ -24,61 +24,61 @@
 
           <!-- NEW: Barangay Details View (when barangay is selected) -->
           <div *ngIf="isShowingBarangayDetails && selectedBarangayData" class="pt-4">
-            <div class="bg-gray-800 p-4 rounded-lg mb-4">
-              <h3 class="text-blue-400 font-semibold text-lg mb-4">
+            <div class="bg-card p-4 rounded-lg mb-4 border border-border">
+              <h3 class="text-primary font-semibold text-lg mb-4">
                 {{ selectedBarangayData.barangay.name }}
               </h3>
 
               <!-- Barangay Chairman/Captain -->
-              <div class="mb-3 pb-3 border-b border-gray-700">
-                <div class="text-gray-400 text-md mb-1">Barangay Captain</div>
-                <div class="text-white font-medium">
+              <div class="mb-3 pb-3 border-b border-border">
+                <div class="text-muted-foreground text-md mb-1">Barangay Captain</div>
+                <div class="text-foreground font-medium">
                   {{ selectedBarangayData.chairman?.name || 'Not Available' }}
                 </div>
-                <div class="text-gray-400 text-xs" *ngIf="selectedBarangayData.chairman?.position">
+                <div class="text-muted-foreground text-xs" *ngIf="selectedBarangayData.chairman?.position">
                   {{ selectedBarangayData.chairman?.position }}
                 </div>
               </div>
 
               <!-- Area (if available) -->
-              <div *ngIf="selectedBarangayData.barangayProfile?.area" class="mb-3 pb-3 border-b border-gray-700">
-                <div class="text-gray-400 text-md mb-1">Area</div>
-                <div class="text-white font-medium">
+              <div *ngIf="selectedBarangayData.barangayProfile?.area" class="mb-3 pb-3 border-b border-border">
+                <div class="text-muted-foreground text-md mb-1">Area</div>
+                <div class="text-foreground font-medium">
                   {{ selectedBarangayData.barangayProfile?.area | number:'1.2-2' }} km²
                 </div>
               </div>
 
               <!-- Population Density (if available) -->
-              <div *ngIf="selectedBarangayData.barangayProfile?.population_density" class="mb-3 pb-3 border-b border-gray-700">
-                <div class="text-gray-400 text-md mb-1">Population Density</div>
-                <div class="text-white font-medium">
+              <div *ngIf="selectedBarangayData.barangayProfile?.population_density" class="mb-3 pb-3 border-b border-border">
+                <div class="text-muted-foreground text-md mb-1">Population Density</div>
+                <div class="text-foreground font-medium">
                   {{ selectedBarangayData.barangayProfile?.population_density | number:'1.0-0' }} persons/km²
                 </div>
               </div>
 
               <!-- Population (if available) -->
-              <div *ngIf="selectedBarangayData.barangayProfile?.population" class="mb-3 pb-3 border-b border-gray-700">
-                <div class="text-gray-400 text-md mb-1">Population</div>
-                <div class="text-white font-medium">
+              <div *ngIf="selectedBarangayData.barangayProfile?.population" class="mb-3 pb-3 border-b border-border">
+                <div class="text-muted-foreground text-md mb-1">Population</div>
+                <div class="text-foreground font-medium">
                   {{ selectedBarangayData.barangayProfile?.population | number:'1.0-0' }}
                 </div>
               </div>
 
               <!-- Livelihood (if available) -->
-              <div *ngIf="selectedBarangayData.barangayProfile?.livelihood" class="mb-3 pb-3 border-b border-gray-700">
-                <div class="text-gray-400 text-md mb-1">Livelihood</div>
-                <div class="text-white font-medium">
+              <div *ngIf="selectedBarangayData.barangayProfile?.livelihood" class="mb-3 pb-3 border-b border-border">
+                <div class="text-muted-foreground text-md mb-1">Livelihood</div>
+                <div class="text-foreground font-medium">
                   {{ selectedBarangayData.barangayProfile?.livelihood }}
                 </div>
               </div>
 
               <!-- Nearest Evacuation Centers (Top 5) -->
               <div *ngIf="selectedBarangayData.nearestEvacuationCenters && selectedBarangayData.nearestEvacuationCenters.length > 0" class="mb-3">
-                <div class="text-gray-400 text-md mb-2">Nearest Evacuation Centers (Top {{ selectedBarangayData.nearestEvacuationCenters.length }})</div>
+                <div class="text-muted-foreground text-md mb-2">Nearest Evacuation Centers (Top {{ selectedBarangayData.nearestEvacuationCenters.length }})</div>
 
                 <!-- List of evacuation centers -->
                 <div *ngFor="let center of selectedBarangayData.nearestEvacuationCenters; let i = index"
-                     class="bg-gray-700 p-3 rounded mb-2 border-l-4"
+                     class="bg-muted p-3 rounded mb-2 border-l-4"
                      [ngClass]="{
                        'border-green-500': i === 0,
                        'border-blue-500': i === 1,
@@ -95,27 +95,27 @@
                   </div> 
 
                   <!-- Placeholder if no image -->
-                  <div *ngIf="!center?.image" class="mb-2 bg-gray-600 rounded flex items-center justify-center h-32">
-                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div *ngIf="!center?.image" class="mb-2 bg-muted rounded flex items-center justify-center h-32">
+                    <svg class="w-12 h-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                     </svg>
                   </div>
 
                   <div class="flex items-start justify-between mb-1">
-                    <div class="text-white font-medium text-sm">
+                    <div class="text-foreground font-medium text-sm">
                       {{ i + 1 }}. {{ center?.venue }}
                     </div>
-                    <div class="text-green-400 font-semibold text-xs">
+                    <div class="text-green-600 font-semibold text-xs">
                       {{ center?.distance | number:'1.2-2' }} km
                     </div>
                   </div>
-                  <!-- <div class="text-gray-400 text-xs" *ngIf="center?.barangay">
+                  <!-- <div class="text-muted-foreground text-xs" *ngIf="center?.barangay">
                     Barangay: {{ center?.barangay }}
                   </div> -->
-                  <div class="text-gray-400 text-xs" *ngIf="center?.venue">
+                  <div class="text-muted-foreground text-xs" *ngIf="center?.venue">
                     Barangay: {{ center?.barangay?.name.toUpperCase() }}
                   </div>
-                  <div class="text-blue-300 text-xs mt-1" *ngIf="center?.barangay_official?.name">
+                  <div class="text-blue-600 text-xs mt-1" *ngIf="center?.barangay_official?.name">
                     Contact: {{ center?.barangay_official?.name }} ({{ center?.barangay_official?.position }})
                   </div>
                 </div>
@@ -123,14 +123,14 @@
 
               <!-- Fallback for no evacuation centers -->
               <div *ngIf="!selectedBarangayData.nearestEvacuationCenters || selectedBarangayData.nearestEvacuationCenters.length === 0" class="mb-3">
-                <div class="text-gray-400 text-xs mb-1">Nearest Evacuation Centers</div>
-                <div class="text-gray-500 italic">No evacuation centers found</div>
+                <div class="text-muted-foreground text-xs mb-1">Nearest Evacuation Centers</div>
+                <div class="text-muted-foreground italic">No evacuation centers found</div>
               </div>
 
               <!-- Back button -->
               <button
                 (click)="clearBarangaySelection()"
-                class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors">
+                class="mt-4 w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2 px-4 rounded transition-colors">
                 Back to Hazards Overview
               </button>
             </div>
@@ -140,43 +140,43 @@
           <div *ngIf="!isShowingBarangayDetails">
             <!-- Loading Indicator -->
             <div *ngIf="isLoadingWeather" class="pt-4 text-center">
-            <p class="text-blue-400 font-semibold">Loading weather data...</p>
+            <p class="text-primary font-semibold">Loading weather data...</p>
           </div>
 
           <!-- Weather Overview for All Barangays -->
           <div class="pt-4" *ngIf="!selectedBarangayWeather && weatherData && !isLoadingWeather && !hasSelectedBarangaysWeather">
-            <h3 class="text-blue-400 font-semibold mb-4">Current Weather Overview</h3>
+            <h3 class="text-primary font-semibold mb-4">Current Weather Overview</h3>
             <div class="grid grid-cols-1 gap-4 mb-6">
-              <div *ngFor="let barangay of barangayNames" class="bg-gray-800 p-3 rounded-lg">
-                <h4 class="text-blue-300 font-medium mb-2">{{ barangay }}</h4>
+              <div *ngFor="let barangay of barangayNames" class="bg-card p-3 rounded-lg border border-border">
+                <h4 class="text-primary font-medium mb-2">{{ barangay }}</h4>
                 <ng-container *ngIf="getCurrentWeatherConditions(barangay) as currentWeather">
                   <div class="grid grid-cols-2 gap-2 text-sm">
-                    <div class="text-gray-300">
+                    <div class="text-foreground">
                       <span class="font-medium">Temp:</span> {{ currentWeather.temperature | number:'1.1-1' }}°C
                     </div>
-                    <div class="text-gray-300">
+                    <div class="text-foreground">
                       <span class="font-medium">Humidity:</span> {{ currentWeather.humidity | number:'1.0-0' }}%
                     </div>
-                    <div class="text-gray-300">
+                    <div class="text-foreground">
                       <span class="font-medium">Rain Chance:</span> {{ currentWeather.precipitationProbability | number:'1.0-0' }}%
                     </div>
-                    <div class="text-gray-300">
+                    <div class="text-foreground">
                       <span class="font-medium">Wind:</span> {{ currentWeather.windSpeed | number:'1.1-1' }} km/h
                     </div>
                   </div>
                 </ng-container>
-                <hr class="my-2 text-gray-300">
+                <hr class="my-2 border-border">
                 <ng-container *ngIf="getBarangayDetail(barangay) as barangayDetail">
                   <div class="grid grid-cols-2 gap-2 text-sm">
-                    <div class="text-gray-300">
+                    <div class="text-foreground">
                       <span class="font-medium">Area:</span> {{ barangayDetail.area }}
                     </div>
-                    <div class="text-gray-300">
+                    <div class="text-foreground">
                       <span class="font-medium">Pop. Density:</span> {{ barangayDetail.pop_density }}
                     </div>
                   </div>
                   <div class="grid grid-cols-1 gap-2 text-sm">
-                    <div class="text-gray-300">
+                    <div class="text-foreground">
                       <span class="font-medium">Livelihood: </span> {{ barangayDetail.livelihood }}
                     </div>
                   </div>
@@ -187,82 +187,82 @@
 
           <!-- Detailed Weather for Selected Barangay -->
           <div class="pt-4" *ngIf="selectedBarangay && selectedBarangayWeather">
-            <h3 class="text-green-400 font-semibold mb-4">Detailed Forecast - {{ selectedBarangay }}</h3>
+            <h3 class="text-primary font-semibold mb-4">Detailed Forecast - {{ selectedBarangay }}</h3>
 
             <!-- Current Conditions -->
-            <div class="bg-gray-800 p-4 rounded-lg mb-4">
-              <h4 class="text-green-300 font-medium mb-3">Current Conditions</h4>
+            <div class="bg-card p-4 rounded-lg mb-4 border border-border">
+              <h4 class="text-primary font-medium mb-3">Current Conditions</h4>
               <div class="grid grid-cols-2 gap-3 text-sm">
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Temperature:</span> {{ selectedBarangayWeather['temperature_2m']?.[0] | number:'1.1-1' }}°C
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Feels Like:</span> {{ selectedBarangayWeather['apparent_temperature']?.[0] | number:'1.1-1' }}°C
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Humidity:</span> {{ selectedBarangayWeather['relative_humidity_2m']?.[0] | number:'1.0-0' }}%
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Dew Point:</span> {{ selectedBarangayWeather['dew_point_2m']?.[0] | number:'1.1-1' }}°C
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Precipitation:</span> {{ selectedBarangayWeather['precipitation_probability']?.[0] | number:'1.0-0' }}%
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Rain:</span> {{ selectedBarangayWeather['rain']?.[0] | number:'1.1-1' }} mm
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Wind Speed:</span> {{ selectedBarangayWeather['wind_speed_10m']?.[0] | number:'1.1-1' }} km/h
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Wind Direction:</span> {{ selectedBarangayWeather['wind_direction_10m']?.[0] | number:'1.0-0' }}°
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Pressure:</span> {{ selectedBarangayWeather['pressure_msl']?.[0] | number:'1.1-1' }} hPa
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Cloud Cover:</span> {{ selectedBarangayWeather['cloudcover']?.[0] | number:'1.0-0' }}%
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Visibility:</span> {{ (selectedBarangayWeather['visibility']?.[0] || 0) / 1000 | number:'1.1-1' }} km
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">UV Index:</span> {{ selectedBarangayWeather['uv_index']?.[0] || 'N/A' }}
                 </div>
               </div>
             </div>
 
             <!-- 24-Hour Forecast -->
-            <div class="bg-gray-800 p-4 rounded-lg mb-4">
-              <h4 class="text-green-300 font-medium mb-3">24-Hour Forecast</h4>
+            <div class="bg-card p-4 rounded-lg mb-4 border border-border">
+              <h4 class="text-primary font-medium mb-3">24-Hour Forecast</h4>
               <div class="max-h-64 overflow-y-auto">
                 <div *ngFor="let forecast of get24HourForecast(selectedBarangay); let i = index"
-                     class="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0">
-                  <div class="text-gray-300 text-sm">
+                     class="flex justify-between items-center py-2 border-b border-border last:border-b-0">
+                  <div class="text-foreground text-sm">
                     {{ forecast.time | date:'MMM d, h:mm a' }}
                   </div>
                   <div class="text-right text-sm">
-                    <div class="text-gray-200">{{ forecast.temperature | number:'1.1-1' }}°C</div>
-                    <div class="text-blue-300">{{ forecast.precipitationProbability | number:'1.0-0' }}%</div>
+                    <div class="text-foreground">{{ forecast.temperature | number:'1.1-1' }}°C</div>
+                    <div class="text-primary">{{ forecast.precipitationProbability | number:'1.0-0' }}%</div>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Soil Conditions (if available) -->
-            <div class="bg-gray-800 p-4 rounded-lg mb-4" *ngIf="selectedBarangayWeather?.['soil_temperature_0cm']">
-              <h4 class="text-orange-300 font-medium mb-3">Soil Conditions</h4>
+            <div class="bg-card p-4 rounded-lg mb-4 border border-border" *ngIf="selectedBarangayWeather?.['soil_temperature_0cm']">
+              <h4 class="text-primary font-medium mb-3">Soil Conditions</h4>
               <div class="grid grid-cols-2 gap-3 text-sm">
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Surface Temp:</span> {{ selectedBarangayWeather['soil_temperature_0cm']?.[0] | number:'1.1-1' }}°C
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">6cm Temp:</span> {{ selectedBarangayWeather['soil_temperature_6cm']?.[0] | number:'1.1-1' }}°C
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Surface Moisture:</span> {{ selectedBarangayWeather['soil_moisture_0_to_1cm']?.[0] | number:'1.2-2' }} m³/m³
                 </div>
-                <div class="text-gray-300">
+                <div class="text-foreground">
                   <span class="font-medium">Deep Moisture:</span> {{ selectedBarangayWeather['soil_moisture_1_to_3cm']?.[0] | number:'1.2-2' }} m³/m³
                 </div>
               </div>
