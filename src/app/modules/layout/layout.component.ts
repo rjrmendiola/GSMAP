@@ -1440,17 +1440,19 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private highlightSelectedBarangay(layer: L.Layer): void {
-    if (this.layers['barangay']) {
-      (this.layers['barangay'] as L.GeoJSON).eachLayer((l: any) => {
-        // Use getBarangayStyle instead of resetStyle to maintain livelihood colors
-        const feature = l.feature;
-        if (feature) {
-          l.setStyle(this.getBarangayStyle(feature));
-        } else {
-          (this.layers['barangay'] as L.GeoJSON).resetStyle(l);
-        }
-      });
-    }
+    // if (this.layers['barangay']) {
+    //   (this.layers['barangay'] as L.GeoJSON).eachLayer((l: any) => {
+    //     // Use getBarangayStyle instead of resetStyle to maintain livelihood colors
+    //     const feature = l.feature;
+    //     if (feature) {
+    //       l.setStyle(this.getBarangayStyle(feature));
+    //     } else {
+    //       (this.layers['barangay'] as L.GeoJSON).resetStyle(l);
+    //     }
+    //   });
+    // }
+
+    this.resetBarangayHighlight();
 
     (layer as any).setStyle({
       weight: 4,
@@ -1462,6 +1464,19 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       (layer as any).bringToFront();
     }
+  }
+
+  private resetBarangayHighlight(): void {
+    if (!this.layers['barangay']) return;
+
+    (this.layers['barangay'] as L.GeoJSON).eachLayer((l: any) => {
+      const feature = l.feature;
+      if (feature) {
+        l.setStyle(this.getBarangayStyle(feature));
+      } else {
+        (this.layers['barangay'] as L.GeoJSON).resetStyle(l);
+      }
+    });
   }
 
   private clearBarangaySelection(): void {
@@ -1483,6 +1498,22 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Clear nearest evacuation center markers
     this.clearNearestEvacuationCenterMarkers();
+  }
+
+  private clearBarangaySelectionUI(): void {
+
+    // Reset barangay styles
+    this.resetBarangayHighlight();
+
+    // Clear evacuation center markers
+    this.clearNearestEvacuationCenterMarkers();
+
+    // Reset state
+    this.selectedBarangay = null;
+    this.selectedBarangayName = null;
+
+    // Reset map
+    this.map.setView([11.232084301848886, 124.7057818628441], 12);
   }
 
   private showNearestEvacuationCenterMarkers(evacuationCenters: any[]): void {
@@ -1852,6 +1883,14 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isMobile = result.matches;
       if (this.isMobile) {
         this.isHazardDetailsMinimized = true; // Minimize on mobile
+      }
+    });
+
+    this.barangaySelectionService.selectedBarangayData$.subscribe(barangay => {
+      // If null → cleared state
+      if (!barangay) {
+        // this.map.setView([11.298, 124.678], 12); // Carigara default
+         this.clearBarangaySelectionUI();
       }
     });
 

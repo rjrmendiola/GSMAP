@@ -478,8 +478,8 @@ export class SidebarDetailsComponent implements OnInit, OnChanges, OnDestroy {
 
   clearBarangaySelection(): void {
     this.barangaySelectionService.clearSelection();
-    this.selectedBarangay = "";
-    this.selectedBarangayName = null;
+    // this.selectedBarangay = "";
+    // this.selectedBarangayName = null;
   }
 
   getEvacuationCenterImageUrl(imagePath: string): string {
