@@ -430,6 +430,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Double-click event listener removed - no longer needed
 
+    // Set openstreetmap as map's default baselayer
+    this.baseLayers['openstreetmap'].addTo(this.map);
+
     // Add map background click handler for clearing selection
     this.map.on('click', (e: L.LeafletMouseEvent) => {
       const target = (e.originalEvent as any).target as HTMLElement;
@@ -467,7 +470,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (this.layerVisibility[layerKey]) {
           layer.addTo(this.map);
-          
+
           // For barangay layer, refresh styles after loading to ensure livelihood colors are applied
           if (layerKey === 'barangay') {
             // Use setTimeout to ensure the layer is fully added to the map
@@ -834,10 +837,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // Show livelihood legend when no disaster type is selected
         var labels: string[] = [];
         labels.push("<strong class='text-sm font-bold mb-2 block' style='color: #333;'>Barangay Livelihood Types</strong>");
-        
+
         // Get unique livelihood types from actual barangay data
         const uniqueLivelihoods = new Map<string, string>();
-        
+
         // Collect all unique livelihoods from barangayDetails
         this.barangayDetails.forEach(detail => {
           if (detail.livelihood && !uniqueLivelihoods.has(detail.livelihood)) {
@@ -845,10 +848,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             uniqueLivelihoods.set(detail.livelihood, color);
           }
         });
-        
+
         // Sort livelihoods alphabetically for better organization
         const sortedLivelihoods = Array.from(uniqueLivelihoods.entries()).sort((a, b) => a[0].localeCompare(b[0]));
-        
+
         // Add livelihood legend items with better formatting
         for (const [livelihood, color] of sortedLivelihoods) {
           // Format the livelihood name nicely
@@ -858,7 +861,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             .split(' ')
             .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
             .join(' ');
-          
+
           labels.push(
             `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
               <i style="background:${color}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px; flex-shrink: 0;"></i>
@@ -870,10 +873,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // Map Features Legend (show default visible layers)
         const defaultVisibleLayers = ['water_river', 'buildings', 'roads', 'forest'];
         const visibleLayers = defaultVisibleLayers.filter(key => this.layerVisibility[key] && this.layerColors[key]);
-        
+
         if (visibleLayers.length > 0) {
           labels.push("<strong class='text-sm font-bold mt-3 mb-2 block' style='color: #333; border-top: 1px solid #ddd; padding-top: 8px;'>Map Features</strong>");
-          
+
           // Map layer keys to display names
           const layerDisplayNames: { [key: string]: string } = {
             'water_river': 'Water Bodies / Rivers',
@@ -882,7 +885,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             'forest': 'Forests',
             'landcover': 'Land Cover'
           };
-          
+
           for (const layerKey of visibleLayers) {
             const color = this.layerColors[layerKey];
             const layerName = layerDisplayNames[layerKey] || layerKey.charAt(0).toUpperCase() + layerKey.slice(1).replace(/_/g, ' ');
@@ -901,7 +904,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       // Always add the legend to the map
       return div;
     };
-    
+
     // Add the legend to the map
     this.legend.addTo(this.map);
   }
@@ -1133,17 +1136,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.livelihoodColors[livelihood]) {
       return this.livelihoodColors[livelihood];
     }
-    
+
     // Try partial match - check if livelihood contains any key
     for (const [key, color] of Object.entries(this.livelihoodColors)) {
       const normalizedKey = key.toLowerCase().replace(/\s+/g, '');
       const normalizedLivelihood = livelihood.toLowerCase().replace(/\s+/g, '');
-      
+
       // Check if key is contained in livelihood or vice versa
       if (normalizedLivelihood.includes(normalizedKey) || normalizedKey.includes(normalizedLivelihood)) {
         return color;
       }
-      
+
       // Also check for main category match (e.g., "Agriculture" or "Fishery")
       const mainCategory = key.split('/')[0];
       if (livelihood.toLowerCase().startsWith(mainCategory.toLowerCase())) {
@@ -1168,11 +1171,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       // Get barangay name and normalize it for matching
       const barangayName = feature.properties.name;
       const normalizedName = this.normalizeBarangayName(barangayName);
-      const barangayDetail = this.barangayDetails.find(detail => 
+      const barangayDetail = this.barangayDetails.find(detail =>
         detail.name === normalizedName || detail.name === barangayName.toLowerCase()
       );
       const fillColor = barangayDetail ? this.getLivelihoodColor(barangayDetail.livelihood) : this.coloringMap.barangay;
-      
+
       return {
         fillColor: fillColor,
         weight: 2,
@@ -1398,9 +1401,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const normalizedName = this.normalizeBarangayName(barangayName);
 
       // Try to find barangay by original name, normalized name, or by normalizing both
-      const barangay = this.barangays.find(b => 
-        b.name === barangayName || 
-        b.name === normalizedName || 
+      const barangay = this.barangays.find(b =>
+        b.name === barangayName ||
+        b.name === normalizedName ||
         this.normalizeBarangayName(b.name) === normalizedName
       );
       if (!barangay) {
@@ -2592,9 +2595,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       const name = feature.properties.name;
       // Normalize name for matching with barangays array
       const normalizedName = this.normalizeBarangayName(name);
-      var id = this.barangays.find(b => 
-        b.name === name || 
-        b.name === normalizedName || 
+      var id = this.barangays.find(b =>
+        b.name === name ||
+        b.name === normalizedName ||
         this.normalizeBarangayName(b.name) === normalizedName
       )?.id;
       if (!id) {
@@ -2628,11 +2631,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // Get barangay name and normalize it for matching
     const barangayName = feature.properties.name;
     const normalizedName = this.normalizeBarangayName(barangayName);
-    const barangayDetail = this.barangayDetails.find(detail => 
+    const barangayDetail = this.barangayDetails.find(detail =>
       detail.name === normalizedName || detail.name === barangayName.toLowerCase()
     );
     const fillColor = barangayDetail ? this.getLivelihoodColor(barangayDetail.livelihood) : this.coloringMap.barangay;
-    
+
     return {
       fillColor: fillColor,
       weight: 2,
