@@ -19,6 +19,16 @@
           </div> -->
         </div>
       </div>
+
+      <div class="p-4">
+        <!-- Back button -->
+        <button
+          (click)="clearBarangaySelection()"
+          class="mt-4 w-full bg-red-500 hover:bg-red-600 text-xs py-2 px-4 rounded transition-colors">
+          Back to Hazards Overview
+        </button>
+      </div>
+
       <div class="p-4 text-muted-foreground text-xs">
         <div class="h-screen scrollbar-thumb-rounded scrollbar-track-rounded grow overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted">
 
@@ -128,11 +138,11 @@
               </div>
 
               <!-- Back button -->
-              <button
+              <!-- <button
                 (click)="clearBarangaySelection()"
                 class="mt-4 w-full bg-red-500 hover:bg-red-600 text-muted-foreground font-medium py-2 px-4 rounded transition-colors">
                 Back to Hazards Overview
-              </button>
+              </button> -->
             </div>
           </div>
 
