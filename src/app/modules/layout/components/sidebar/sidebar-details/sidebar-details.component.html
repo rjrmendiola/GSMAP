@@ -147,14 +147,14 @@
           </div>
 
           <!-- EXISTING: Default Hazards View (when no barangay selected) -->
-          <div *ngIf="!isShowingBarangayDetails">
+          <div class="hidden" *ngIf="!isShowingBarangayDetails">
             <!-- Loading Indicator -->
             <div *ngIf="isLoadingWeather" class="pt-4 text-center">
             <p class="text-primary font-semibold">Loading weather data...</p>
           </div>
 
           <!-- Weather Overview for All Barangays -->
-          <div class="pt-4" *ngIf="!selectedBarangayWeather && weatherData && !isLoadingWeather && !hasSelectedBarangaysWeather">
+          <div class="pt-4 hidden" *ngIf="!selectedBarangayWeather && weatherData && !isLoadingWeather && !hasSelectedBarangaysWeather">
             <h3 class="text-primary font-semibold mb-4">Current Weather Overview</h3>
             <div class="grid grid-cols-1 gap-4 mb-6">
               <div *ngFor="let barangay of barangayNames" class="bg-card p-3 rounded-lg border border-border">
