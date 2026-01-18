@@ -12,11 +12,11 @@
               <svg-icon src="assets/icons/heroicons/outline/Flood-Fill--Streamline-Sharp-Fill-Material-Symbols.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
             </div>
           </ng-template>
-          <div class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+          <!-- <div class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
             <a class="ml-10 truncate text-sm font-semibold tracking-wide focus:outline-none">
               Barangays Susceptible to Hazards
             </a>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="p-4 text-muted-foreground text-xs">
@@ -92,7 +92,7 @@
                          [alt]="center?.name"
                          class="w-full h-12 object-cover rounded shadow-md"
                          >
-                  </div> 
+                  </div>
 
                   <!-- Placeholder if no image -->
                   <div *ngIf="!center?.image" class="mb-2 bg-muted rounded flex items-center justify-center h-32">
@@ -130,7 +130,7 @@
               <!-- Back button -->
               <button
                 (click)="clearBarangaySelection()"
-                class="mt-4 w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2 px-4 rounded transition-colors">
+                class="mt-4 w-full bg-red-500 hover:bg-red-600 text-muted-foreground font-medium py-2 px-4 rounded transition-colors">
                 Back to Hazards Overview
               </button>
             </div>
