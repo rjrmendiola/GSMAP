@@ -42,6 +42,7 @@ import { BarangayDetailsService } from 'src/app/core/services/barangay-details.s
 import { BarangayTypeaheadComponent } from './components/sidebar/components/barangay-typeahead/barangay-typeahead.component';
 import { SimulationService } from 'src/app/core/services/simulation.service';
 import { SimulationParams } from 'src/app/core/models/simulation.model';
+import { WeatherService } from './services/weather.service';
 
 @Component({
   selector: 'app-layout',
@@ -272,6 +273,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private simulationInterval: any = null;
   private rainLayer: L.LayerGroup | null = null;
   private simulationSubscription?: Subscription;
+
+  // Weather layers state
+  private weatherData: { [barangay: string]: any } = {};
+  private weatherRainLayer: L.LayerGroup | null = null;
+  private showWeatherLayers: boolean = true; // Show weather layers when not simulating
+  private weatherRefreshInterval: any = null; // Interval for real-time weather updates
 
   private hazardAffectedBarangays = {
     'landslide': {
@@ -1834,6 +1841,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private barangaySelectionService: BarangaySelectionService,
     private barangayDetailsService: BarangayDetailsService,
     private simulationService: SimulationService,
+    private weatherService: WeatherService,
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1927,7 +1935,70 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       if (state.isActive && !state.isPaused) {
         // Update evacuation center risks are handled by the service
       }
+      // Hide weather layers when simulation is active
+      if (state.isActive) {
+        this.removeWeatherLayers();
+        this.showWeatherLayers = false;
+        this.stopWeatherRefreshInterval(); // Stop refresh during simulation
+      } else {
+        this.showWeatherLayers = true;
+        // Reload weather layers when simulation stops
+        if (Object.keys(this.weatherData).length > 0) {
+          this.updateWeatherLayers();
+        }
+        // Resume weather refresh when simulation stops
+        this.startWeatherRefreshInterval();
+      }
     });
+
+    // Load weather data for visualization
+    this.loadWeatherDataForVisualization();
+  }
+
+  private async loadWeatherDataForVisualization(): Promise<void> {
+    try {
+      // Use direct Open Meteo API call (not cached backend data)
+      console.log('Fetching fresh weather data from Open Meteo API...');
+      this.weatherData = await this.weatherService.getWeatherDataForAllBarangay();
+      console.log('Weather data loaded from Open Meteo:', Object.keys(this.weatherData).length, 'barangays');
+      
+      // Update weather layers if not simulating
+      if (!this.isSimulationActive && this.map && this.showWeatherLayers) {
+        this.updateWeatherLayers();
+      }
+    } catch (error) {
+      console.error('Error loading weather data for visualization:', error);
+      // Fallback to backend API if direct call fails
+      try {
+        console.log('Falling back to backend API...');
+        this.weatherData = await this.weatherService.getWeatherDataForAllBarangay_v2();
+        if (!this.isSimulationActive && this.map && this.showWeatherLayers) {
+          this.updateWeatherLayers();
+        }
+      } catch (fallbackError) {
+        console.error('Error loading weather data from backend:', fallbackError);
+      }
+    }
+  }
+
+  private startWeatherRefreshInterval(): void {
+    // Clear existing interval if any
+    this.stopWeatherRefreshInterval();
+
+    // Refresh weather data every 1 minute (60000 ms) for real-time updates
+    this.weatherRefreshInterval = setInterval(() => {
+      if (!this.isSimulationActive && this.showWeatherLayers) {
+        console.log('Refreshing weather data from Open Meteo API...');
+        this.loadWeatherDataForVisualization();
+      }
+    }, 60000); // 1 minute
+  }
+
+  private stopWeatherRefreshInterval(): void {
+    if (this.weatherRefreshInterval) {
+      clearInterval(this.weatherRefreshInterval);
+      this.weatherRefreshInterval = null;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -1937,6 +2008,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.addInfoControl();
     // this.addDetailsControl();
     // this.addAffectedBarangaysControl();
+    
+    // Load weather data and show layers after map is initialized
+    setTimeout(() => {
+      this.loadWeatherDataForVisualization();
+      // Start periodic refresh for real-time updates
+      this.startWeatherRefreshInterval();
+    }, 1000); // Small delay to ensure map is fully loaded
   }
 
   ngOnDestroy(): void {
@@ -1958,6 +2036,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Clean up simulation
     this.stopSimulation();
+
+    // Clean up weather layers
+    this.removeWeatherLayers();
+
+    // Stop weather refresh interval
+    this.stopWeatherRefreshInterval();
   }
 
   handleDisasterTypeChange(): void {
@@ -2793,6 +2877,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isSimulationPaused = false;
     this.currentSimulationTime = 0;
 
+    // Remove weather layers when simulation starts
+    this.removeWeatherLayers();
+
     // Start simulation in service
     this.simulationService.startSimulation(params, this.evacuationCenters);
 
@@ -2853,6 +2940,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Stop simulation in service
     this.simulationService.stopSimulation();
+
+    // Restore weather layers when simulation stops
+    if (Object.keys(this.weatherData).length > 0) {
+      this.updateWeatherLayers();
+    }
   }
 
   get simulationProgress(): number {
@@ -3007,6 +3099,255 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.rainLayer) {
       this.map.removeLayer(this.rainLayer);
       this.rainLayer = null;
+    }
+  }
+
+  // Weather Layers Methods (for Open Meteo data when not simulating)
+  private updateWeatherLayers(): void {
+    if (!this.map || !this.showWeatherLayers || Object.keys(this.weatherData).length === 0) {
+      return;
+    }
+
+    // Remove existing weather layers
+    this.removeWeatherLayers();
+
+    // Create rain layer (using simulation-style overlay)
+    this.createWeatherRainLayer();
+
+    // Add weather legends
+    this.addWeatherLegends();
+  }
+
+  private createWeatherRainLayer(): void {
+    if (!this.map || Object.keys(this.weatherData).length === 0) return;
+
+    const rainFeatures: any[] = [];
+    let featureIndex = 0;
+    let totalWithRain = 0;
+    let maxRainValue = 0;
+
+    Object.values(this.barangayPolygons).forEach((polygon: any) => {
+      const barangayName = polygon.properties.name;
+      const normalizedName = this.normalizeBarangayName(barangayName);
+      
+      // Find matching weather data
+      const weather = this.weatherData[barangayName] || this.weatherData[normalizedName];
+      
+      if (weather) {
+        // Get current rain value - check multiple possible data structures
+        let currentRain = 0;
+        let precipitation = 0;
+
+        // Handle different data formats
+        if (Array.isArray(weather.rain) && weather.rain.length > 0) {
+          currentRain = Number(weather.rain[0]) || 0;
+        } else if (typeof weather.rain === 'number') {
+          currentRain = weather.rain;
+        }
+
+        if (Array.isArray(weather.precipitation) && weather.precipitation.length > 0) {
+          precipitation = Number(weather.precipitation[0]) || 0;
+        } else if (typeof weather.precipitation === 'number') {
+          precipitation = weather.precipitation;
+        }
+
+        const rainValue = Math.max(currentRain, precipitation);
+
+        // Always create feature, even if rain is 0 (to show all areas)
+        // This ensures the layer is visible and users can see which areas have weather data
+        if (rainValue > 0) {
+          totalWithRain++;
+          maxRainValue = Math.max(maxRainValue, rainValue);
+        }
+
+        // Use same color interpolation style as simulation
+        // Convert rain value (mm) to a risk-like percentage (0-100)
+        // Scale: 0mm = 0%, 50mm+ = 100%
+        const rainRisk = Math.min(100, (rainValue / 50) * 100);
+        
+        let color = '#E0F2FE';
+        let opacity = 0.1;
+
+        // Use same color scheme as simulation with smooth interpolation
+        if (rainRisk >= 70) {
+          const blend = (rainRisk - 70) / 30;
+          color = this.interpolateColor('#00008B', '#8B008B', blend);
+          opacity = 0.6 + (blend * 0.2); // 0.6 to 0.8
+        } else if (rainRisk >= 50) {
+          const blend = (rainRisk - 50) / 20;
+          color = this.interpolateColor('#4169E1', '#00008B', blend);
+          opacity = 0.4 + (blend * 0.2); // 0.4 to 0.6
+        } else if (rainRisk >= 30) {
+          const blend = (rainRisk - 30) / 20;
+          color = this.interpolateColor('#87CEEB', '#4169E1', blend);
+          opacity = 0.2 + (blend * 0.2); // 0.2 to 0.4
+        } else if (rainRisk > 0) {
+          const intensity = rainRisk / 30;
+          color = this.interpolateColor('#E0F2FE', '#87CEEB', intensity);
+          opacity = 0.1 + (intensity * 0.1); // 0.1 to 0.2
+        } else {
+          color = '#E0F2FE';
+          opacity = 0.05;
+        }
+
+        rainFeatures.push({
+          type: 'Feature',
+          geometry: polygon.geometry,
+          properties: {
+            name: barangayName,
+            rain: rainValue,
+            color: color,
+            opacity: opacity
+          }
+        });
+      }
+      featureIndex++;
+    });
+
+    // Debug logging
+    console.log(`Weather Rain Layer: ${totalWithRain} barangays with rain, max value: ${maxRainValue}mm`);
+    if (totalWithRain > 0) {
+      console.log('Sample weather data:', Object.keys(this.weatherData).slice(0, 3).map(key => ({
+        key,
+        hasRain: !!this.weatherData[key]?.rain,
+        rainValue: Array.isArray(this.weatherData[key]?.rain) ? this.weatherData[key].rain[0] : this.weatherData[key]?.rain
+      })));
+    }
+
+    // Safety check: If more than 80% of polygons have rain > 20mm, something is likely wrong with the data
+    const totalPolygons = Object.keys(this.barangayPolygons).length;
+    const heavyRainCount = rainFeatures.filter(f => f.properties.rain > 20).length;
+    if (totalPolygons > 0 && heavyRainCount / totalPolygons > 0.8) {
+      console.warn('Warning: Most areas showing heavy rain (>20mm). This may indicate invalid data. Skipping weather layer.');
+      return;
+    }
+
+    // Create layer if we have features (even if no rain, to show weather data coverage)
+    if (rainFeatures.length > 0) {
+      const rainGeoJSON = {
+        type: 'FeatureCollection',
+        features: rainFeatures
+      };
+
+      this.weatherRainLayer = L.geoJSON(rainGeoJSON as any, {
+        style: (feature: any) => {
+          const props = feature.properties;
+          const rainValue = props.rain || 0;
+          const rainRisk = Math.min(100, (rainValue / 50) * 100);
+          const color = props.color || '#E0F2FE';
+          const opacity = props.opacity || 0.05;
+
+          return {
+            fillColor: color,
+            weight: rainRisk > 50 ? 3 : 2,
+            opacity: Math.min(1, opacity),
+            color: rainRisk > 70 ? '#FF0000' : color,
+            dashArray: rainRisk > 70 ? '5, 5' : '',
+            fillOpacity: opacity
+          };
+        },
+        onEachFeature: (feature: any, layer: any) => {
+          // Add popup on click to show rain amount
+          const props = feature.properties;
+          const rainValue = props.rain || 0;
+          layer.bindPopup(`
+            <strong>${props.name}</strong><br>
+            <strong>Rain Intensity:</strong> ${rainValue.toFixed(2)} mm
+          `);
+          
+          // Add CSS transitions for smooth color changes (same as simulation)
+          if (layer._path) {
+            layer._path.style.transition = 'fill-opacity 0.5s ease, fill 0.5s ease';
+          }
+        }
+      });
+
+      // Bring each layer to front and add transitions (same as simulation)
+      if (this.weatherRainLayer && (this.weatherRainLayer as any).eachLayer) {
+        (this.weatherRainLayer as any).eachLayer((layer: any) => {
+          if (layer.bringToFront) {
+            layer.bringToFront();
+          }
+        });
+      }
+
+      this.weatherRainLayer.addTo(this.map);
+      
+      console.log(`Rain layer added with ${rainFeatures.length} features`);
+    } else {
+      console.warn('No rain features created. Weather data might not match barangay names.');
+    }
+    
+    // Add weather legends after creating layers
+    // (Legends are added in updateWeatherLayers method)
+  }
+
+
+  private removeWeatherLayers(): void {
+    if (this.weatherRainLayer) {
+      this.map.removeLayer(this.weatherRainLayer);
+      this.weatherRainLayer = null;
+    }
+    // Remove weather legends
+    this.removeWeatherLegends();
+  }
+
+  private weatherLegend: L.Control | null = null;
+
+  private addWeatherLegends(): void {
+    if (!this.map) return;
+
+    // Remove existing weather legend if any
+    this.removeWeatherLegends();
+
+    // Create rain legend HTML (using same style as simulation)
+    const rainLegendHtml = `
+      <div class="weather-legend">
+        <strong>Rain Intensity</strong><br>
+        <i style="background: #E0F2FE; opacity: 0.1;"></i> <span>None/Trace (0-5 mm)</span><br>
+        <i style="background: #87CEEB; opacity: 0.2;"></i> <span>Light (5-15 mm)</span><br>
+        <i style="background: #4169E1; opacity: 0.4;"></i> <span>Moderate (15-25 mm)</span><br>
+        <i style="background: #00008B; opacity: 0.6;"></i> <span>Heavy (25-35 mm)</span><br>
+        <i style="background: #8B008B; opacity: 0.8;"></i> <span>Extreme (>35 mm)</span>
+      </div>
+    `;
+
+    // Use only rain legend
+    const combinedLegendHtml = rainLegendHtml;
+
+    // Create Leaflet control for weather legend
+    this.weatherLegend = new L.Control({ position: 'bottomright' });
+
+    this.weatherLegend.onAdd = () => {
+      const div = L.DomUtil.create('div', 'weather-legend-container');
+      div.innerHTML = combinedLegendHtml;
+      div.style.cssText = `
+        background: rgba(255, 255, 255, 0.95);
+        padding: 10px 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        line-height: 1.4;
+        max-width: 200px;
+      `;
+      
+      // Prevent map click when clicking legend
+      L.DomEvent.disableClickPropagation(div);
+      
+      return div;
+    };
+
+    if (this.weatherLegend) {
+      this.weatherLegend.addTo(this.map);
+    }
+  }
+
+  private removeWeatherLegends(): void {
+    if (this.weatherLegend) {
+      this.map.removeControl(this.weatherLegend);
+      this.weatherLegend = null;
     }
   }
 
