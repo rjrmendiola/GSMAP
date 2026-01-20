@@ -277,6 +277,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   // Weather layers state
   private weatherData: { [barangay: string]: any } = {};
   private weatherRainLayer: L.LayerGroup | null = null;
+  private weatherIconLayer: L.LayerGroup | null = null;
   private showWeatherLayers: boolean = true; // Show weather layers when not simulating
   private weatherRefreshInterval: any = null; // Interval for real-time weather updates
 
@@ -3114,6 +3115,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // Create rain layer (using simulation-style overlay)
     this.createWeatherRainLayer();
 
+    // Create weather icon markers
+    this.createWeatherIconMarkers();
+
     // Add weather legends
     this.addWeatherLegends();
   }
@@ -3282,11 +3286,227 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // (Legends are added in updateWeatherLayers method)
   }
 
+  private getWeatherIconHtml(weatherCode: number, rainValue: number): string {
+    // Use Material Icons for better-looking weather icons
+    let iconName = 'wb_cloudy'; // Default cloudy icon
+    let iconColor = '#757575';
+
+    if (weatherCode === 0) {
+      iconName = 'wb_sunny';
+      iconColor = '#FFA500';
+    } else if (weatherCode >= 1 && weatherCode <= 3) {
+      iconName = 'partly_cloudy_day';
+      iconColor = '#FFA500';
+    } else if (weatherCode >= 45 && weatherCode <= 48) {
+      iconName = 'foggy';
+      iconColor = '#9E9E9E';
+    } else if (weatherCode >= 51 && weatherCode <= 55) {
+      iconName = 'grain';
+      iconColor = '#4A90E2';
+    } else if (weatherCode >= 61 && weatherCode <= 67 || weatherCode >= 80 && weatherCode <= 82) {
+      // Rain - show different intensity
+      if (rainValue > 10 || weatherCode >= 65 || weatherCode >= 82) {
+        iconName = 'rainy';
+      } else {
+        iconName = 'grain';
+      }
+      iconColor = '#4A90E2';
+    } else if (weatherCode >= 71 && weatherCode <= 77 || weatherCode >= 85 && weatherCode <= 86) {
+      iconName = 'ac_unit';
+      iconColor = '#E0E0E0';
+    } else if (weatherCode >= 95 && weatherCode <= 99) {
+      iconName = 'thunderstorm';
+      iconColor = '#616161';
+    }
+
+    return `
+      <div style="
+        width: 36px; 
+        height: 36px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      ">
+        <span class="material-icons" style="
+          font-size: 28px; 
+          color: ${iconColor};
+          line-height: 1;
+        ">${iconName}</span>
+      </div>
+    `;
+  }
+
+  private getWeatherDescription(weatherCode: number): string {
+    // Convert WMO weather code to user-friendly description
+    if (weatherCode === 0) return 'Clear Sky';
+    if (weatherCode >= 1 && weatherCode <= 3) return 'Partly Cloudy';
+    if (weatherCode >= 45 && weatherCode <= 48) return 'Foggy';
+    if (weatherCode >= 51 && weatherCode <= 55) return 'Light Drizzle';
+    if (weatherCode >= 56 && weatherCode <= 57) return 'Freezing Drizzle';
+    if (weatherCode >= 61 && weatherCode <= 65) return 'Rain';
+    if (weatherCode >= 66 && weatherCode <= 67) return 'Freezing Rain';
+    if (weatherCode >= 71 && weatherCode <= 77) return 'Snow';
+    if (weatherCode >= 80 && weatherCode <= 82) return 'Rain Showers';
+    if (weatherCode >= 85 && weatherCode <= 86) return 'Snow Showers';
+    if (weatherCode >= 95 && weatherCode <= 99) return 'Thunderstorm';
+    return 'Cloudy';
+  }
+
+  private createWeatherIconMarkers(): void {
+    if (!this.map || Object.keys(this.weatherData).length === 0) return;
+
+    const weatherMarkers: L.Marker[] = [];
+
+    Object.values(this.barangayPolygons).forEach((polygon: any) => {
+      const barangayName = polygon.properties.name;
+      const normalizedName = this.normalizeBarangayName(barangayName);
+      
+      // Find matching weather data
+      const weather = this.weatherData[barangayName] || this.weatherData[normalizedName];
+      
+      if (weather) {
+        // Get current weather code and rain value
+        let weatherCode = 0;
+        let currentRain = 0;
+        let precipitation = 0;
+        let temperature = 0;
+
+        // Handle different data formats
+        if (Array.isArray(weather.weather_code) && weather.weather_code.length > 0) {
+          weatherCode = Number(weather.weather_code[0]) || 0;
+        } else if (typeof weather.weather_code === 'number') {
+          weatherCode = weather.weather_code;
+        }
+
+        if (Array.isArray(weather.rain) && weather.rain.length > 0) {
+          currentRain = Number(weather.rain[0]) || 0;
+        } else if (typeof weather.rain === 'number') {
+          currentRain = weather.rain;
+        }
+
+        if (Array.isArray(weather.precipitation) && weather.precipitation.length > 0) {
+          precipitation = Number(weather.precipitation[0]) || 0;
+        } else if (typeof weather.precipitation === 'number') {
+          precipitation = weather.precipitation;
+        }
+
+        if (Array.isArray(weather.temperature_2m) && weather.temperature_2m.length > 0) {
+          temperature = Number(weather.temperature_2m[0]) || 0;
+        } else if (typeof weather.temperature_2m === 'number') {
+          temperature = weather.temperature_2m;
+        }
+
+        let humidity = 0;
+        let windSpeed = 0;
+        let windDirection = 0;
+        let cloudCover = 0;
+
+        if (Array.isArray(weather.relative_humidity_2m) && weather.relative_humidity_2m.length > 0) {
+          humidity = Number(weather.relative_humidity_2m[0]) || 0;
+        } else if (typeof weather.relative_humidity_2m === 'number') {
+          humidity = weather.relative_humidity_2m;
+        }
+
+        if (Array.isArray(weather.wind_speed_10m) && weather.wind_speed_10m.length > 0) {
+          windSpeed = Number(weather.wind_speed_10m[0]) || 0;
+        } else if (typeof weather.wind_speed_10m === 'number') {
+          windSpeed = weather.wind_speed_10m;
+        }
+
+        if (Array.isArray(weather.wind_direction_10m) && weather.wind_direction_10m.length > 0) {
+          windDirection = Number(weather.wind_direction_10m[0]) || 0;
+        } else if (typeof weather.wind_direction_10m === 'number') {
+          windDirection = weather.wind_direction_10m;
+        }
+
+        if (Array.isArray(weather.cloudcover) && weather.cloudcover.length > 0) {
+          cloudCover = Number(weather.cloudcover[0]) || 0;
+        } else if (typeof weather.cloudcover === 'number') {
+          cloudCover = weather.cloudcover;
+        }
+
+        const rainValue = Math.max(currentRain, precipitation);
+
+        // Get center of polygon for marker placement
+        const center = this.calculateCentroid(polygon.geometry);
+        
+        // Get weather icon HTML
+        const iconHtml = this.getWeatherIconHtml(weatherCode, rainValue);
+        
+        // Create custom icon
+        const weatherIcon = L.divIcon({
+          className: 'weather-icon-marker',
+          html: iconHtml,
+          iconSize: [36, 36],
+          iconAnchor: [18, 18]
+        });
+
+        const marker = L.marker(center as [number, number], { icon: weatherIcon });
+        
+        // Add popup with user-friendly weather info
+        const weatherDescription = this.getWeatherDescription(weatherCode);
+        let popupContent = `
+          <div style="min-width: 180px; font-family: Arial, sans-serif;">
+            <strong style="font-size: 14px; color: #333;">${barangayName}</strong><br>
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;">
+              <div style="margin-bottom: 6px;">
+                <span style="color: #666; font-size: 12px;">Condition:</span>
+                <strong style="color: #333; font-size: 13px; margin-left: 4px;">${weatherDescription}</strong>
+              </div>
+              <div style="margin-bottom: 6px;">
+                <span style="color: #666; font-size: 12px;">Temperature:</span>
+                <strong style="color: #333; font-size: 13px; margin-left: 4px;">${temperature.toFixed(1)}°C</strong>
+              </div>
+              ${rainValue > 0 ? `
+              <div style="margin-bottom: 6px;">
+                <span style="color: #666; font-size: 12px;">Rain:</span>
+                <strong style="color: #4A90E2; font-size: 13px; margin-left: 4px;">${rainValue.toFixed(2)} mm</strong>
+              </div>
+              ` : ''}
+              <div style="margin-bottom: 6px;">
+                <span style="color: #666; font-size: 12px;">Humidity:</span>
+                <strong style="color: #333; font-size: 13px; margin-left: 4px;">${humidity.toFixed(0)}%</strong>
+              </div>
+              ${windSpeed > 0 ? `
+              <div style="margin-bottom: 6px;">
+                <span style="color: #666; font-size: 12px;">Wind:</span>
+                <strong style="color: #333; font-size: 13px; margin-left: 4px;">${windSpeed.toFixed(1)} km/h</strong>
+              </div>
+              ` : ''}
+              ${cloudCover > 0 ? `
+              <div style="margin-bottom: 6px;">
+                <span style="color: #666; font-size: 12px;">Cloud Cover:</span>
+                <strong style="color: #333; font-size: 13px; margin-left: 4px;">${cloudCover.toFixed(0)}%</strong>
+              </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        
+        marker.bindPopup(popupContent);
+        weatherMarkers.push(marker);
+      }
+    });
+
+    if (weatherMarkers.length > 0) {
+      this.weatherIconLayer = L.layerGroup(weatherMarkers);
+      this.weatherIconLayer.addTo(this.map);
+      console.log(`Weather icons added for ${weatherMarkers.length} barangays`);
+    }
+  }
+
 
   private removeWeatherLayers(): void {
     if (this.weatherRainLayer) {
       this.map.removeLayer(this.weatherRainLayer);
       this.weatherRainLayer = null;
+    }
+    if (this.weatherIconLayer) {
+      this.map.removeLayer(this.weatherIconLayer);
+      this.weatherIconLayer = null;
     }
     // Remove weather legends
     this.removeWeatherLegends();
