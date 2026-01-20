@@ -35,7 +35,14 @@
       (mapTypeSelected)="onMapTypeSelected($event)"
       id="layers-section">
     </app-sidebar-menu> -->
+    <app-simulation-input
+      *ngIf="isSimulationMode"
+      [evacuationCenters]="evacuationCenters"
+      (simulationStarted)="onSimulationStarted($event)"
+      (backClicked)="onSimulationBack()">
+    </app-simulation-input>
     <app-sidebar-menu
+      *ngIf="!isSimulationMode"
       [barangays]="barangays"
       [barangayOfficials]="barangayOfficials"
       [evacuationCenters]="evacuationCenters"
@@ -44,6 +51,7 @@
       (dssAlertClicked)="onDssAlertClicked()"
       (dssDecisionClicked)="onDssDecisionClicked()"
       (dssEvacuationClicked)="onDssEvacuationClicked()"
+      (simulationClicked)="onSimulationClicked()"
       (barangayOfficialSelected)="onBarangayOfficialSelected($event)"
       (evacuationCenterSelected)="onEvacuationCenterSelected($event)"
       (barangaysSelected)="onBarangaysSelected($event)"

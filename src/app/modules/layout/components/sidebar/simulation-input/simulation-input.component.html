@@ -1,0 +1,119 @@
+<div class="flex flex-col h-full">
+  <!-- Header -->
+  <div class="p-4">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-foreground">Data Simulation</h2>
+      <button
+        (click)="onBack()"
+        class="text-muted-foreground hover:text-foreground transition-colors">
+        <svg-icon src="assets/icons/heroicons/outline/arrow-long-left.svg" [svgClass]="'h-5 w-5'"></svg-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="flex-1 overflow-y-auto px-4 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+    <!-- Simulation Inputs -->
+    <div class="space-y-6 pb-4">
+      <!-- Rainfall Intensity -->
+      <div class="bg-card p-3 rounded-lg border border-border">
+        <label class="block text-sm font-medium text-foreground mb-3">
+          Rainfall Intensity: <span class="text-primary font-bold">{{ rainfallIntensity }} MM</span>
+        </label>
+        <div class="relative w-full">
+          <div class="absolute inset-y-0 left-0 right-0 h-2 bg-gray-200 rounded-full mt-2"></div>
+          <input
+            type="range"
+            min="0"
+            max="500"
+            step="5"
+            [(ngModel)]="rainfallIntensity"
+            class="relative w-full z-10"
+            [disabled]="isSimulationActive">
+        </div>
+        <div class="flex justify-between text-xs text-muted-foreground mt-2">
+          <span>0 MM</span>
+          <span>500 MM</span>
+        </div>
+      </div>
+
+      <!-- Duration -->
+      <div class="bg-card p-3 rounded-lg border border-border">
+        <label class="block text-sm font-medium text-foreground mb-3">
+          Duration: <span class="text-primary font-bold">{{ duration }} hours</span>
+        </label>
+        <div class="relative w-full">
+          <div class="absolute inset-y-0 left-0 right-0 h-2 bg-gray-200 rounded-full mt-2"></div>
+          <input
+            type="range"
+            min="1"
+            max="72"
+            step="1"
+            [(ngModel)]="duration"
+            class="relative w-full z-10"
+            [disabled]="isSimulationActive">
+        </div>
+        <div class="flex justify-between text-xs text-muted-foreground mt-2">
+          <span>1 hour</span>
+          <span>72 hours</span>
+        </div>
+      </div>
+
+      <!-- Soil Moisture -->
+      <div>
+        <label class="block text-sm font-medium text-foreground mb-2">
+          Soil Moisture
+        </label>
+        <div class="space-y-2">
+          <label class="flex items-center p-2 rounded border border-border cursor-pointer hover:bg-card" [ngClass]="{'bg-primary/10': soilMoisture === 'Dry', 'border-primary': soilMoisture === 'Dry'}">
+            <input type="radio" name="soilMoisture" value="Dry" [(ngModel)]="soilMoisture" class="mr-2" [disabled]="isSimulationActive">
+            <span class="text-sm text-foreground">Dry</span>
+          </label>
+          <label class="flex items-center p-2 rounded border border-border cursor-pointer hover:bg-card" [ngClass]="{'bg-primary/10': soilMoisture === 'Moist', 'border-primary': soilMoisture === 'Moist'}">
+            <input type="radio" name="soilMoisture" value="Moist" [(ngModel)]="soilMoisture" class="mr-2" [disabled]="isSimulationActive">
+            <span class="text-sm text-foreground">Moist</span>
+          </label>
+          <label class="flex items-center p-2 rounded border border-border cursor-pointer hover:bg-card" [ngClass]="{'bg-primary/10': soilMoisture === 'Saturated', 'border-primary': soilMoisture === 'Saturated'}">
+            <input type="radio" name="soilMoisture" value="Saturated" [(ngModel)]="soilMoisture" class="mr-2" [disabled]="isSimulationActive">
+            <span class="text-sm text-foreground">Saturated</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Update Button -->
+      <button
+        (click)="onUpdate()"
+        [disabled]="isSimulationActive"
+        class="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2 px-4 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        {{ isSimulationActive ? 'Simulation Running...' : 'Update' }}
+      </button>
+    </div>
+
+    <!-- Overall Risk Level -->
+    <div *ngIf="isSimulationActive && evacuationCenterRisks.length > 0" class="mt-6 pb-4">
+      <div class="bg-card p-4 rounded-lg border-2 border-border mb-6">
+        <div class="text-center">
+          <p class="text-xs text-muted-foreground mb-2 uppercase tracking-wide">Overall Risk Level</p>
+          <div class="inline-block px-6 py-3 rounded-lg text-lg font-bold text-white shadow-lg"
+               [ngClass]="getRiskLevelColor(getOverallRiskLevel())">
+            {{ getOverallRiskLevel() }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Evacuation Centers List -->
+      <div>
+        <h3 class="text-sm font-semibold text-foreground mb-3">Evacuation Centers</h3>
+        <div class="space-y-2">
+          <div *ngFor="let center of evacuationCenterRisks"
+               class="bg-card p-3 rounded-lg border border-border">
+            <div>
+              <h4 class="text-sm font-medium text-foreground">{{ center.name }}</h4>
+              <p class="text-xs text-muted-foreground mt-1">{{ center.venue }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

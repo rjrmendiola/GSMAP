@@ -40,6 +40,8 @@ import { HazardDetectorService } from 'src/app/core/services/hazard-detector.ser
 import { BarangaySelectionService } from 'src/app/core/services/barangay-selection.service';
 import { BarangayDetailsService } from 'src/app/core/services/barangay-details.service';
 import { BarangayTypeaheadComponent } from './components/sidebar/components/barangay-typeahead/barangay-typeahead.component';
+import { SimulationService } from 'src/app/core/services/simulation.service';
+import { SimulationParams } from 'src/app/core/models/simulation.model';
 
 @Component({
   selector: 'app-layout',
@@ -261,6 +263,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   barangayLayerMap = new Map<number, L.Layer>();
 
   barangayLabelLayer!: L.LayerGroup;
+
+  // Simulation state
+  isSimulationActive: boolean = false;
+  isSimulationPaused: boolean = false;
+  simulationParams: SimulationParams | null = null;
+  currentSimulationTime: number = 0;
+  private simulationInterval: any = null;
+  private rainLayer: L.LayerGroup | null = null;
+  private simulationSubscription?: Subscription;
 
   private hazardAffectedBarangays = {
     'landslide': {
@@ -1822,6 +1833,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private hazardService: HazardDetectorService,
     private barangaySelectionService: BarangaySelectionService,
     private barangayDetailsService: BarangayDetailsService,
+    private simulationService: SimulationService,
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -1909,6 +1921,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.isLoggedIn) {
       this.startTour();
     }
+
+    // Subscribe to simulation state changes
+    this.simulationSubscription = this.simulationService.simulationState$.subscribe(state => {
+      if (state.isActive && !state.isPaused) {
+        // Update evacuation center risks are handled by the service
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -1932,6 +1951,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.mapTypeSubscription) {
       this.mapTypeSubscription.unsubscribe();
     }
+
+    if (this.simulationSubscription) {
+      this.simulationSubscription.unsubscribe();
+    }
+
+    // Clean up simulation
+    this.stopSimulation();
   }
 
   handleDisasterTypeChange(): void {
@@ -2757,6 +2783,230 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } catch (error) {
       console.error('Error handling barangay selection:', error);
+    }
+  }
+
+  // Simulation Methods
+  onSimulationStarted(params: SimulationParams): void {
+    this.simulationParams = params;
+    this.isSimulationActive = true;
+    this.isSimulationPaused = false;
+    this.currentSimulationTime = 0;
+
+    // Start simulation in service
+    this.simulationService.startSimulation(params, this.evacuationCenters);
+
+    // Create initial rain overlay
+    this.updateRainOverlay(0);
+
+    // Start timelapse
+    this.startSimulationTimelapse();
+  }
+
+  private startSimulationTimelapse(): void {
+    if (this.simulationInterval) {
+      clearInterval(this.simulationInterval);
+    }
+
+    // Update more frequently for smoother animation
+    // Each update represents a fraction of an hour
+    // Speed: 1 real second = 0.1 simulation hours (so 10 hours duration = 100 real seconds)
+    const timeStep = (this.simulationParams?.duration || 1) / 100; // Complete simulation in 100 seconds
+
+    this.simulationInterval = setInterval(() => {
+      if (!this.isSimulationPaused && this.isSimulationActive && this.simulationParams) {
+        this.currentSimulationTime += timeStep;
+
+        if (this.currentSimulationTime >= this.simulationParams.duration) {
+          this.currentSimulationTime = this.simulationParams.duration;
+          this.stopSimulation();
+          return;
+        }
+
+        // Update simulation service
+        this.simulationService.updateSimulationTime(this.currentSimulationTime, this.evacuationCenters);
+
+        // Update rain overlay with smooth animation
+        this.updateRainOverlay(this.currentSimulationTime);
+      }
+    }, 100); // Update every 100ms for smoother animation
+  }
+
+  toggleSimulationPause(): void {
+    this.isSimulationPaused = !this.isSimulationPaused;
+    this.simulationService.togglePause();
+  }
+
+  stopSimulation(): void {
+    this.isSimulationActive = false;
+    this.isSimulationPaused = false;
+    this.currentSimulationTime = 0;
+    this.simulationParams = null;
+
+    if (this.simulationInterval) {
+      clearInterval(this.simulationInterval);
+      this.simulationInterval = null;
+    }
+
+    // Remove rain overlay
+    this.removeRainOverlay();
+
+    // Stop simulation in service
+    this.simulationService.stopSimulation();
+  }
+
+  get simulationProgress(): number {
+    if (!this.simulationParams || this.simulationParams.duration === 0) {
+      return 0;
+    }
+    return (this.currentSimulationTime / this.simulationParams.duration) * 100;
+  }
+
+  private updateRainOverlay(time: number): void {
+    if (!this.simulationParams || !this.map) return;
+
+    // Calculate flood risk for current time
+    const floodRisk = this.simulationService.calculateFloodRisk(this.simulationParams, time);
+    
+    // Calculate progress (0 to 1)
+    const progress = time / (this.simulationParams.duration || 1);
+    
+    // Create pulsing effect based on time
+    const pulsePhase = (time * 2) % 10; // 10 second pulse cycle
+    const pulseIntensity = 0.1 + (Math.sin(pulsePhase * Math.PI / 5) * 0.1); // Vary opacity slightly
+
+    // Remove existing rain layer
+    this.removeRainOverlay();
+
+    // Create new rain layer based on flood risk
+    const rainFeatures: any[] = [];
+    let featureIndex = 0;
+
+    // Use barangay polygons to create rain overlay
+    Object.values(this.barangayPolygons).forEach((polygon: any) => {
+      const barangayName = polygon.properties.name;
+      const normalizedName = this.normalizeBarangayName(barangayName);
+      
+      // Calculate risk for this barangay using deterministic method based on index
+      // This ensures consistent progression without random variation
+      const baseRisk = floodRisk;
+      
+      // Add deterministic variation based on feature index and time
+      // This creates a more realistic distribution pattern
+      const indexVariation = (featureIndex % 10) * 2; // 0-18% variation
+      const timeVariation = Math.sin(time * 0.1 + featureIndex * 0.5) * 5; // Smooth wave pattern
+      const barangayRisk = Math.max(0, Math.min(100, baseRisk + indexVariation + timeVariation));
+
+      // Determine color based on risk with smooth gradients
+      let color = '#87CEEB'; // Light blue (low)
+      let opacity = 0.2 + (barangayRisk / 100) * 0.6; // Opacity scales with risk
+      
+      // Add pulse effect
+      opacity = Math.min(1, opacity + pulseIntensity);
+
+      // Smooth color transitions based on risk percentage
+      if (barangayRisk >= 70) {
+        // Purple (extreme) - blend between dark blue and purple
+        const blend = (barangayRisk - 70) / 30;
+        color = this.interpolateColor('#00008B', '#8B008B', blend);
+      } else if (barangayRisk >= 50) {
+        // Dark blue (high) - blend between blue and dark blue
+        const blend = (barangayRisk - 50) / 20;
+        color = this.interpolateColor('#4169E1', '#00008B', blend);
+      } else if (barangayRisk >= 30) {
+        // Blue (moderate) - blend between light blue and blue
+        const blend = (barangayRisk - 30) / 20;
+        color = this.interpolateColor('#87CEEB', '#4169E1', blend);
+      } else {
+        // Light blue (low) - intensity based on risk
+        const intensity = barangayRisk / 30;
+        color = this.interpolateColor('#E0F2FE', '#87CEEB', intensity);
+        opacity = 0.1 + intensity * 0.2;
+      }
+
+      rainFeatures.push({
+        type: 'Feature',
+        geometry: polygon.geometry,
+        properties: {
+          name: barangayName,
+          risk: barangayRisk,
+          color: color,
+          opacity: opacity
+        }
+      });
+      
+      featureIndex++;
+    });
+
+    if (rainFeatures.length > 0) {
+      const rainGeoJSON = {
+        type: 'FeatureCollection',
+        features: rainFeatures
+      };
+
+      this.rainLayer = L.geoJSON(rainGeoJSON as any, {
+        style: (feature: any) => {
+          const props = feature.properties;
+          const risk = props.risk;
+          const color = props.color || '#87CEEB';
+          const opacity = props.opacity || 0.3;
+
+          return {
+            fillColor: color,
+            weight: risk > 50 ? 3 : 2,
+            opacity: Math.min(1, opacity),
+            color: risk > 70 ? '#FF0000' : color, // Red border for extreme risk
+            dashArray: risk > 70 ? '5, 5' : '', // Dashed border for extreme
+            fillOpacity: opacity
+          };
+        }
+      });
+
+      // Add CSS animation class to the layer and bring to front
+      if (this.rainLayer && (this.rainLayer as any).eachLayer) {
+        (this.rainLayer as any).eachLayer((layer: any) => {
+          if (layer._path) {
+            layer._path.style.transition = 'fill-opacity 0.5s ease, fill 0.5s ease';
+          }
+          // Bring each layer to front
+          if (layer.bringToFront) {
+            layer.bringToFront();
+          }
+        });
+      }
+
+      this.rainLayer.addTo(this.map);
+    }
+  }
+
+  // Helper method to interpolate between two colors
+  private interpolateColor(color1: string, color2: string, factor: number): string {
+    const c1 = this.hexToRgb(color1);
+    const c2 = this.hexToRgb(color2);
+    
+    if (!c1 || !c2) return color1;
+    
+    const r = Math.round(c1.r + (c2.r - c1.r) * factor);
+    const g = Math.round(c1.g + (c2.g - c1.g) * factor);
+    const b = Math.round(c1.b + (c2.b - c1.b) * factor);
+    
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  // Helper method to convert hex to RGB
+  private hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+  private removeRainOverlay(): void {
+    if (this.rainLayer) {
+      this.map.removeLayer(this.rainLayer);
+      this.rainLayer = null;
     }
   }
 

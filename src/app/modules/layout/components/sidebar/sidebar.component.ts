@@ -4,6 +4,7 @@ import packageJson from '../../../../../../package.json';
 import { MenuService } from '../../services/menu.service';
 import { Router, RouterLink } from '@angular/router';
 import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
+import { SimulationInputComponent } from './simulation-input/simulation-input.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgClass, NgIf } from '@angular/common';
 import { Theme } from 'src/app/core/models/theme.model';
@@ -11,6 +12,7 @@ import { DisasterService } from 'src/app/core/services/disaster.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { MapTypeService } from 'src/app/core/services/maptype.service';
 import { BarangayTypeaheadComponent } from './components/barangay-typeahead/barangay-typeahead.component';
+import { SimulationParams } from 'src/app/core/models/simulation.model';
 
 interface DisasterType {
   type: string;
@@ -22,7 +24,7 @@ interface DisasterType {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
   standalone: true,
-  imports: [NgClass, NgIf, AngularSvgIconModule, SidebarMenuComponent, RouterLink],
+  imports: [NgClass, NgIf, AngularSvgIconModule, SidebarMenuComponent, SimulationInputComponent, RouterLink],
 })
 export class SidebarComponent implements OnInit {
   @Input() barangays: any[] = [];
@@ -38,9 +40,11 @@ export class SidebarComponent implements OnInit {
   @Output() evacuationCenterSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
   @Output() barangaysSelected = new EventEmitter<number[]>();
+  @Output() simulationStarted = new EventEmitter<SimulationParams>();
 
   public appJson: any = packageJson;
   public isLoggedIn = false;
+  public isSimulationMode: boolean = false;
   // public isDssFilterVisible = false;
 
   constructor(
@@ -104,5 +108,17 @@ export class SidebarComponent implements OnInit {
   public logout() {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
+  }
+
+  public onSimulationClicked() {
+    this.isSimulationMode = true;
+  }
+
+  public onSimulationBack() {
+    this.isSimulationMode = false;
+  }
+
+  public onSimulationStarted(params: SimulationParams) {
+    this.simulationStarted.emit(params);
   }
 }

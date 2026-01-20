@@ -12,6 +12,7 @@
     (dssDecisionClicked)="isDssDecisionModalOpen = true"
     (dssEvacuationClicked)="isDssEvacuationModalOpen = true"
     (barangaysSelected)="onBarangaysSelected($event)"
+    (simulationStarted)="onSimulationStarted($event)"
     >
   </app-sidebar>
 
@@ -116,8 +117,34 @@
         </div> -->
 
         <!-- Map Frame -->
-        <div class="map-frame flex-1">
+        <div class="map-frame flex-1 relative">
           <div id="map" class="h-full w-full"></div>
+
+          <!-- Simulation Progress Bar -->
+          <div *ngIf="isSimulationActive" 
+               class="absolute bottom-0 left-0 right-0 bg-background/90 border-t border-border p-3 z-[1000]">
+            <div class="flex items-center gap-4">
+              <button 
+                (click)="toggleSimulationPause()"
+                class="px-3 py-1 bg-muted hover:bg-muted/80 rounded text-sm text-foreground transition-colors">
+                {{ isSimulationPaused ? '▶' : '⏸' }}
+              </button>
+              <div class="flex-1">
+                <div class="w-full bg-muted rounded-full h-2">
+                  <div class="bg-primary h-2 rounded-full transition-all duration-300" 
+                       [style.width.%]="simulationProgress"></div>
+                </div>
+                <div class="text-xs mt-1 text-muted-foreground">
+                  {{ currentSimulationTime | number:'1.1-1' }} / {{ simulationParams?.duration || 0 }} hours
+                </div>
+              </div>
+              <button 
+                (click)="stopSimulation()"
+                class="px-3 py-1 bg-red-500 hover:bg-red-600 rounded text-sm text-white transition-colors">
+                ⏹ Stop
+              </button>
+            </div>
+          </div>
 
           <app-dss-filter
             *ngIf="isDssFilterModalOpen"

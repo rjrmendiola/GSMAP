@@ -46,6 +46,7 @@ export class SidebarMenuComponent implements OnInit {
   @Output() evacuationCenterSelected = new EventEmitter<{ id: number }>();
   @Output() mapTypeSelected = new EventEmitter<{ type: string }>();
   @Output() barangaysSelected = new EventEmitter<number[]>();
+  @Output() simulationClicked = new EventEmitter<void>();
 
   isDropdownOpen: boolean = false;
   isFloodCategoriesVisible: boolean = false;
@@ -178,6 +179,10 @@ export class SidebarMenuComponent implements OnInit {
 
   public onDssEvacuationClick() {
     this.dssEvacuationClicked.emit();
+  }
+
+  public onSimulationClick() {
+    this.simulationClicked.emit();
   }
 
   public truncate(text: string, max: number = 20): string {

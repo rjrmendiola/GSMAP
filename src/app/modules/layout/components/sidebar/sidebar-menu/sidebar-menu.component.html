@@ -391,6 +391,18 @@
   </div>
   <ul class="flex flex-col space-y-1">
     <li>
+      <div class="group relative text-muted-foreground" (click)="onSimulationClick()">
+        <div class="text-muted-foreground/50 pointer-events-none absolute m-2">
+          <svg-icon src="assets/icons/heroicons/outline/chart-pie.svg" [svgClass]="'h-5 w-5'"></svg-icon>
+        </div>
+        <div class="flex h-9 cursor-pointer items-center justify-start rounded text-muted-foreground hover:bg-card hover:text-foreground">
+          <a class="ml-10 truncate text-xs font-semibold tracking-wide focus:outline-none">
+            Data Simulation
+          </a>
+        </div>
+      </div>
+    </li>
+    <li>
       <div class="group relative text-muted-foreground" (click)="onDssAlertClick()">
         <div class="text-muted-foreground/50 pointer-events-none absolute m-2">
           <svg-icon src="assets/icons/heroicons/outline/exclamation-triangle.svg" [svgClass]="'h-5 w-5'"></svg-icon>
