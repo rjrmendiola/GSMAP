@@ -39,6 +39,7 @@ import { FeatureCollection, GeoJsonObject } from 'geojson';
 import { HazardDetectorService } from 'src/app/core/services/hazard-detector.service';
 import { BarangaySelectionService } from 'src/app/core/services/barangay-selection.service';
 import { BarangayDetailsService } from 'src/app/core/services/barangay-details.service';
+import { BarangayTypeaheadComponent } from './components/sidebar/components/barangay-typeahead/barangay-typeahead.component';
 
 @Component({
   selector: 'app-layout',
@@ -1894,6 +1895,15 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    this.barangayService.selectedBarangay$.subscribe(barangay => {
+      console.log("barangay: ", barangay);
+      if (barangay) {
+        this.onBarangaySelected(barangay);
+      } else {
+        this.clearBarangaySelection();
+      }
+    });
+
     this.isLoggedIn = this.authService.isLoggedIn();
 
     if (!this.isLoggedIn) {
@@ -2278,8 +2288,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // });
     this.barangayService.getAllBarangays().subscribe({
       next: (response) => {
-        this.barangays = response;
-        this.barangays.sort((a, b) => a.name.localeCompare(b.name));
+        // this.barangays = response;
+        // this.barangays.sort((a, b) => a.name.localeCompare(b.name));
+        this.barangays = response.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+
+        this.barangayService.setBarangays(this.barangays);
       },
       error: (err) => {
         console.error('Error fetching barangay details:', err);
@@ -2698,4 +2713,51 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // Sync everything
     this.onBarangaysSelected(this.selectedBarangaysFilter);
   }
+
+  private async onBarangaySelected(barangay: Barangay): Promise<void> {
+    try {
+      // Normalize name if necessary
+      const normalizedName = this.normalizeBarangayName(barangay.name);
+
+      // Find the polygon layer
+      const layer = Object.values(this.barangayPolygons).find(
+        (p: any) => p.properties.name === barangay.name ||
+                    this.normalizeBarangayName(p.properties.name) === normalizedName
+      );
+
+      if (!layer) {
+        console.error('Polygon layer not found for barangay:', barangay.name);
+        return;
+      }
+
+      // Fetch complete details using the existing service
+      const details = await this.barangayDetailsService.getCompleteBarangayDetails(barangay);
+
+      // Update shared selection
+      this.barangaySelectionService.setSelectedBarangay({
+        barangay: details.barangay,
+        barangayProfile: details.barangayProfile,
+        chairman: details.chairman,
+        nearestEvacuationCenters: details.nearestEvacuationCenters
+      });
+
+      this.selectedBarangay = barangay.id;
+      this.selectedBarangayName = barangay.name;
+
+      // Highlight polygon
+      this.highlightSelectedBarangay(layer);
+
+      // Show nearest evacuation center markers
+      this.showNearestEvacuationCenterMarkers(details.nearestEvacuationCenters);
+
+      // Zoom map to the barangay
+      this.map.fitBounds(layer.getBounds(), {
+        padding: [50, 50],
+        maxZoom: 14
+      });
+    } catch (error) {
+      console.error('Error handling barangay selection:', error);
+    }
+  }
+
 }

@@ -67,4 +67,9 @@ export class BarangayService {
       formData
     );
   }
+
+  clearSelection() {
+    console.log("barangay.service.ts clearSelection() called");
+    this.selectedBarangaySource.next(null);
+  }
 }

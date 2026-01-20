@@ -452,7 +452,6 @@ export class SidebarDetailsComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes['selectedBarangays']) {
-      console.log("Selected Barangays: ", this.selectedBarangays);
       if (this.selectedBarangays.length) {
         this.loadWeatherDataForBarangays(this.selectedBarangays);
       } else {
@@ -478,6 +477,7 @@ export class SidebarDetailsComponent implements OnInit, OnChanges, OnDestroy {
 
   clearBarangaySelection(): void {
     this.barangaySelectionService.clearSelection();
+    this.barangayService.clearSelection();
     // this.selectedBarangay = "";
     // this.selectedBarangayName = null;
   }

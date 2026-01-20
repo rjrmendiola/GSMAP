@@ -10,6 +10,7 @@ import { Theme } from 'src/app/core/models/theme.model';
 import { DisasterService } from 'src/app/core/services/disaster.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { MapTypeService } from 'src/app/core/services/maptype.service';
+import { BarangayTypeaheadComponent } from './components/barangay-typeahead/barangay-typeahead.component';
 
 interface DisasterType {
   type: string;

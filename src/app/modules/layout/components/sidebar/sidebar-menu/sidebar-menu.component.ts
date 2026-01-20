@@ -7,6 +7,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgFor, NgClass, NgTemplateOutlet, NgIf } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Barangay } from 'src/app/shared/models/barangay.model';
+import { BarangayTypeaheadComponent } from '../components/barangay-typeahead/barangay-typeahead.component';
 
 interface DisasterType {
   type: string;
@@ -28,6 +29,7 @@ interface DisasterType {
         RouterLinkActive,
         NgIf,
         SidebarSubmenuComponent,
+        BarangayTypeaheadComponent
     ],
 })
 export class SidebarMenuComponent implements OnInit {
