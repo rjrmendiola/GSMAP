@@ -924,10 +924,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             .join(' ');
 
           // ✅ Add checkbox
-          const checkbox = L.DomUtil.create('input', '', item) as HTMLInputElement;
-          checkbox.type = 'checkbox';
-          checkbox.dataset['livelihood'] = livelihood;
-          checkbox.style.marginLeft = 'auto';
+          // const checkbox = L.DomUtil.create('input', '', item) as HTMLInputElement;
+          // checkbox.type = 'checkbox';
+          // checkbox.dataset['livelihood'] = livelihood;
+          // checkbox.style.marginLeft = 'auto';
 
           // 🔥 Prevent map drag when interacting with legend
           L.DomEvent.disableClickPropagation(item);
@@ -938,25 +938,25 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             this.onLivelihoodLegendClick(livelihood);
           });
 
-          // L.DomEvent.on(item, 'mouseenter', () => {
-          //   this.highlightBarangaysByLivelihood(livelihood);
-          // });
+          L.DomEvent.on(item, 'mouseenter', () => {
+            this.highlightBarangaysByLivelihood(livelihood);
+          });
 
-          // L.DomEvent.on(item, 'mouseleave', () => {
-          //   if (this.activeLivelihood !== livelihood) {
-          //     this.clearLivelihoodHighlight();
-          //   }
-          // });
+          L.DomEvent.on(item, 'mouseleave', () => {
+            if (this.activeLivelihood !== livelihood) {
+              this.clearLivelihoodHighlight();
+            }
+          });
 
           // ✅ Event: toggle active livelihood
-          L.DomEvent.on(checkbox, 'change', () => {
-            if (checkbox.checked) {
-              this.activeLivelihoods.add(livelihood);
-            } else {
-              this.activeLivelihoods.delete(livelihood);
-            }
-            this.applyLivelihoodHighlights(); // single unified function
-          });
+          // L.DomEvent.on(checkbox, 'change', () => {
+          //   if (checkbox.checked) {
+          //     this.activeLivelihoods.add(livelihood);
+          //   } else {
+          //     this.activeLivelihoods.delete(livelihood);
+          //   }
+          //   this.applyLivelihoodHighlights(); // single unified function
+          // });
         }
 
         // // Map Features Legend (show default visible layers)
@@ -3739,32 +3739,64 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyLivelihoodHighlights(): void {
-    Object.values(this.barangayPolygons).forEach((feature: any) => {
-      const barangayName = feature.properties.name;
+    // If no active livelihoods, reset all polygons
+    if (this.activeLivelihoods.size === 0) {
+      this.layers['barangay'].eachLayer((layer: any) => {
+        layer.setStyle({
+          fillOpacity: 0.1,
+          weight: 0.5,
+          color: '#999'
+        });
+      });
+      return;
+    }
 
-      const detail = this.barangayDetails.find(
-        d =>
-          this.normalizeBarangayName(d.name) ===
-          this.normalizeBarangayName(barangayName)
+    // Highlight only active livelihoods
+    this.layers['barangay'].eachLayer((layer: any) => {
+      const barangayName = layer.feature?.properties?.name;
+      if (!barangayName) return;
+
+      const detail = this.barangayDetails.find(d =>
+        this.normalizeBarangayName(d.name) === this.normalizeBarangayName(barangayName)
       );
 
       if (!detail) return;
 
-      const layer = this.barangayLayerMap.get(this.normalizeBarangayName(barangayName)) as L.Path;
-
-      if (!layer || !layer.setStyle) return;
-
-      const isMatch =
-        this.activeLivelihoods.size === 0
-          ? true // 🔑 nothing checked = show all
-          : this.activeLivelihoods.has(detail.livelihood);
+      const isActive = this.activeLivelihoods.has(detail.livelihood?.toLowerCase() ?? '');
 
       layer.setStyle({
-        fillOpacity: isMatch ? 0.6 : 0.1,
-        weight: isMatch ? 2 : 0.5,
-        color: isMatch ? '#000' : '#999'
+        fillOpacity: isActive ? 0.6 : 0.1,
+        weight: isActive ? 2 : 0.5,
+        color: isActive ? '#000' : '#999'
       });
     });
+
+    // Object.values(this.barangayPolygons).forEach((feature: any) => {
+    //   const barangayName = feature.properties.name;
+
+    //   const detail = this.barangayDetails.find(
+    //     d =>
+    //       this.normalizeBarangayName(d.name) ===
+    //       this.normalizeBarangayName(barangayName)
+    //   );
+
+    //   if (!detail) return;
+
+    //   const layer = this.barangayLayerMap.get(this.normalizeBarangayName(barangayName)) as L.Path;
+
+    //   if (!layer || !layer.setStyle) return;
+
+    //   const isMatch =
+    //     this.activeLivelihoods.size === 0
+    //       ? true // 🔑 nothing checked = show all
+    //       : this.activeLivelihoods.has(detail.livelihood);
+
+    //   layer.setStyle({
+    //     fillOpacity: isMatch ? 0.6 : 0.1,
+    //     weight: isMatch ? 2 : 0.5,
+    //     color: isMatch ? '#000' : '#999'
+    //   });
+    // });
   }
 
 }
