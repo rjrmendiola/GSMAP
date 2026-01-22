@@ -2054,7 +2054,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private async loadWeatherDataForVisualization(): Promise<void> {
     try {
-      return;
       // Use direct Open Meteo API call (not cached backend data)
       console.log('Fetching fresh weather data from Open Meteo API...');
       this.weatherData = await this.weatherService.getWeatherDataForAllBarangay();
