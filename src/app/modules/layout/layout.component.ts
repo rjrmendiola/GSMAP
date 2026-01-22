@@ -261,7 +261,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   highlightBarangayLayer!: L.LayerGroup | null;
   barangayFeatureMap = new Map<number, any>();
-  barangayLayerMap = new Map<number, L.Layer>();
+  barangayLayerMap = new Map<string, L.Layer>();
 
   barangayLabelLayer!: L.LayerGroup;
 
@@ -280,6 +280,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private weatherIconLayer: L.LayerGroup | null = null;
   private showWeatherLayers: boolean = true; // Show weather layers when not simulating
   private weatherRefreshInterval: any = null; // Interval for real-time weather updates
+  private activeLivelihood: string | null = null;
+
+  private activeLivelihoods = new Set<string>();
 
   private hazardAffectedBarangays = {
     'landslide': {
@@ -823,7 +826,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       div.style.maxWidth = '280px';
       div.style.fontFamily = 'Arial, Helvetica, sans-serif';
 
-      if (this.disasterType) {
+      // if (this.disasterType) {
+      if (this.disasterType && this.disasterType.type) {
+
         // var colors: string[] = ['#800000', '#6B8E23', '#FFFF00'];
         var colors: string[] = [
           this.coloringMap.landslide.high,
@@ -873,24 +878,88 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         const sortedLivelihoods = Array.from(uniqueLivelihoods.entries()).sort((a, b) => a[0].localeCompare(b[0]));
 
         // Add livelihood legend items with better formatting
+        // for (const [livelihood, color] of sortedLivelihoods) {
+        //   // Format the livelihood name nicely
+        //   const displayName = livelihood
+        //     .replace(/\//g, ' / ')
+        //     .replace(/\bmainy\b/gi, 'mainly') // Fix typo
+        //     .split(' ')
+        //     .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        //     .join(' ');
+
+        //   labels.push(
+        //     `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
+        //       <i style="background:${color}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px; flex-shrink: 0;"></i>
+        //       <span class="text-xs" style="color: #333; font-size: 11px; line-height: 1.3; word-wrap: break-word;">${displayName}</span>
+        //     </div>`
+        //   );
+        // }
+
         for (const [livelihood, color] of sortedLivelihoods) {
-          // Format the livelihood name nicely
-          const displayName = livelihood
+          const item = L.DomUtil.create('div', 'legend-item', div);
+          item.style.display = 'flex';
+          item.style.alignItems = 'center';
+          item.style.marginBottom = '6px';
+          item.style.cursor = 'pointer';
+          item.style.gap = '6px';
+
+          // Colored box
+          const box = L.DomUtil.create('i', '', item);
+          box.style.background = color;
+          box.style.width = '20px';
+          box.style.height = '20px';
+          box.style.marginRight = '8px';
+          box.style.border = '1px solid #333';
+          box.style.borderRadius = '2px';
+
+          // Label text
+          const label = L.DomUtil.create('span', '', item);
+          label.style.fontSize = '11px';
+          label.style.color = '#333';
+          label.innerText = livelihood
             .replace(/\//g, ' / ')
-            .replace(/\bmainy\b/gi, 'mainly') // Fix typo
+            .replace(/\bmainy\b/gi, 'mainly')
             .split(' ')
-            .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
             .join(' ');
 
-          labels.push(
-            `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
-              <i style="background:${color}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px; flex-shrink: 0;"></i>
-              <span class="text-xs" style="color: #333; font-size: 11px; line-height: 1.3; word-wrap: break-word;">${displayName}</span>
-            </div>`
-          );
+          // ✅ Add checkbox
+          const checkbox = L.DomUtil.create('input', '', item) as HTMLInputElement;
+          checkbox.type = 'checkbox';
+          checkbox.dataset['livelihood'] = livelihood;
+          checkbox.style.marginLeft = 'auto';
+
+          // 🔥 Prevent map drag when interacting with legend
+          L.DomEvent.disableClickPropagation(item);
+          L.DomEvent.disableScrollPropagation(item);
+
+          // ✅ Event: toggle active livelihood
+          L.DomEvent.on(item, 'click', () => {
+            this.onLivelihoodLegendClick(livelihood);
+          });
+
+          // L.DomEvent.on(item, 'mouseenter', () => {
+          //   this.highlightBarangaysByLivelihood(livelihood);
+          // });
+
+          // L.DomEvent.on(item, 'mouseleave', () => {
+          //   if (this.activeLivelihood !== livelihood) {
+          //     this.clearLivelihoodHighlight();
+          //   }
+          // });
+
+          // ✅ Event: toggle active livelihood
+          L.DomEvent.on(checkbox, 'change', () => {
+            if (checkbox.checked) {
+              this.activeLivelihoods.add(livelihood);
+            } else {
+              this.activeLivelihoods.delete(livelihood);
+            }
+            this.applyLivelihoodHighlights(); // single unified function
+          });
         }
 
-        // Map Features Legend (show default visible layers)
+        // // Map Features Legend (show default visible layers)
         const defaultVisibleLayers = ['water_river', 'buildings', 'roads', 'forest'];
         const visibleLayers = defaultVisibleLayers.filter(key => this.layerVisibility[key] && this.layerColors[key]);
 
@@ -906,19 +975,46 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             'landcover': 'Land Cover'
           };
 
-          for (const layerKey of visibleLayers) {
-            const color = this.layerColors[layerKey];
-            const layerName = layerDisplayNames[layerKey] || layerKey.charAt(0).toUpperCase() + layerKey.slice(1).replace(/_/g, ' ');
-            labels.push(
-              `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
-                <i style="background:${color}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px; flex-shrink: 0;"></i>
-                <span class="text-xs" style="color: #333; font-size: 11px;">${layerName}</span>
-              </div>`
-            );
+        //   for (const layerKey of visibleLayers) {
+        //     const color = this.layerColors[layerKey];
+        //     const layerName = layerDisplayNames[layerKey] || layerKey.charAt(0).toUpperCase() + layerKey.slice(1).replace(/_/g, ' ');
+        //     labels.push(
+        //       `<div class="py-1 flex items-center" style="margin-bottom: 4px;">
+        //         <i style="background:${color}; width: 20px; height: 20px; display: inline-block; margin-right: 8px; border: 1px solid #333; border-radius: 2px; flex-shrink: 0;"></i>
+        //         <span class="text-xs" style="color: #333; font-size: 11px;">${layerName}</span>
+        //       </div>`
+        //     );
+        //   }
+          if (visibleLayers.length > 0) {
+            const sectionTitle = L.DomUtil.create('strong', '', div);
+            sectionTitle.innerText = 'Map Features';
+            sectionTitle.style.display = 'block';
+            sectionTitle.style.marginTop = '10px';
+            sectionTitle.style.borderTop = '1px solid #ddd';
+            sectionTitle.style.paddingTop = '6px';
+
+            for (const layerKey of visibleLayers) {
+              const row = L.DomUtil.create('div', '', div);
+              row.style.display = 'flex';
+              row.style.alignItems = 'center';
+              row.style.marginBottom = '4px';
+
+              const box = L.DomUtil.create('i', '', row);
+              box.style.background = this.layerColors[layerKey];
+              box.style.width = '20px';
+              box.style.height = '20px';
+              box.style.marginRight = '8px';
+              box.style.border = '1px solid #333';
+
+              const label = L.DomUtil.create('span', '', row);
+              label.innerText = layerDisplayNames[layerKey] ?? layerKey;
+              label.style.fontSize = '11px';
+            }
           }
+
         }
 
-        div.innerHTML = labels.join("");
+        // div.innerHTML = labels.join("");
       }
 
       // Always add the legend to the map
@@ -1958,11 +2054,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private async loadWeatherDataForVisualization(): Promise<void> {
     try {
+      return;
       // Use direct Open Meteo API call (not cached backend data)
       console.log('Fetching fresh weather data from Open Meteo API...');
       this.weatherData = await this.weatherService.getWeatherDataForAllBarangay();
       console.log('Weather data loaded from Open Meteo:', Object.keys(this.weatherData).length, 'barangays');
-      
+
       // Update weather layers if not simulating
       if (!this.isSimulationActive && this.map && this.showWeatherLayers) {
         this.updateWeatherLayers();
@@ -2009,7 +2106,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.addInfoControl();
     // this.addDetailsControl();
     // this.addAffectedBarangaysControl();
-    
+
     // Load weather data and show layers after map is initialized
     setTimeout(() => {
       this.loadWeatherDataForVisualization();
@@ -2960,10 +3057,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Calculate flood risk for current time
     const floodRisk = this.simulationService.calculateFloodRisk(this.simulationParams, time);
-    
+
     // Calculate progress (0 to 1)
     const progress = time / (this.simulationParams.duration || 1);
-    
+
     // Create pulsing effect based on time
     const pulsePhase = (time * 2) % 10; // 10 second pulse cycle
     const pulseIntensity = 0.1 + (Math.sin(pulsePhase * Math.PI / 5) * 0.1); // Vary opacity slightly
@@ -2979,11 +3076,11 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     Object.values(this.barangayPolygons).forEach((polygon: any) => {
       const barangayName = polygon.properties.name;
       const normalizedName = this.normalizeBarangayName(barangayName);
-      
+
       // Calculate risk for this barangay using deterministic method based on index
       // This ensures consistent progression without random variation
       const baseRisk = floodRisk;
-      
+
       // Add deterministic variation based on feature index and time
       // This creates a more realistic distribution pattern
       const indexVariation = (featureIndex % 10) * 2; // 0-18% variation
@@ -2993,7 +3090,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       // Determine color based on risk with smooth gradients
       let color = '#87CEEB'; // Light blue (low)
       let opacity = 0.2 + (barangayRisk / 100) * 0.6; // Opacity scales with risk
-      
+
       // Add pulse effect
       opacity = Math.min(1, opacity + pulseIntensity);
 
@@ -3027,7 +3124,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
           opacity: opacity
         }
       });
-      
+
       featureIndex++;
     });
 
@@ -3076,13 +3173,13 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   private interpolateColor(color1: string, color2: string, factor: number): string {
     const c1 = this.hexToRgb(color1);
     const c2 = this.hexToRgb(color2);
-    
+
     if (!c1 || !c2) return color1;
-    
+
     const r = Math.round(c1.r + (c2.r - c1.r) * factor);
     const g = Math.round(c1.g + (c2.g - c1.g) * factor);
     const b = Math.round(c1.b + (c2.b - c1.b) * factor);
-    
+
     return `rgb(${r}, ${g}, ${b})`;
   }
 
@@ -3133,10 +3230,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     Object.values(this.barangayPolygons).forEach((polygon: any) => {
       const barangayName = polygon.properties.name;
       const normalizedName = this.normalizeBarangayName(barangayName);
-      
+
       // Find matching weather data
       const weather = this.weatherData[barangayName] || this.weatherData[normalizedName];
-      
+
       if (weather) {
         // Get current rain value - check multiple possible data structures
         let currentRain = 0;
@@ -3168,7 +3265,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         // Convert rain value (mm) to a risk-like percentage (0-100)
         // Scale: 0mm = 0%, 50mm+ = 100%
         const rainRisk = Math.min(100, (rainValue / 50) * 100);
-        
+
         let color = '#E0F2FE';
         let opacity = 0.1;
 
@@ -3258,7 +3355,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             <strong>${props.name}</strong><br>
             <strong>Rain Intensity:</strong> ${rainValue.toFixed(2)} mm
           `);
-          
+
           // Add CSS transitions for smooth color changes (same as simulation)
           if (layer._path) {
             layer._path.style.transition = 'fill-opacity 0.5s ease, fill 0.5s ease';
@@ -3276,12 +3373,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       this.weatherRainLayer.addTo(this.map);
-      
+
       console.log(`Rain layer added with ${rainFeatures.length} features`);
     } else {
       console.warn('No rain features created. Weather data might not match barangay names.');
     }
-    
+
     // Add weather legends after creating layers
     // (Legends are added in updateWeatherLayers method)
   }
@@ -3321,17 +3418,17 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return `
       <div style="
-        width: 36px; 
-        height: 36px; 
-        display: flex; 
-        align-items: center; 
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
         justify-content: center;
         background: rgba(255, 255, 255, 0.9);
         border-radius: 50%;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       ">
         <span class="material-icons" style="
-          font-size: 28px; 
+          font-size: 28px;
           color: ${iconColor};
           line-height: 1;
         ">${iconName}</span>
@@ -3363,10 +3460,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     Object.values(this.barangayPolygons).forEach((polygon: any) => {
       const barangayName = polygon.properties.name;
       const normalizedName = this.normalizeBarangayName(barangayName);
-      
+
       // Find matching weather data
       const weather = this.weatherData[barangayName] || this.weatherData[normalizedName];
-      
+
       if (weather) {
         // Get current weather code and rain value
         let weatherCode = 0;
@@ -3432,10 +3529,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Get center of polygon for marker placement
         const center = this.calculateCentroid(polygon.geometry);
-        
+
         // Get weather icon HTML
         const iconHtml = this.getWeatherIconHtml(weatherCode, rainValue);
-        
+
         // Create custom icon
         const weatherIcon = L.divIcon({
           className: 'weather-icon-marker',
@@ -3445,7 +3542,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         const marker = L.marker(center as [number, number], { icon: weatherIcon });
-        
+
         // Add popup with user-friendly weather info
         const weatherDescription = this.getWeatherDescription(weatherCode);
         let popupContent = `
@@ -3485,7 +3582,7 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             </div>
           </div>
         `;
-        
+
         marker.bindPopup(popupContent);
         weatherMarkers.push(marker);
       }
@@ -3497,7 +3594,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(`Weather icons added for ${weatherMarkers.length} barangays`);
     }
   }
-
 
   private removeWeatherLayers(): void {
     if (this.weatherRainLayer) {
@@ -3552,10 +3648,10 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
         line-height: 1.4;
         max-width: 200px;
       `;
-      
+
       // Prevent map click when clicking legend
       L.DomEvent.disableClickPropagation(div);
-      
+
       return div;
     };
 
@@ -3569,6 +3665,106 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
       this.map.removeControl(this.weatherLegend);
       this.weatherLegend = null;
     }
+  }
+
+  private onLivelihoodLegendClick(livelihood: string): void {
+    console.log('Legend clicked:',
+       livelihood);
+
+    // Toggle behavior (optional)
+    if (this.activeLivelihood === livelihood) {
+      this.clearLivelihoodHighlight();
+      this.activeLivelihood = null;
+      return;
+    }
+
+    this.activeLivelihood = livelihood;
+    this.highlightBarangaysByLivelihood(livelihood);
+  }
+
+  private highlightBarangaysByLivelihood(livelihood: string): void {
+    this.layers['barangay'].eachLayer((layer: any) => {
+      const barangayName = layer.feature?.properties?.name;
+      if (!barangayName) return;
+
+      const detail = this.barangayDetails.find(d =>
+        this.normalizeBarangayName(d.name) ===
+        this.normalizeBarangayName(barangayName)
+      );
+
+      if (!detail) return;
+
+      const isMatch =
+        detail.livelihood?.toLowerCase() === livelihood.toLowerCase();
+
+      layer.setStyle({
+        fillOpacity: isMatch ? 0.6 : 0.1,
+        weight: isMatch ? 2 : 0.5,
+        color: isMatch ? '#000' : '#999'
+      });
+    });
+
+    // Object.values(this.barangayPolygons).forEach((polygon: any) => {
+
+    //   const barangayName = polygon.properties.name;
+    //   const layer = L.geoJSON(this.barangayPolygons[barangayName]);
+
+    //   const detail = this.barangayDetails.find(
+    //     d => this.normalizeBarangayName(d.name) ===
+    //         this.normalizeBarangayName(barangayName)
+    //   );
+
+    //   if (!detail) return;
+
+    //   const isMatch =
+    //     detail.livelihood?.toLowerCase() === livelihood.toLowerCase();
+
+    //   layer.setStyle({
+    //     fillOpacity: isMatch ? 0.6 : 0.1,
+    //     weight: isMatch ? 2 : 0.5,
+    //     color: isMatch ? '#000' : '#999'
+    //   });
+    // });
+  }
+
+  private clearLivelihoodHighlight(): void {
+    Object.values(this.barangayPolygons).forEach((polygon: any) => {
+      const layer = L.geoJSON(this.barangayPolygons[polygon.properties.name]);
+      layer.setStyle({
+        fillOpacity: 0.4,
+        weight: 1,
+        color: '#333'
+      });
+    });
+  }
+
+  private applyLivelihoodHighlights(): void {
+    Object.values(this.barangayPolygons).forEach((feature: any) => {
+      const barangayName = feature.properties.name;
+
+      const detail = this.barangayDetails.find(
+        d =>
+          this.normalizeBarangayName(d.name) ===
+          this.normalizeBarangayName(barangayName)
+      );
+
+      if (!detail) return;
+
+      const layer = this.barangayLayerMap.get(this.normalizeBarangayName(barangayName)) as L.Path;
+
+      if (!layer || !layer.setStyle) return;
+
+      const isMatch =
+        this.activeLivelihoods.size === 0
+          ? true // 🔑 nothing checked = show all
+          : this.activeLivelihoods.has(detail.livelihood);
+
+      layer.setStyle({
+        fillOpacity: isMatch ? 0.6 : 0.1,
+        weight: isMatch ? 2 : 0.5,
+        color: isMatch ? '#000' : '#999'
+      });
+    });
   }
 
 }
