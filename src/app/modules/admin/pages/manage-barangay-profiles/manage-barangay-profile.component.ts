@@ -8,37 +8,47 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Barangay } from 'src/app/shared/models/barangay.model';
 import { RouterModule } from '@angular/router';
 
-// Interface for Population Data
-export interface PopulationDensity {
+// Interface for Barangay Profile
+export interface BarangayProfile {
   id?: number;
   barangay_id: number;
-  population_count: number;
-  land_area_sq_km: number;
-  density?: number; // Usually calculated as population / area
+  area: number;
+  // population_density: number;
+  population: number;
+  livelihood: string;
+  // land_area_sq_km: number;
+  // density?: number; // Usually calculated as population / area
+  max_slope: number;
+  mean_slope: number;
 }
 
 @Component({
-  selector: 'app-population-density',
+  selector: 'app-barangay-profile',
   standalone: true,
   imports: [AngularSvgIconModule, CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
-  templateUrl: './manage-population-density.component.html',
-  styleUrl: './manage-population-density.component.scss'
+  templateUrl: './manage-barangay-profile.component.html',
+  styleUrl: './manage-barangay-profile.component.scss'
 })
-export class ManagePopulationDensityComponent implements OnInit {
+export class ManageBarangayProfileComponent implements OnInit {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
 
-  densities: PopulationDensity[] = [];
+  profiles: BarangayProfile[] = [];
   barangays: Barangay[] = [];
   isEditing = false;
   selectedId: number | null = null;
   isModalOpen = false;
 
-  // Form updated for Population metrics
-  densityForm = this.fb.group({
+  // Form
+  profileForm = this.fb.group({
     barangay_id: [null as number | null, Validators.required],
-    population_count: [null as number | null, [Validators.required, Validators.min(0)]],
-    land_area_sq_km: [null as number | null, [Validators.required, Validators.min(0.0001)]],
+    // population_count: [null as number | null, [Validators.required, Validators.min(0)]],
+    // land_area_sq_km: [null as number | null, [Validators.required, Validators.min(0.0001)]],
+    population: [null as number | null, [Validators.required, Validators.min(0)]],
+    area: [null as number | null, [Validators.required, Validators.min(0.0001)]],
+    livelihood: ["" as string],
+    max_slope: [null as number | null],
+    mean_slope: [null as number | null],
   });
 
   searchQuery = '';
@@ -48,7 +58,7 @@ export class ManagePopulationDensityComponent implements OnInit {
 
   ngOnInit() {
     this.fetchBarangays();
-    this.fetchDensities();
+    this.fetchBarangayProfiles();
   }
 
   fetchBarangays() {
@@ -57,27 +67,28 @@ export class ManagePopulationDensityComponent implements OnInit {
     });
   }
 
-  fetchDensities() {
+  fetchBarangayProfiles() {
     const params = {
       page: this.page.toString(),
       limit: this.limit.toString(),
       search: this.searchQuery
     };
 
-    this.http.get<any>(`${environment.apiUrl}/population-density`, { params }).subscribe(response => {
-      this.densities = response.data || []; // Adjust based on your API's key (e.g., 'densities' or 'data')
-      this.total = response.total || 0;
-    });
+    this.http.get<any>(`${environment.apiUrl}/barangayprofiles`, { params })
+      .subscribe(response => {
+        this.profiles = response.profiles || [];
+        this.total = response.total || 0;
+      });
   }
 
-  openModal(record?: PopulationDensity) {
+  openModal(record?: BarangayProfile) {
     this.isEditing = !!record;
     this.selectedId = record?.id ?? null;
 
-    this.densityForm.reset({
+    this.profileForm.reset({
       barangay_id: record?.barangay_id ? Number(record.barangay_id) : null,
-      population_count: record?.population_count ?? null,
-      land_area_sq_km: record?.land_area_sq_km ?? null
+      population: record?.population ?? null,
+      area: record?.area ?? null
     });
 
     this.isModalOpen = true;
@@ -85,25 +96,25 @@ export class ManagePopulationDensityComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
-    this.densityForm.reset();
+    this.profileForm.reset();
     this.isEditing = false;
     this.selectedId = null;
   }
 
-  onSubmit() {
-    if (this.densityForm.invalid) return;
+  onSubmit () {
+     if (this.profileForm.invalid) return;
 
-    const payload = this.densityForm.value;
-    const url = `${environment.apiUrl}/population-density`;
-
+    const payload = this.profileForm.value;
     if (this.isEditing && this.selectedId !== null) {
-      this.http.put(`${url}/${this.selectedId}`, payload).subscribe(() => {
-        this.fetchDensities();
+      this.http
+        .put(`${environment.apiUrl}/barangayprofiles/${this.selectedId}`, payload)
+        .subscribe(() => {
+        this.fetchBarangayProfiles();
         this.closeModal();
       });
     } else {
-      this.http.post(url, payload).subscribe(() => {
-        this.fetchDensities();
+      this.http.post(`${environment.apiUrl}/barangayprofiles`, payload).subscribe(() => {
+        this.fetchBarangayProfiles();
         this.closeModal();
       });
     }
@@ -111,19 +122,19 @@ export class ManagePopulationDensityComponent implements OnInit {
 
   onDelete(id: number) {
     if (!confirm('Delete this population record?')) return;
-    this.http.delete(`${environment.apiUrl}/population-density/${id}`).subscribe(() => {
-      this.fetchDensities();
+    this.http.delete(`${environment.apiUrl}/barangayprofiles/${id}`).subscribe(() => {
+      this.fetchBarangayProfiles();
     });
   }
 
   onSearch() {
     this.page = 1;
-    this.fetchDensities();
+    this.fetchBarangayProfiles();
   }
 
   onPageChange(newPage: number) {
     this.page = newPage;
-    this.fetchDensities();
+    this.fetchBarangayProfiles();
   }
 
   get totalPages(): number {

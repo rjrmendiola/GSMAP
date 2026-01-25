@@ -49,8 +49,8 @@ const routes: Routes = [
       // { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
       // { path: 'weather-settings', loadComponent: () => import('./pages/manage-weather-settings/manage-weather-settings.component').then(m => m.ManageWeatherSettingsComponent) }
       {
-        path: 'population-density',
-        loadComponent: () => import('./pages/manage-population-density/manage-population-density.component').then(m => m.ManagePopulationDensityComponent)
+        path: 'barangay-profiles',
+        loadComponent: () => import('./pages/manage-barangay-profiles/manage-barangay-profile.component').then(m => m.ManageBarangayProfileComponent)
       },
     ]
   }
