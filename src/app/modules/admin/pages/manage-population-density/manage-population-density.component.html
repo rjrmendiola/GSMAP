@@ -14,14 +14,14 @@
 
 <div class="flex min-w-full flex-col rounded-xl border border-muted/20 bg-background p-2">
   <div class="flex flex-wrap items-center justify-between gap-2 py-3 px-5">
-    <h3 class="text-sm font-medium text-muted-foreground">Showing {{densities.length}} of {{total}} population_density</h3>
+    <h3 class="text-sm font-medium text-muted-foreground">Showing {{densities.length}} of {{total}} records</h3>
     <div class="flex flex-wrap gap-2">
       <div class="flex">
         <label class="relative text-muted-foreground">
           <div class="absolute left-2.5 top-2.5">
             <svg-icon src="assets/icons/heroicons/outline/magnifying-glass.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
           </div>
-          <input class="py-2 pl-8 pr-2" placeholder="Search slopes" type="text" [(ngModel)]="searchQuery" (input)="onSearch()"/>
+          <input class="py-2 pl-8 pr-2" placeholder="Search" type="text" [(ngModel)]="searchQuery" (input)="onSearch()"/>
         </label>
       </div>
     </div>
@@ -31,8 +31,9 @@
     <table class="table w-full table-auto border-collapse border-0 text-left align-middle leading-5 text-muted-foreground">
       <thead class="border border-muted/20 text-xs text-muted-foreground">
         <tr>
-          <th class="min-w-[100px]">name</th>
-          <th class="min-w-[100px]">population_density</th>
+          <th class="min-w-[100px]">#</th>
+          <th class="min-w-[100px]">Barangay Name</th>
+          <th class="min-w-[100px]">Population Density</th>
         </tr>
       </thead>
       <tbody>
