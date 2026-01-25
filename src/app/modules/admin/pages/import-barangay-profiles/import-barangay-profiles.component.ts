@@ -4,13 +4,13 @@ import { RouterLink } from '@angular/router';
 import { BarangayService } from 'src/app/core/services/barangay.service';
 
 @Component({
-  selector: 'app-import-population-density',
+  selector: 'app-import-barangay-profiles',
   standalone: true,
   imports: [NgIf, RouterLink],
-  templateUrl: './import-population-density.component.html',
-  styleUrl: './import-population-density.component.scss'
+  templateUrl: './import-barangay-profiles.component.html',
+  styleUrl: './import-barangay-profiles.component.scss'
 })
-export class ImportBarangaysComponent {
+export class ImportBarangayProfilesComponent {
 
   selectedFile: File | null = null;
   isUploading = false;

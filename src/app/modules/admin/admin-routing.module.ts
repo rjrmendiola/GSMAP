@@ -52,6 +52,10 @@ const routes: Routes = [
         path: 'barangay-profiles',
         loadComponent: () => import('./pages/manage-barangay-profiles/manage-barangay-profile.component').then(m => m.ManageBarangayProfileComponent)
       },
+      {
+        path: 'barangay-profiles/import',
+        loadComponent: () => import('./pages/import-barangay-profiles/import-barangay-profiles.component').then(m => m.ImportBarangayProfilesComponent)
+      },
     ]
   }
 ];
