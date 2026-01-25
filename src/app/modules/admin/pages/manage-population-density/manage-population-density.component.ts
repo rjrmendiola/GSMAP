@@ -21,10 +21,10 @@ export interface PopulationDensity {
   selector: 'app-population-density',
   standalone: true,
   imports: [AngularSvgIconModule, CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
-  templateUrl: './population-density.component.html',
-  styleUrl: './population-density.component.scss'
+  templateUrl: './manage-population-density.component.html',
+  styleUrl: './manage-population-density.component.scss'
 })
-export class PopulationDensityComponent implements OnInit {
+export class ManagePopulationDensityComponent implements OnInit {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
 

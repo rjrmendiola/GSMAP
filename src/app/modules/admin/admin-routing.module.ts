@@ -47,7 +47,11 @@ const routes: Routes = [
         loadComponent: () => import('./pages/manage-evacuation-center-images/manage-evacuation-center-images.component').then(m => m.ManageEvacuationCenterImagesComponent)
       },
       // { path: 'users', loadComponent: () => import('./pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent) },
-      // { path: 'weather-settings', loadComponent: () => import('./pages/manage-weather-settings/manage-weather-settings.component').then(m => m.ManageWeatherSettingsComponent) },
+      // { path: 'weather-settings', loadComponent: () => import('./pages/manage-weather-settings/manage-weather-settings.component').then(m => m.ManageWeatherSettingsComponent) }
+      {
+        path: 'population-density',
+        loadComponent: () => import('./pages/manage-population-density/manage-population-density.component').then(m => m.ManagePopulationDensityComponent)
+      },
     ]
   }
 ];

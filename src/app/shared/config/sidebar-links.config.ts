@@ -12,5 +12,5 @@ export const ADMIN_LINKS = [
   // { label: 'Users', path: '/admin/users', icon: 'admin_panel_settings' },
   // { label: 'Weather Settings', path: '/admin/weather-settings', icon: 'admin_panel_settings' },
   // { label: 'Manage Users', path: '/admin/users', icon: 'admin_panel_settings' },
-  // Add other admin links
+  { label: 'Population Density', path: '/admin/population-density', icon: 'people' },
 ];

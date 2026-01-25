@@ -4,11 +4,11 @@ import { RouterLink } from '@angular/router';
 import { BarangayService } from 'src/app/core/services/barangay.service';
 
 @Component({
-  selector: 'app-import-barangays',
+  selector: 'app-import-population-density',
   standalone: true,
   imports: [NgIf, RouterLink],
-  templateUrl: './import-barangays.component.html',
-  styleUrl: './import-barangays.component.scss'
+  templateUrl: './import-population-density.component.html',
+  styleUrl: './import-population-density.component.scss'
 })
 export class ImportBarangaysComponent {
 
