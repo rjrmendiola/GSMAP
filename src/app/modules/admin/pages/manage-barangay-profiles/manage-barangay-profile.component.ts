@@ -88,7 +88,10 @@ export class ManageBarangayProfileComponent implements OnInit {
     this.profileForm.reset({
       barangay_id: record?.barangay_id ? Number(record.barangay_id) : null,
       population: record?.population ?? null,
-      area: record?.area ?? null
+      area: record?.area ?? null,
+      livelihood: record?.livelihood ?? null,
+      max_slope: record?.max_slope ?? null,
+      mean_slope: record?.mean_slope ?? null
     });
 
     this.isModalOpen = true;
