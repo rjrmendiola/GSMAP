@@ -32,10 +32,10 @@ export class BarangayDetailsService {
       this.allBarangayOfficials = officials;
       this.dataLoaded = true;
 
-      console.log('Barangay details data loaded:', {
-        evacuationCenters: this.allEvacuationCenters.length,
-        barangayOfficials: this.allBarangayOfficials.length
-      });
+      // console.log('Barangay details data loaded:', {
+      //   evacuationCenters: this.allEvacuationCenters.length,
+      //   barangayOfficials: this.allBarangayOfficials.length
+      // });
     } catch (error) {
       console.error('Error loading barangay details data:', error);
       throw error;
@@ -52,8 +52,8 @@ export class BarangayDetailsService {
       return [];
     }
 
-    console.log(`🔍 Finding top ${topCount} nearest evacuation centers`);
-    console.log('Total evacuation centers from database:', this.allEvacuationCenters.length);
+    // console.log(`🔍 Finding top ${topCount} nearest evacuation centers`);
+    // console.log('Total evacuation centers from database:', this.allEvacuationCenters.length);
 
     // Calculate distance for each evacuation center (same logic as layout.component.ts findNearestLocations)
     const distances = this.allEvacuationCenters.map(center => ({
@@ -80,7 +80,7 @@ export class BarangayDetailsService {
       }))
     );
 
-    console.log("CENTERS",topCenters)
+    // console.log("CENTERS",topCenters)
 
     return topCenters;
   }
@@ -141,18 +141,18 @@ export class BarangayDetailsService {
     // Handle both 'official' (from API) and 'barangay_official' (from interface) property names
     if (firstCenter && (firstCenter.official || firstCenter.barangay_official)) {
       chairman = firstCenter.official || firstCenter.barangay_official;
-      console.log('Chairman from nearest evacuation center:', chairman);
+      // console.log('Chairman from nearest evacuation center:', chairman);
     } else {
       // Fallback: try to find from barangay officials list
       chairman = this.getChairmanForBarangay(barangay.id);
-      console.log('Chairman from officials list (fallback):', chairman);
+      // console.log('Chairman from officials list (fallback):', chairman);
     }
 
     const barangayWithProfile = barangay as any;
     const barangayProfile = barangayWithProfile.barangayProfile || null;
 
-    console.log('Final chairman data:', chairman);
-    console.log('Total nearest evacuation centers:', nearestCenters.length);
+    // console.log('Final chairman data:', chairman);
+    // console.log('Total nearest evacuation centers:', nearestCenters.length);
 
     return {
       barangay,

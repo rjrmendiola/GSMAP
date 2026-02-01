@@ -1977,13 +1977,29 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
             this.map.removeLayer(this.labelMarker);
           }
 
-          this.map.removeLayer(this.layers['flood_low']);
-          this.map.removeLayer(this.layers['flood_moderate']);
-          this.map.removeLayer(this.layers['flood_high']);
+          if (this.layers['flood_low']) {
+            this.map.removeLayer(this.layers['flood_low']);
+          }
 
-          this.map.removeLayer(this.layers['landslide_low']);
-          this.map.removeLayer(this.layers['landslide_moderate']);
-          this.map.removeLayer(this.layers['landslide_high']);
+          if (this.layers['flood_moderate']) {
+            this.map.removeLayer(this.layers['flood_moderate']);
+          }
+
+          if (this.layers['flood_high']) {
+            this.map.removeLayer(this.layers['flood_high']);
+          }
+
+          if (this.layers['landslide_low']) {
+            this.map.removeLayer(this.layers['landslide_low']);
+          }
+
+          if (this.layers['landslide_moderate']) {
+            this.map.removeLayer(this.layers['landslide_moderate']);
+          }
+
+          if (this.layers['landslide_high']) {
+            this.map.removeLayer(this.layers['landslide_high']);
+          }
         }
       }
     );
@@ -2013,7 +2029,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.barangayService.selectedBarangay$.subscribe(barangay => {
-      console.log("barangay: ", barangay);
       if (barangay) {
         this.onBarangaySelected(barangay);
       } else {
@@ -2116,7 +2131,9 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.map) {
+      this.map.off();
       this.map.remove();
+      this.map = undefined;
     }
 
     if (this.disasterTypeSubscription) {
@@ -3595,6 +3612,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private removeWeatherLayers(): void {
+    if (!this.map) return;
+
     if (this.weatherRainLayer) {
       this.map.removeLayer(this.weatherRainLayer);
       this.weatherRainLayer = null;
